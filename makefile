@@ -1,4 +1,4 @@
-infile=projecto.l
+infile=ijscanner.l
 outfile=out
 
 make:
