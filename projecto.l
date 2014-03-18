@@ -1,11 +1,20 @@
 %{
-int line=0;
-int column=0;
+int line=1;
+int column=1;
 %}
 %x COMMENT
 reserved (abstract|assert|break|byte|case|catch|char|const|continue|default|do|double|enum|extends|final|finally|float|for|goto|implements|import|instanceof|interface|long|native|package|private|protected|short|strictfp|super|switch|synchronized|this|throw|throws|transient|try|volatile)
 %%
 <COMMENT>
+
+"true"|"false" {printf("BOOLLIT\n");column+=yyleng;}
+"int" {printf("INT\n");column+=yyleng;}
+"boolean" {printf("BOOL\n");column+=yyleng;}
+"new" {printf("NEW\n");column+=yyleng};
+"if" {printf("IF\n");column+=yyleng};
+"else" {printf("ELSE\n");column+=yyleng};
+"while" {printf("WHILE\n");column+=yyleng};
+"System.out.println" {printf("PRINT\n");column+=yyleng};
 "class" {printf("CLASS\n");column+=yyleng;}
 "{" {printf("OBRACE\n");column+=yyleng;}
 "}" {printf("CBRACE\n");column+=yyleng;}
