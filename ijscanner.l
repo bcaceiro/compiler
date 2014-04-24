@@ -1,7 +1,9 @@
 %{
+#include "y.tab.h"
 int Commentline=0;
 int Commentcolumn=0;
 int column=1;
+extern int yylval;  /* Para partilhar yylval*/
 %}
 
 %option yylineno
