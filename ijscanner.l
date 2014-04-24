@@ -23,7 +23,7 @@ reserved (abstract|assert|break|byte|case|catch|char|const|continue|default|do|d
 " "|"\t" 				{column  +=  yyleng;}
 "\n" 					{column = 1;}
 
-(([0-9])+|("0x"[0-9a-fA-F]+)) {printf("INTLIT(%s)\n",yytext);column += yyleng;}
+(([0-9])+|("0x"[0-9a-fA-F]+)) {column += yyleng;yylval = atoi(yytext);return NUMBER;}
 "true"|"false" 			{printf("BOOLLIT(%s)\n",yytext);column += yyleng;}
 "int" 					{printf("INT\n");column += yyleng;}
 "boolean" 				{printf("BOOL\n");column += yyleng;}
