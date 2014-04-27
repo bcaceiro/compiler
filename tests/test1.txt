@@ -1,0 +1,15 @@
+class echo {
+ public static void main(String[] args) {
+ int x;
+ /* começa e acaba */
+ /a*/* começa e tem coisas lá dentro
+
+asdasdasd*/  asd */
+ x = Integer.parseInt(args[0]); //We are the oooooones
+ System.out.println(x);
+ }/*
+ }*/
+0xabcd
+0xfff
+0x123abc
+0xg23abc

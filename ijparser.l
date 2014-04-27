@@ -17,7 +17,7 @@ reserved (abstract|assert|break|byte|case|catch|char|const|continue|default|do|d
 %X COMMENT
 
 %%
-<COMMENT><<EOF>> {BEGIN 0;if(DEBUG)printf("Line %d, col %d: unterminated comment\n",Commentline,Commentcolumn);}
+<COMMENT><<EOF>> {BEGIN 0;printf("Line %d, col %d: unterminated comment\n",Commentline,Commentcolumn);}
 <COMMENT>"*/" {BEGIN 0;column += yyleng;}
 <COMMENT>"\n" {column = 1;}
 <COMMENT>. {column += yyleng;}
@@ -60,7 +60,7 @@ reserved (abstract|assert|break|byte|case|catch|char|const|continue|default|do|d
 "," {if(DEBUG)printf("COMMA\n");column += yyleng;return COMMA;}
 {reserved} {if(DEBUG)printf("RESERVED(%s)\n",yytext);column += yyleng;return RESERVED;}
 [a-zA-Z_$]([a-zA-Z_$0-9])* {if(DEBUG)printf("ID(%s)\n",yytext);column += yyleng;return ID;}
-. {if(DEBUG)printf("Line %d, col %d: illegal character ('%s')\n",yylineno,column,yytext);column += yyleng;}
+. {printf("Line %d, col %d: illegal character ('%s')\n",yylineno,column,yytext);column += yyleng;}
 
 
 %%

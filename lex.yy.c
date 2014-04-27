@@ -675,8 +675,9 @@ extern int yyval;
 int Commentline=0;
 int Commentcolumn=0;
 int column=1;
+int prevColumn = 1;
 
-#line 680 "lex.yy.c"
+#line 681 "lex.yy.c"
 
 #define INITIAL 0
 #define COMMENT 1
@@ -864,9 +865,9 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 19 "ijparser.l"
+#line 20 "ijparser.l"
 
-#line 870 "lex.yy.c"
+#line 871 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -960,222 +961,222 @@ do_action:	/* This label is used only to access EOF actions. */
 			goto yy_find_action;
 
 case YY_STATE_EOF(COMMENT):
-#line 20 "ijparser.l"
-{BEGIN 0;if(DEBUG)printf("Line %d, col %d: unterminated comment\n",Commentline,Commentcolumn);}
+#line 21 "ijparser.l"
+{BEGIN 0;printf("Line %d, col %d: unterminated comment\n",Commentline,Commentcolumn);}
 	YY_BREAK
 case 1:
 YY_RULE_SETUP
-#line 21 "ijparser.l"
-{BEGIN 0;column += yyleng;}
+#line 22 "ijparser.l"
+{BEGIN 0;prevColumn = column; prevLine=yylineno; column += yyleng;}
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 22 "ijparser.l"
-{column = 1;}
+#line 23 "ijparser.l"
+{prevColumn = column;column = 1;prevLine++;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 23 "ijparser.l"
-{column += yyleng;}
+#line 24 "ijparser.l"
+{prevColumn = column; prevLine=yylineno; column += yyleng;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 24 "ijparser.l"
-{BEGIN COMMENT;Commentcolumn=column;column += yyleng;Commentline = yylineno;}
+#line 25 "ijparser.l"
+{BEGIN COMMENT;Commentcolumn=column;prevColumn = column; prevLine=yylineno; column += yyleng;Commentline = yylineno;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 25 "ijparser.l"
-{column=1;}
+#line 26 "ijparser.l"
+{column=1;prevColumn = column; prevLine=yylineno;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 27 "ijparser.l"
-{column  +=  yyleng;}
+#line 28 "ijparser.l"
+{prevColumn = column; prevLine=yylineno; column  +=  yyleng;}
 	YY_BREAK
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 28 "ijparser.l"
-{column = 1;}
+#line 29 "ijparser.l"
+{prevColumn = column;column = 1;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 30 "ijparser.l"
-{if(DEBUG)if(DEBUG)printf("INTLIT(%s)\n",yytext);column += yyleng;/*yylval = atoi(yytext);*/return INTLIT;}
+#line 31 "ijparser.l"
+{if(DEBUG)if(DEBUG)printf("INTLIT(%s)\n",yytext);prevColumn = column; prevLine=yylineno; column += yyleng;/*yylval = atoi(yytext);*/return INTLIT;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 31 "ijparser.l"
-{if(DEBUG)if(DEBUG)printf("BOOLLIT(%s)\n",yytext);column += yyleng;return BOOLLIT;}
+#line 32 "ijparser.l"
+{if(DEBUG)if(DEBUG)printf("BOOLLIT(%s)\n",yytext);prevColumn = column; prevLine=yylineno; column += yyleng;return BOOLLIT;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 32 "ijparser.l"
-{if(DEBUG)printf("INT\n");column += yyleng;return INT;}
+#line 33 "ijparser.l"
+{if(DEBUG)printf("INT\n");prevColumn = column; prevLine=yylineno; column += yyleng;return INT;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 33 "ijparser.l"
-{if(DEBUG)printf("BOOL\n");column += yyleng;return BOOL;}
+#line 34 "ijparser.l"
+{if(DEBUG)printf("BOOL\n");prevColumn = column; prevLine=yylineno; column += yyleng;return BOOL;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 34 "ijparser.l"
-{if(DEBUG)printf("NEW\n");column += yyleng;return NEW;}
+#line 35 "ijparser.l"
+{if(DEBUG)printf("NEW\n");prevColumn = column; prevLine=yylineno; column += yyleng;return NEW;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 35 "ijparser.l"
-{if(DEBUG)printf("IF\n");column += yyleng;return IF;}
+#line 36 "ijparser.l"
+{if(DEBUG)printf("IF\n");prevColumn = column; prevLine=yylineno; column += yyleng;return IF;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 36 "ijparser.l"
-{if(DEBUG)printf("ELSE\n");column += yyleng;return ELSE;}
+#line 37 "ijparser.l"
+{if(DEBUG)printf("ELSE\n");prevColumn = column; prevLine=yylineno; column += yyleng;return ELSE;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 37 "ijparser.l"
-{if(DEBUG)printf("WHILE\n");column += yyleng;return WHILE;}
+#line 38 "ijparser.l"
+{if(DEBUG)printf("WHILE\n");prevColumn = column; prevLine=yylineno; column += yyleng;return WHILE;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 38 "ijparser.l"
-{if(DEBUG)printf("PRINT\n");column += yyleng;return PRINT;}
+#line 39 "ijparser.l"
+{if(DEBUG)printf("PRINT\n");prevColumn = column; prevLine=yylineno; column += yyleng;return PRINT;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 39 "ijparser.l"
-{if(DEBUG)printf("PARSEINT\n");column += yyleng;return PARSEINT;}
+#line 40 "ijparser.l"
+{if(DEBUG)printf("PARSEINT\n");prevColumn = column; prevLine=yylineno; column += yyleng;return PARSEINT;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 40 "ijparser.l"
-{if(DEBUG)printf("CLASS\n");column += yyleng;return CLASS;}
+#line 41 "ijparser.l"
+{if(DEBUG)printf("CLASS\n");prevColumn = column; prevLine=yylineno; column += yyleng;return CLASS;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 41 "ijparser.l"
-{if(DEBUG)printf("PUBLIC\n");column += yyleng;return PUBLIC;}
+#line 42 "ijparser.l"
+{if(DEBUG)printf("PUBLIC\n");prevColumn = column; prevLine=yylineno; column += yyleng;return PUBLIC;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 42 "ijparser.l"
-{if(DEBUG)printf("STATIC\n");column += yyleng;return STATIC;}
+#line 43 "ijparser.l"
+{if(DEBUG)printf("STATIC\n");prevColumn = column; prevLine=yylineno; column += yyleng;return STATIC;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 43 "ijparser.l"
-{if(DEBUG)printf("VOID\n");column += yyleng;return VOID;}
+#line 44 "ijparser.l"
+{if(DEBUG)printf("VOID\n");prevColumn = column; prevLine=yylineno; column += yyleng;return VOID;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 44 "ijparser.l"
-{if(DEBUG)printf("STRING\n");column += yyleng;return STRING;}
+#line 45 "ijparser.l"
+{if(DEBUG)printf("STRING\n");prevColumn = column; prevLine=yylineno; column += yyleng;return STRING;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 45 "ijparser.l"
-{if(DEBUG)printf("DOTLENGTH\n");column += yyleng;return DOTLENGTH;}
+#line 46 "ijparser.l"
+{if(DEBUG)printf("DOTLENGTH\n");prevColumn = column; prevLine=yylineno; column += yyleng;return DOTLENGTH;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 46 "ijparser.l"
-{if(DEBUG)printf("RETURN\n");column += yyleng;return RETURN;}
+#line 47 "ijparser.l"
+{if(DEBUG)printf("RETURN\n");prevColumn = column; prevLine=yylineno; column += yyleng;return RETURN;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 47 "ijparser.l"
-{if(DEBUG)printf("OCURV\n");column += yyleng;return OCURV;}
+#line 48 "ijparser.l"
+{if(DEBUG)printf("OCURV\n");prevColumn = column; prevLine=yylineno; column += yyleng;return OCURV;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 48 "ijparser.l"
-{if(DEBUG)printf("CCURV\n");column += yyleng;return CCURV;}
+#line 49 "ijparser.l"
+{if(DEBUG)printf("CCURV\n");prevColumn = column; prevLine=yylineno; column += yyleng;return CCURV;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 49 "ijparser.l"
-{if(DEBUG)printf("OBRACE\n");column += yyleng;return OBRACE;}
+#line 50 "ijparser.l"
+{if(DEBUG)printf("OBRACE\n");prevColumn = column; prevLine=yylineno; column += yyleng;return OBRACE;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 50 "ijparser.l"
-{if(DEBUG)printf("CBRACE\n");column += yyleng;return CBRACE;}
+#line 51 "ijparser.l"
+{if(DEBUG)printf("CBRACE\n");prevColumn = column; prevLine=yylineno; column += yyleng;return CBRACE;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 51 "ijparser.l"
-{if(DEBUG)printf("OSQUARE\n");column += yyleng;return OSQUARE;}
+#line 52 "ijparser.l"
+{if(DEBUG)printf("OSQUARE\n");prevColumn = column; prevLine=yylineno; column += yyleng;return OSQUARE;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 52 "ijparser.l"
-{if(DEBUG)printf("CSQUARE\n");column += yyleng;return CSQUARE;}
+#line 53 "ijparser.l"
+{if(DEBUG)printf("CSQUARE\n");prevColumn = column; prevLine=yylineno; column += yyleng;return CSQUARE;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 53 "ijparser.l"
-{if(DEBUG)printf("OP1(%s)\n",yytext);column += yyleng;return OP1;}
+#line 54 "ijparser.l"
+{if(DEBUG)printf("OP1(%s)\n",yytext);prevColumn = column; prevLine=yylineno; column += yyleng;return OP1;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 54 "ijparser.l"
-{if(DEBUG)printf("OP2(%s)\n",yytext);column += yyleng;return OP2;}
+#line 55 "ijparser.l"
+{if(DEBUG)printf("OP2(%s)\n",yytext);prevColumn = column; prevLine=yylineno; column += yyleng;return OP2;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 55 "ijparser.l"
-{if(DEBUG)printf("OP3(%s)\n",yytext);column += yyleng;return OP3;}
+#line 56 "ijparser.l"
+{if(DEBUG)printf("OP3(%s)\n",yytext);prevColumn = column; prevLine=yylineno; column += yyleng;return OP3;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 56 "ijparser.l"
-{if(DEBUG)printf("OP4(%s)\n",yytext);column += yyleng;return OP4;}
+#line 57 "ijparser.l"
+{if(DEBUG)printf("OP4(%s)\n",yytext);prevColumn = column; prevLine=yylineno; column += yyleng;return OP4;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 57 "ijparser.l"
-{if(DEBUG)printf("NOT\n");column += yyleng;return NOT;}
+#line 58 "ijparser.l"
+{if(DEBUG)printf("NOT\n");prevColumn = column; prevLine=yylineno; column += yyleng;return NOT;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 58 "ijparser.l"
-{if(DEBUG)printf("ASSIGN\n");column += yyleng;return ASSIGN;}
+#line 59 "ijparser.l"
+{if(DEBUG)printf("ASSIGN\n");prevColumn = column; prevLine=yylineno; column += yyleng;return ASSIGN;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 59 "ijparser.l"
-{if(DEBUG)printf("SEMIC\n");column += yyleng;return SEMIC;}
+#line 60 "ijparser.l"
+{if(DEBUG)printf("SEMIC\n");prevColumn = column; prevLine=yylineno; column += yyleng;return SEMIC;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 60 "ijparser.l"
-{if(DEBUG)printf("COMMA\n");column += yyleng;return COMMA;}
+#line 61 "ijparser.l"
+{if(DEBUG)printf("COMMA\n");prevColumn = column; prevLine=yylineno; column += yyleng;return COMMA;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 61 "ijparser.l"
-{if(DEBUG)printf("RESERVED(%s)\n",yytext);column += yyleng;return RESERVED;}
+#line 62 "ijparser.l"
+{if(DEBUG)printf("RESERVED(%s)\n",yytext);prevColumn = column; prevLine=yylineno; column += yyleng;return RESERVED;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 62 "ijparser.l"
-{if(DEBUG)printf("ID(%s)\n",yytext);column += yyleng;return ID;}
+#line 63 "ijparser.l"
+{if(DEBUG)printf("ID(%s)\n",yytext);prevColumn = column; prevLine=yylineno; column += yyleng;return ID;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 63 "ijparser.l"
-{if(DEBUG)printf("Line %d, col %d: illegal character ('%s')\n",yylineno,column,yytext);column += yyleng;}
+#line 64 "ijparser.l"
+{printf("Line %d, col %d: illegal character ('%s')\n",yylineno,column,yytext);prevColumn = column; prevLine=yylineno; column += yyleng;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 66 "ijparser.l"
+#line 67 "ijparser.l"
 ECHO;
 	YY_BREAK
-#line 1179 "lex.yy.c"
+#line 1180 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2185,7 +2186,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 66 "ijparser.l"
+#line 67 "ijparser.l"
 
 
 

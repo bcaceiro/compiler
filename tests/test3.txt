@@ -1,0 +1,10 @@
+class Test
+{
+    static int outsideInteger;
+
+    public static void main(String []args)
+    {
+        int j, abraham;
+        abraham = (new int[5])[2];
+    }
+}

@@ -1,5 +1,6 @@
 %{
-#include<stdio.h>
+#include <stdio.h>
+#include <string.h>
 void yyerror(char *s);
 
 extern int column;
@@ -16,17 +17,21 @@ extern int yyleng;
 
 %token INTLIT BOOLLIT INT BOOL NEW IF ELSE WHILE PRINT PARSEINT CLASS PUBLIC STATIC VOID STRING DOTLENGTH RETURN OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE OP1 OP2 OP3 OP4 NOT ASSIGN SEMIC COMMA RESERVED ID
 
+%nonassoc REDUCEEXPRESSON1
+
+%nonassoc IFX
+%nonassoc ELSE
+
 %right ASSIGN
 %left OP1
 %left OP3
 %left OP2
 %left OP4
-%left DOTLENGTH
-%left OSQUARE
+%left OSQUARE DOTLENGTH
 %right OPS_FTW
 
-%nonassoc IFX
-%nonassoc ELSE
+
+
 
 %% 
 
@@ -64,7 +69,7 @@ VarDecl :
 	|	;
 
 several_var_decl_in_same_instructionOPTIONAL:
-		COMMA ID
+		COMMA ID several_var_decl_in_same_instructionOPTIONAL
 	|	;
 
 Type : 
@@ -99,18 +104,23 @@ return_expression :
 		Expr
 	|	;
 
-Expr : 
+Cenas: 
 		Expr operations Expr %prec OPS_FTW
-	|	Expr OSQUARE Expr CSQUARE
 	|	ID
 	|	INTLIT
 	|	BOOLLIT
-	|	NEW int_or_bool OSQUARE Expr CSQUARE
 	|	not_or_op3 Expr %prec OPS_FTW
 	|	OCURV Expr CCURV
 	|	Expr DOTLENGTH;
 	|	PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV
 	|	ID OCURV Args_OPTIONAL CCURV;
+
+Expr : 
+		Cenas %prec REDUCEEXPRESSON1
+	|	Cenas OSQUARE Cenas CSQUARE
+	|	NEW int_or_bool OSQUARE Expr CSQUARE;	
+
+
 
 operations:
 		OP1
@@ -146,5 +156,5 @@ int main(){
 }
 
 void yyerror (char *s) {
-	printf ("Line %d, col %d: %s: %s\n",yylineno, column-yyleng, s, yytext);
+	printf ("Line %d, col %d: %s: %s\n",yylineno, (int)(column-strlen(yytext)), s, yytext);
 }

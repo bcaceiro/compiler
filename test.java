@@ -13,6 +13,7 @@ class gcd {
 			else
 				x[1] = x[1] - x[0];
 		}
-	System.out.println(x[0]);
+		lol = (new int[1])[2]; 
+		System.out.println(x[0]);
 	}
 }

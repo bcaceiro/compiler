@@ -1,0 +1,14 @@
+class Test
+{
+    /* These all have to be static. Check the grammar */
+    static int a;
+    static int[] b;
+    static int[] c, d, e, f;
+    static boolean g;
+
+    public static void main(int a, int b) {
+        int c, d, e;
+        int[] a,b,c;
+        boolean d;
+    }
+}

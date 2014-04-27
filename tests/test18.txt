@@ -1,0 +1,15 @@
+class Test
+{
+    /* These all have to be static. Check the grammar */
+    static int a;
+    static int[] b;
+    static int[] c, d, e, f;
+    static boolean g;
+
+    public static void main(String[] args) {
+        int a;
+        a = a+(args.length / 50);
+        b = f(a,b,c, f(a,b,g(a[2], c.length)));
+    }
+}
+
