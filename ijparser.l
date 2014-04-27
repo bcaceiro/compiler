@@ -1,5 +1,10 @@
 %{
+#include "string.h"
 #include "y.tab.h"
+#define DEBUG 0
+
+extern int yyval;
+
 int Commentline=0;
 int Commentcolumn=0;
 int column=1;
@@ -12,7 +17,7 @@ reserved (abstract|assert|break|byte|case|catch|char|const|continue|default|do|d
 %X COMMENT
 
 %%
-<COMMENT><<EOF>> {BEGIN 0;printf("Line %d, col %d: unterminated comment\n",Commentline,Commentcolumn);}
+<COMMENT><<EOF>> {BEGIN 0;if(DEBUG)printf("Line %d, col %d: unterminated comment\n",Commentline,Commentcolumn);}
 <COMMENT>"*/" {BEGIN 0;column += yyleng;}
 <COMMENT>"\n" {column = 1;}
 <COMMENT>. {column += yyleng;}
@@ -22,48 +27,43 @@ reserved (abstract|assert|break|byte|case|catch|char|const|continue|default|do|d
 " "|"\t" 				{column  +=  yyleng;}
 "\n" 					{column = 1;}
 
-(([0-9])+|("0x"[0-9a-fA-F]+)) {column += yyleng;yylval = atoi(yytext);return NUMBER;}
-"true"|"false" 			{printf("BOOLLIT(%s)\n",yytext);column += yyleng;}
-"int" 					{printf("INT\n");column += yyleng;}
-"boolean" 				{printf("BOOL\n");column += yyleng;}
-"new" 					{printf("NEW\n");column += yyleng;}
-"if"					{printf("IF\n");column += yyleng;}
-"else"					{printf("ELSE\n");column += yyleng;}
-"while"					{printf("WHILE\n");column += yyleng;}
-"System.out.println" 	{printf("PRINT\n");column += yyleng;}
-"Integer.parseInt" 		{printf("PARSEINT\n");column += yyleng;}
-"class" 				{printf("CLASS\n");column += yyleng;}
-"public" 				{printf("PUBLIC\n");column += yyleng;}
-"static" 				{printf("STATIC\n");column += yyleng;}
-"void" 					{printf("VOID\n");column += yyleng;}
-"String" 				{printf("STRING\n");column += yyleng;}
-".length" 				{printf("DOTLENGTH\n");column += yyleng;}
-"return" 				{printf("RETURN\n");column += yyleng;}
-"("						{printf("OCURV\n");column += yyleng;}
-")"						{printf("CCURV\n");column += yyleng;}
-"{"						{printf("OBRACE\n");column += yyleng;}
-"}"						{printf("CBRACE\n");column += yyleng;}
-"["						{printf("OSQUARE\n");column += yyleng;}
-"]"						{printf("CSQUARE\n");column += yyleng;}
-("&&"|"||") 			{printf("OP1(%s)\n",yytext);column += yyleng;}
-("<"|">"|"=="|"!="|"<="|">=") {printf("OP2(%s)\n",yytext);column += yyleng;}
-("+"|"-") {printf("OP3(%s)\n",yytext);column += yyleng;}
-("*"|"/"|"%") {printf("OP4(%s)\n",yytext);column += yyleng;}
-"!" {printf("NOT\n");column += yyleng;}
-"=" {printf("ASSIGN\n");column += yyleng;}
-";" {printf("SEMIC\n");column += yyleng;}
-"," {printf("COMMA\n");column += yyleng;}
-{reserved} {printf("RESERVED(%s)\n",yytext);column += yyleng;}
-[a-zA-Z_$]([a-zA-Z_$0-9])* {printf("ID(%s)\n",yytext);column += yyleng;}
-. {printf("Line %d, col %d: illegal character ('%s')\n",yylineno,column,yytext);column += yyleng;}
+(([0-9])+|("0x"[0-9a-fA-F]+)) {if(DEBUG)if(DEBUG)printf("INTLIT(%s)\n",yytext);column += yyleng;/*yylval = atoi(yytext);*/return INTLIT;}
+"true"|"false" 			{if(DEBUG)if(DEBUG)printf("BOOLLIT(%s)\n",yytext);column += yyleng;return BOOLLIT;}
+"int" 					{if(DEBUG)printf("INT\n");column += yyleng;return INT;}
+"boolean" 				{if(DEBUG)printf("BOOL\n");column += yyleng;return BOOL;}
+"new" 					{if(DEBUG)printf("NEW\n");column += yyleng;return NEW;}
+"if"					{if(DEBUG)printf("IF\n");column += yyleng;return IF;}
+"else"					{if(DEBUG)printf("ELSE\n");column += yyleng;return ELSE;}
+"while"					{if(DEBUG)printf("WHILE\n");column += yyleng;return WHILE;}
+"System.out.println" 	{if(DEBUG)printf("PRINT\n");column += yyleng;return PRINT;}
+"Integer.parseInt" 		{if(DEBUG)printf("PARSEINT\n");column += yyleng;return PARSEINT;}
+"class" 				{if(DEBUG)printf("CLASS\n");column += yyleng;return CLASS;}
+"public" 				{if(DEBUG)printf("PUBLIC\n");column += yyleng;return PUBLIC;}
+"static" 				{if(DEBUG)printf("STATIC\n");column += yyleng;return STATIC;}
+"void" 					{if(DEBUG)printf("VOID\n");column += yyleng;return VOID;}
+"String" 				{if(DEBUG)printf("STRING\n");column += yyleng;return STRING;}
+".length" 				{if(DEBUG)printf("DOTLENGTH\n");column += yyleng;return DOTLENGTH;}
+"return" 				{if(DEBUG)printf("RETURN\n");column += yyleng;return RETURN;}
+"("						{if(DEBUG)printf("OCURV\n");column += yyleng;return OCURV;}
+")"						{if(DEBUG)printf("CCURV\n");column += yyleng;return CCURV;}
+"{"						{if(DEBUG)printf("OBRACE\n");column += yyleng;return OBRACE;}
+"}"						{if(DEBUG)printf("CBRACE\n");column += yyleng;return CBRACE;}
+"["						{if(DEBUG)printf("OSQUARE\n");column += yyleng;return OSQUARE;}
+"]"						{if(DEBUG)printf("CSQUARE\n");column += yyleng;return CSQUARE;}
+("&&"|"||") 			{if(DEBUG)printf("OP1(%s)\n",yytext);column += yyleng;return OP1;}
+("<"|">"|"=="|"!="|"<="|">=") {if(DEBUG)printf("OP2(%s)\n",yytext);column += yyleng;return OP2;}
+("+"|"-") {if(DEBUG)printf("OP3(%s)\n",yytext);column += yyleng;return OP3;}
+("*"|"/"|"%") {if(DEBUG)printf("OP4(%s)\n",yytext);column += yyleng;return OP4;}
+"!" {if(DEBUG)printf("NOT\n");column += yyleng;return NOT;}
+"=" {if(DEBUG)printf("ASSIGN\n");column += yyleng;return ASSIGN;}
+";" {if(DEBUG)printf("SEMIC\n");column += yyleng;return SEMIC;}
+"," {if(DEBUG)printf("COMMA\n");column += yyleng;return COMMA;}
+{reserved} {if(DEBUG)printf("RESERVED(%s)\n",yytext);column += yyleng;return RESERVED;}
+[a-zA-Z_$]([a-zA-Z_$0-9])* {if(DEBUG)printf("ID(%s)\n",yytext);column += yyleng;return ID;}
+. {if(DEBUG)printf("Line %d, col %d: illegal character ('%s')\n",yylineno,column,yytext);column += yyleng;}
 
 
 %%
-
-int main()
-{
-	yylex();
-}
 
 int yywrap()
 {

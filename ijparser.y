@@ -1,18 +1,37 @@
 %{
 #include<stdio.h>
+void yyerror(char *s);
+
+extern int column;
+extern int yylineno;
+extern char* yytext;
+extern int yyleng;
+
 %}
 %union{
-char cval;
-int intval;
+	char cval;
+	int intval;
 }
-%token <intval> NUMBER
+
+
+%token INTLIT BOOLLIT INT BOOL NEW IF ELSE WHILE PRINT PARSEINT CLASS PUBLIC STATIC VOID STRING DOTLENGTH RETURN OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE OP1 OP2 OP3 OP4 NOT ASSIGN SEMIC COMMA RESERVED ID
+
+%right ASSIGN
+%left OP1
+%left OP3
+%left OP2
+%left OP4
+%left DOTLENGTH
+%left OSQUARE
+%right OPS_FTW
+
+%nonassoc IFX
+%nonassoc ELSE
 
 %% 
-calc: 		expression 			{printf("%d\n", $1);}
 
-Start :  Program;
-
-Program : CLASS ID OBRACE field_or_method_decaration CBRACE;
+Start :
+		CLASS ID OBRACE field_or_method_decaration CBRACE;
 
 field_or_method_decaration : 
 		FieldDecl field_or_method_decaration 
@@ -24,7 +43,8 @@ FieldDecl :
 		STATIC VarDecl;
 
 MethodDecl :
-		PUBLIC STATIC method_type_declaration ID OCURV FormalParams CCURV OBRACE VarDecl { Statement } CBRACE;
+		PUBLIC STATIC method_type_declaration ID OCURV FormalParams CCURV OBRACE VarDecl statement_declaration_REPETITION CBRACE;
+
 
 method_type_declaration:
 		Type
@@ -48,26 +68,30 @@ several_var_decl_in_same_instructionOPTIONAL:
 	|	;
 
 Type : 
-		INT square_brackets
-	| 	BOOL square_brackets;
+		int_or_bool square_brackets_OPTIONAL;
 
-square_brackets : 
-	 OSQUARE CSQUARE;
+square_brackets_OPTIONAL : 
+		OSQUARE CSQUARE
+	|	;
+	
+statement_declaration_REPETITION:
+		Statement statement_declaration_REPETITION
+	|	;
 
 Statement : 
-		OBRACE several_statement CBRACE;
-	|	IF OCURV Expr CCURV Statement 
-	|	IF OCURV Expr CCURV Statement ELSE Statement;
-	|	WHILE OCURV Expr CCURV Statement;
-	|	PRINT OCURV Expr CCURV SEMIC;
-	|	ID array_index ASSIGN Expr SEMIC;
+		OBRACE several_statement CBRACE
+	|	IF OCURV Expr CCURV Statement %prec IFX
+	|	IF OCURV Expr CCURV Statement ELSE Statement
+	|	WHILE OCURV Expr CCURV Statement
+	|	PRINT OCURV Expr CCURV SEMIC
+	|	ID array_indexOPTIONAL ASSIGN Expr SEMIC
 	|	RETURN return_expression SEMIC;
 
 several_statement:
-		Statement
+		Statement several_statement
 	|	;
 
-array_index:
+array_indexOPTIONAL:
 		OSQUARE Expr CSQUARE
 	|	;
 
@@ -76,27 +100,51 @@ return_expression :
 	|	;
 
 Expr : 
-		Expr ( OP1 | OP2 | OP3 | OP4 ) Expr
-	|	Expr OSQUARE Expr CSQUARE;
-	|	ID | INTLIT | BOOLLIT;
-	|	NEW ( INT | BOOL ) OSQUARE Expr CSQUARE;
-	|	OCURV Expr CCURV;
-	|	Expr DOTLENGTH | ( OP3 | NOT ) Expr;
-	|	PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV;
-	|	ID OCURV [ Args ] CCURV;
+		Expr operations Expr %prec OPS_FTW
+	|	Expr OSQUARE Expr CSQUARE
+	|	ID
+	|	INTLIT
+	|	BOOLLIT
+	|	NEW int_or_bool OSQUARE Expr CSQUARE
+	|	not_or_op3 Expr %prec OPS_FTW
+	|	OCURV Expr CCURV
+	|	Expr DOTLENGTH;
+	|	PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV
+	|	ID OCURV Args_OPTIONAL CCURV;
 
-Args : Expr { COMMA Expr };
+operations:
+		OP1
+	|	OP2
+	|	OP3
+	|	OP4;
+
+int_or_bool:
+		INT
+	|	BOOL;
+
+not_or_op3:
+		OP3
+	|	NOT;
+
+Args_OPTIONAL:
+		Args
+	|	;
+
+Args:
+		Expr comma_expr
+
+comma_expr: 
+		COMMA Expr comma_expr
+	|	;
 
 
 %%
-void yyerror (char *s) {
-	//TODO
-	//printf ("Line %d, col %d: %s: %s\n", <num linha>, <numcoluna>, s, yytext);
-	printf("%s",s);
+
+int main(){
+	yyparse();
+	return 0;
 }
-int main()
-{
 
-yyparse();
-
+void yyerror (char *s) {
+	printf ("Line %d, col %d: %s: %s\n",yylineno, column-yyleng, s, yytext);
 }
