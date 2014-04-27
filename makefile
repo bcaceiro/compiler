@@ -1,8 +1,8 @@
-lexFile=ijscanner.l
-yaacFile=ijscanner.l
+lexFile=ijparser.l
+yaacFile=ijparser.y
 outfile=out
 
 make:
 	lex $(lexFile)
-	yacc -d $(yaccFile)
+	yacc --defines=y.tab.h $(yaacFile)
 	cc -o $(outfile) y.tab.c lex.yy.c -ll -ly
