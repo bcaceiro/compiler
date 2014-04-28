@@ -117,7 +117,7 @@ Cenas:
 
 Expr : 
 		Cenas %prec REDUCEEXPRESSON1
-	|	Cenas OSQUARE Cenas CSQUARE
+	|	Cenas OSQUARE Expr CSQUARE
 	|	NEW int_or_bool OSQUARE Expr CSQUARE;	
 
 
