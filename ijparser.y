@@ -1,12 +1,22 @@
 %{
 #include <stdio.h>
 #include <string.h>
+#include "show.h"
+#include "structures.h"
+
 void yyerror(char *s);
 
+//Lex variables
 extern int column;
 extern int yylineno;
 extern char* yytext;
 extern int yyleng;
+
+//program tree
+Class* program = NULL;
+
+//simbol tree
+//ClassTable* symbols = NULL;
 
 %}
 %union{
@@ -22,12 +32,15 @@ extern int yyleng;
 %nonassoc IFX
 %nonassoc ELSE
 
-%right ASSIGN
 %left OP1
 %left OP3
 %left OP2
 %left OP4
-%left OSQUARE DOTLENGTH
+%right ASSIGN
+%left OSQUARE
+%left OBRACE
+%left NOT
+%left DOTLENGTH
 %right OPS_FTW
 
 
@@ -43,13 +56,11 @@ field_or_method_decaration :
 	| 	MethodDecl field_or_method_decaration
 	|	;
 
-
 FieldDecl :
 		STATIC VarDecl;
 
 MethodDecl :
 		PUBLIC STATIC method_type_declaration ID OCURV FormalParams CCURV OBRACE VarDecl statement_declaration_REPETITION CBRACE;
-
 
 method_type_declaration:
 		Type
@@ -104,22 +115,21 @@ return_expression :
 		Expr
 	|	;
 
-Cenas: 
-		Expr operations Expr %prec OPS_FTW
-	|	ID
+IndexableExpr: 
+		ID
 	|	INTLIT
 	|	BOOLLIT
-	|	not_or_op3 Expr %prec OPS_FTW
+	|	ID OCURV Args_OPTIONAL CCURV
 	|	OCURV Expr CCURV
-	|	Expr DOTLENGTH;
-	|	PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV
-	|	ID OCURV Args_OPTIONAL CCURV;
+	|	Expr DOTLENGTH
+	|	IndexableExpr OSQUARE Expr CSQUARE
+	|	PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV;
 
 Expr : 
-		Cenas %prec REDUCEEXPRESSON1
-	|	Cenas OSQUARE Expr CSQUARE
-	|	NEW int_or_bool OSQUARE Expr CSQUARE;	
-
+		Expr operations Expr %prec OPS_FTW
+	|	not_or_op3 Expr %prec OPS_FTW
+	|	NEW int_or_bool OSQUARE Expr CSQUARE
+	|	IndexableExpr;
 
 
 operations:
@@ -150,9 +160,38 @@ comma_expr:
 
 %%
 
-int main(){
+int main(int argc, char *argv[]){
+	int i, printTree, printSymbols;
+
 	yyparse();
-	return 0;
+
+	
+	printTree = printSymbols = 0;
+	for(i=0; i < argc; i++)
+	{
+		//caso a flag -s esteja presente
+		if(strcmp(argv[i], "-s") == 0)
+		{
+			printSymbols = 1;
+			break;
+		}
+		//caso a flag -t esteja presente
+		else if(strcmp(argv[i], "-t") == 0)
+		{
+			printTree = 1;
+			break;
+		}
+	}
+
+	/*if(printTree)
+		show_program(program);*/
+	//TODO
+	/*if(printSymbols)
+		printSymbols(symbols);
+	*/
+	//TODO:LIMPAR MEMÓRIA???
+		
+    return 0;
 }
 
 void yyerror (char *s) {
