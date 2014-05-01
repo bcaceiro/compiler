@@ -123,7 +123,7 @@ IndexableExpr:
 	|	OCURV Expr CCURV
 	|	Expr DOTLENGTH
 	|	IndexableExpr OSQUARE Expr CSQUARE
-	|	PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV;
+	|	PARSEINT OCURV ID OSQUA[RE Expr CSQUARE CCURV;
 
 Expr : 
 		Expr operations Expr %prec OPS_FTW
