@@ -1,4 +1,5 @@
 class gcd {
+	static int cristianaFeia, davidLindo, coimbraAwesome;
 	public static void main(String[] args) {
 		int[] x;
 		x = new int[2];

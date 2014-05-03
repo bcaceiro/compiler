@@ -1,90 +1,82 @@
+#ifndef _FUNCTIONS_
+#define _FUNCTIONS_
 #include "structures.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
-Node* insertID(Node* currentNode, char* id){
-
-    listID tmp;
-    //create the new Node of the arrayList
-    tmp = malloc(sizeof(listID));
-    if (tmp != NULL){
-        //create the string
-        tmp.id = malloc( sizeof(id) );
-        if ( tmp->id != NULL){
-            //replace the current ID for the nextOne;
-            tmp.id  = strcpy(tmp.id ,id);
-            tmp.next = currentNode->id;
-            currentNode.id = tmp;
-        }else{
-            printf("DEU MERDA MALLOC insertNode\n");
-            return NULL;
-        }
-    else{
-        printf("DEU MERDA MALLOC insertNode\n");
-        return NULL;
+listID* insertID(Node* currentNode, char* id){
+    printf("InsertingID\n\n");
+    //just to be safe
+    if(currentNode==NULL){
+        printf("NODE NULL insertID\n");
+        assert(currentNode!=NULL);
     }
-    return currentNode;
+    listID* tmp;
+    //create the new Node of the arrayList
+    tmp = (listID*) malloc(sizeof(listID));
+    if (tmp != NULL){
+        //replace the current ID for the nextOne;
+        tmp->id  = id;
+        tmp->next = currentNode->id;
+        currentNode->id = tmp;
+    }
+    else{
+        printf("DEU MERDA MALLOC insertID\n");
+        assert(tmp!=NULL);
+    }
+    return tmp;
 }
 
+Node* insertClass(char* id, Node* statements){
+    printf("Inserting Class (%s) \n\n",id);
+    Node* newClass = (Node*) malloc(sizeof(Node));
+    if(newClass==NULL){
+        printf("DEU MERDA MALLOC insertClass\n");
+        assert(newClass!=NULL);
+    }
 
-
-
-/*is_expression_list* insert_expression_list(is_expression_list* list, is_expression* exp)
-{
-	is_expression_list* iel=(is_expression_list*)malloc(sizeof(is_expression_list));	//Cria novo nó na lista
-	iel->expr=exp;				//Preenche-o
-	
-	if(list==NULL)		//Se a lista estiver vazia
-		return iel;	//Devolve o nó criado
-
-	is_expression_list* aux;
-			
-	for(aux=list; aux->next!=NULL; aux=aux->next);	//procura pelo final da lista
-	aux->next=iel;					//adiciona no final da lista
-	
-	return list;
+    //set the node type
+    newClass->n_type = NODE_PROGRAM;
+    newClass->id = insertID(newClass, id);
+    newClass->next = statements;
+    return newClass;
 }
 
-is_expression* insert_i_expression(is_infix_expression* expression)
-{
-	is_expression* ie=(is_expression*)malloc(sizeof(is_expression));
-	ie->disc_d=d_infix_exp;				//Coloca etiqueta a informar que é um "infix expression"
-	ie->data_expression.u_infix_exp=(struct is_infix_expression*) expression;	//Guarda o conteúdo
-		
-	return ie;		
-}
-is_expression* insert_u_expression(is_unary_expression* expression)
-{
-	is_expression* ie=(is_expression*)malloc(sizeof(is_expression));
-	ie->disc_d=d_unary_exp;				//Coloca etiqueta a informar que é um "unary expression"
-	ie->data_expression.u_unary_exp=(struct is_unary_expression*) expression;	//Guarda o conteúdo
-		
-	return ie;		
-}
-
-is_expression* insert_NUMBER(int number)
-{
-	is_expression* ie=(is_expression*)malloc(sizeof(is_expression));
-	ie->disc_d=d_number;				//Coloca etiqueta a informar que é um numero
-	ie->data_expression.number=number;	//Guarda o conteúdo
-		
-	return ie;		
+listID* newVarID(char* id, listID* next){
+    listID* tmp;
+    if(id==NULL){
+        printf("DEU MERDA MALLOC newVarID\n");
+        assert(id!=NULL);
+    }
+    tmp = (listID*) malloc(sizeof(listID));
+    if (tmp != NULL){
+        //replace the current ID for the nextOne;
+        tmp->id  = id;
+        tmp->next = next;
+    }
+    else{
+        printf("DEU MERDA MALLOC newVarID\n");
+        assert(tmp!=NULL);
+    }
+    return tmp;
 }
 
-is_infix_expression *insert_infix_expression(is_expression *op1, is_oper oper, is_expression *op2)
-{
-        is_infix_expression *iie=(is_infix_expression*)malloc(sizeof(is_infix_expression));
-        iie->exp1=op1;			//Guarda operando 1
-        iie->oper=oper;			//Guarda operador
-        iie->exp2=op2;			//Guarda operando 2
+Node* newVarDecl(int type, char* id, listID* moreIds, Node* next){
+    printf("Inserting newVarDecl (%s) \n\n",id);
+    Node* newVar = (Node*) malloc(sizeof(Node));
+    if(newVar==NULL){
+        printf("DEU MERDA MALLOC insertClass\n");
+        assert(newVar!=NULL);
+    }
 
-        return iie;
+    //set the node type
+    newVar->n_type = NODE_VARDECL;
+    newVar->type = (Type)type;
+    newVar->id = newVarID(id, moreIds);
+    newVar->next = next;
+    return newVar;
 }
 
-is_unary_expression* insert_unary_expression(is_expression* expression)
-{
-        is_unary_expression *iue=(is_unary_expression*)malloc(sizeof(is_unary_expression));
-        iue->exp=expression;			//Guarda operando
-
-        return iue;
-}*/
+#endif

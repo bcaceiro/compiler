@@ -1,20 +1,34 @@
 #ifndef _STRUCTURES_
 #define _STRUCTURES_
 
-#include "structures.h"
+typedef enum {NODE_PROGRAM,
+             NODE_VARDECL,
+             NODE_METHODDECL,
+             NODE_METHODPARAMS,
+             NODE_METHODBODY,
+             NODE_PARAMDECL,
+             NODE_COMPOUNDSTAT,
+             NODE_IFELSE,
+             NODE_PRINT,
+             NODE_RETURN,
+             NODE_STORE,
+             NODE_MUL,
+             NODE_DIV,
+             NODE_MOD,
+             NODE_NOT,
+             NODE_MINUS,
+             NODE_PLUS,
+             NODE_LENGTH,
+             NODE_LOADARRAY,
+             NODE_CALL,
+             NODE_NEWINT,
+             NODE_NEWBOOL,
+             NODE_PARSEARGS} NodeType;
 
-/**is_expression_list* insert_expression_list(is_expression_list*, is_expression*);
-is_expression* insert_i_expression(is_infix_expression*);
-is_expression* insert_u_expression(is_unary_expression*);
-is_expression* insert_NUMBER(int);
-is_infix_expression* insert_infix_expression(is_expression*, is_oper, is_expression*);
-is_unary_expression* insert_unary_expression(is_expression*);*/
-
-typedef enum {} NodeType;
 typedef enum {TYPE_VOID, TYPE_INT, TYPE_BOOL, TYPE_INT_ARRAY, TYPE_BOOL_ARRAY, TYPE_STRING_ARRAY} Type;
 
 
-//Lista de IDs (para multiplas declarações de variaveis)
+//LinkList de IDs (para multiplas declarações de variaveis)
 typedef struct _idList
 {
 	char* id;
@@ -24,15 +38,28 @@ typedef struct _idList
 //General Node
 typedef struct _Node
 {
+    //Type of the Node (to identify the tipe of the node)
 	NodeType n_type;
+
+    //Type of the struct (int, void, string)
 	Type type;
-	listID id;
-	struct _Node* n1;
+
+    //id or list of ids
+    listID* id;
+
+    //the tree next nodes (for if and stuff)
+    struct _Node* n1;
 	struct _Node* n2;
 	struct _Node* n3;
 
+    //the next node
 	struct _Node* next;
 }Node;
+
+listID* insertID(Node* currentNode, char* id);
+Node* insertClass(char* id, Node* statements);
+listID* newVarID(char* id, listID* next);
+Node* newVarDecl(int type, char* id, listID* moreIds, Node* next);
 
 #endif
 
