@@ -87,7 +87,7 @@ field_or_method_declaration :
         |                                                           {printf("No more stuff\n");$$ = NULL;};
 
 FieldDecl :
-                STATIC VarDecl      {printf("static var\n");};
+                STATIC VarDecl      {printf("static var\n"); $$ = $2;setStatic($$);};
 
 MethodDecl :
                 PUBLIC STATIC method_type_declaration ID OCURV FormalParams CCURV OBRACE VarDecl statement_declaration_REPETITION CBRACE        {}
@@ -210,8 +210,8 @@ int main(int argc, char *argv[]){
 		}
 	}
 
-        /*if(printTree)
-                show_program(program);*/
+        //if(printTree)
+                show_program(program);
 	//TODO
 	/*if(printSymbols)
 		printSymbols(symbols);

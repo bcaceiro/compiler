@@ -6,6 +6,15 @@
 #include <string.h>
 #include <assert.h>
 
+Node* setStatic(Node* currentNode){
+    if(currentNode==NULL){
+        printf("NODE NULL insertID\n");
+        assert(currentNode!=NULL);
+    }
+    currentNode->isStatic = TRUE;
+    return currentNode;
+}
+
 listID* insertID(Node* currentNode, char* id){
     printf("InsertingID\n\n");
     //just to be safe

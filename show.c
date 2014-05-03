@@ -7,9 +7,12 @@
 
 void show_program(Node* currentNode)
 {
-    printf("printstuff\n\n\n\n\n\n");
-    printf("CLASS\n\tID(%s)\n",currentNode->id->id);
+    while(currentNode!=NULL){
+        printIDs(currentNode->id);
+        currentNode = currentNode->next;
+    }
 }
+
 void printIDs(listID* ids){
     while(ids!=NULL){
         printf("%s\n",ids->id);

@@ -1,6 +1,10 @@
 #ifndef _STRUCTURES_
 #define _STRUCTURES_
 
+
+#define FALSE 0
+#define TRUE !FALSE
+
 typedef enum {NODE_PROGRAM,
              NODE_VARDECL,
              NODE_METHODDECL,
@@ -54,6 +58,7 @@ typedef struct _Node
 
     //the next node
 	struct _Node* next;
+    char isStatic;
 }Node;
 
 listID* insertID(Node* currentNode, char* id);
