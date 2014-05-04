@@ -73,7 +73,7 @@ listID* newVarID(char* id, listID* next){
 }
 
 Node* newVarDecl(int type, char* id, listID* moreIds, Node* next){
-    printf("Inserting newVarDecl (%s) \n\n",id);
+    printf("Inserting newVarDecl (%s)\n",id);
     Node* newVar = (Node*) malloc(sizeof(Node));
     if(newVar==NULL){
         printf("DEU MERDA MALLOC insertClass\n");
@@ -86,6 +86,30 @@ Node* newVarDecl(int type, char* id, listID* moreIds, Node* next){
     newVar->id = newVarID(id, moreIds);
     newVar->next = next;
     return newVar;
+}
+
+Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statements){
+    printf("Inserting New method(%s)\n",id);
+    Node* newMethod = (Node*) malloc(sizeof(Node));
+    if(newMethod==NULL){
+        printf("DEU MERDA MALLOC insertClass\n");
+        assert(newMethod!=NULL);
+    }
+
+    //set the node type
+    newMethod->n_type = NODE_PROGRAM;
+    newMethod->type = type;
+    newMethod->id = insertID(newMethod, id);
+    newMethod->n1 = params;
+    newMethod->n2 = varDecl;
+    newMethod->n3 = statements;
+    newMethod->next = NULL;
+
+    return newMethod;
+}
+Node* setNext(Node* current, Node* next){
+    current->next = next;
+    return current;
 }
 
 #endif

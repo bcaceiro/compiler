@@ -15,7 +15,7 @@ void show_program(Node* currentNode)
 
 void printIDs(listID* ids){
     while(ids!=NULL){
-        printf("%s\n",ids->id);
+        printf("Id(%s)\n",ids->id);
         ids = ids->next;
     }
 }

@@ -33,7 +33,7 @@ Node* program = NULL;
 %type<node> field_or_method_declaration
 %type<node> FieldDecl
 %type<node> MethodDecl
-%type<node> method_type_declaration
+%type<type> method_type_declaration
 %type<node> FormalParams
 %type<node> several_FormalParams
 %type<node> VarDecl
@@ -82,29 +82,29 @@ Start :
         ;
 
 field_or_method_declaration :
-                FieldDecl field_or_method_declaration               {printf("New variable\n");/*$$ = insertVariable($1,$2);*/}
-        | 	MethodDecl field_or_method_declaration              {}
+                FieldDecl field_or_method_declaration               {printf("New variable\n");$$ = setNext($1,$2);}
+        | 	MethodDecl field_or_method_declaration              {printf("New Method\n"); $$ = setNext($1,$2);}
         |                                                           {printf("No more stuff\n");$$ = NULL;};
 
 FieldDecl :
-                STATIC VarDecl      {printf("static var\n"); $$ = $2;setStatic($$);};
+                STATIC VarDecl      {printf("static var\n"); $$ = setStatic($2);};
 
 MethodDecl :
-                PUBLIC STATIC method_type_declaration ID OCURV FormalParams CCURV OBRACE VarDecl statement_declaration_REPETITION CBRACE        {}
+                PUBLIC STATIC method_type_declaration ID OCURV FormalParams CCURV OBRACE VarDecl statement_declaration_REPETITION CBRACE        {printf("Create method\n"); $$ = setStatic(newMethod($3,$4,$6,$9,$10));}
         ;
 
 method_type_declaration:
-                Type            {}
+                Type            {$$ = $1;}
         |	VOID            {$$ = TYPE_VOID;};
 
 FormalParams : 
-                Type ID several_FormalParams        {}
-        |	STRING OSQUARE CSQUARE ID           {}
-        |                                           {};
+                Type ID several_FormalParams        {printf("FormalParamsOther\n");$$ = newVarDecl($1,$2,NULL,$3);}
+        |	STRING OSQUARE CSQUARE ID           {printf("FormalParamsString\n");$$ = newVarDecl(TYPE_STRING_ARRAY,$4,NULL,NULL);}
+        |                                           {printf("NoFormalParams\n");$$ = NULL;};
 
 several_FormalParams : 
-                COMMA Type ID several_FormalParams      {}
-        |                                               {};
+                COMMA Type ID several_FormalParams      {printf("SeveralFormalParams\n");$$ = newVarDecl($2,$3,NULL,$4);}
+        |                                               {printf("No more formal params\n");$$ = NULL;};
 
 VarDecl :
                 Type ID several_var_decl_in_same_instructionOPTIONAL SEMIC VarDecl      {printf("new var\n");$$ = newVarDecl($1,$2,$3,$5);}
