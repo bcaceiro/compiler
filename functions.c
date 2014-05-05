@@ -97,7 +97,7 @@ Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statement
     }
 
     //set the node type
-    newMethod->n_type = NODE_PROGRAM;
+    newMethod->n_type = NODE_METHODDECL;
     newMethod->type = type;
     newMethod->id = insertID(newMethod, id);
     newMethod->n1 = params;
