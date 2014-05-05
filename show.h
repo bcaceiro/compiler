@@ -25,7 +25,8 @@ static const char *NODE_STRING[] = {
                  "NODE_CALL",
                  "NODE_NEWINT",
                  "NODE_NEWBOOL",
-                 "NODE_PARSEARGS"
+                 "NODE_PARSEARGS",
+                 "NODE_WHILE"
 };
 void show_program(Node*);
 void printIDs(listID* ids, int tabs);

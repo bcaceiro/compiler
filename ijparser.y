@@ -131,10 +131,10 @@ statement_declaration_REPETITION:
         ;
 
 Statement : 
-                OBRACE several_statement CBRACE                     {}
+                OBRACE several_statement CBRACE                     {$$ = insertCompound($2);}
         |	IF OCURV Expr CCURV Statement %prec IFX             {}
         |	IF OCURV Expr CCURV Statement ELSE Statement        {}
-        |	WHILE OCURV Expr CCURV Statement                    {}
+        |	WHILE OCURV Expr CCURV Statement                    {$$ = insertWhile($3,$5);}
         |	PRINT OCURV Expr CCURV SEMIC                        {}
         |	ID array_indexOPTIONAL ASSIGN Expr SEMIC            {}
         |	RETURN return_expression SEMIC                      {$$ = setAsReturn($2);}

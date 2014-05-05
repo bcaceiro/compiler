@@ -27,7 +27,9 @@ typedef enum {NODE_PROGRAM,
              NODE_CALL,
              NODE_NEWINT,
              NODE_NEWBOOL,
-             NODE_PARSEARGS} NodeType;
+             NODE_PARSEARGS,
+             NODE_WHILE
+             } NodeType;
 
 typedef enum {TYPE_VOID, TYPE_INT, TYPE_BOOL, TYPE_INT_ARRAY, TYPE_BOOL_ARRAY, TYPE_STRING_ARRAY} Type;
 
@@ -68,6 +70,7 @@ Node* newVarDecl(int type, char* id, listID* moreIds, Node* next);
 Node* setNext(Node* current, Node* next);
 Node* setStatic(Node* currentNode);
 Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statements);
+Node* insertCompound(Node* expression);
 
 #endif
 
