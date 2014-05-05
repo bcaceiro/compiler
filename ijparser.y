@@ -71,8 +71,8 @@ Node* program = NULL;
 %left NOT
 %left DOTLENGTH
 %right OPS_FTW
-
-
+s
+us
 
 
 %% 
@@ -118,7 +118,8 @@ Type :
                 INT OSQUARE CSQUARE        {$$ = TYPE_INT_ARRAY;}
        |        BOOL OSQUARE CSQUARE       {$$ = TYPE_BOOL_ARRAY;}
        |        INT                        {$$ = TYPE_INT;}
-       |        BOOL                       {$$ = TYPE_BOOL;};
+       |        BOOL                       {$$ = TYPE_BOOL;}
+       ;
 	
 
 
@@ -126,7 +127,8 @@ Type :
 
 statement_declaration_REPETITION:
                 Statement statement_declaration_REPETITION          {$$ = setNext($1,$2);}
-        |                                                           {$$ = NULL;};
+        |                                                           {$$ = NULL;}
+        ;
 
 Statement : 
                 OBRACE several_statement CBRACE                     {}
@@ -135,15 +137,18 @@ Statement :
         |	WHILE OCURV Expr CCURV Statement                    {}
         |	PRINT OCURV Expr CCURV SEMIC                        {}
         |	ID array_indexOPTIONAL ASSIGN Expr SEMIC            {}
-        |	RETURN return_expression SEMIC                      {};
+        |	RETURN return_expression SEMIC                      {$$ = setAsReturn($2);}
+        ;
 
 several_statement:
-                Statement several_statement     {}
-        |                                       {$$ = NULL;};
+                Statement several_statement     {$$ = setNext($1,$2);}
+        |                                       {$$ = NULL;}
+        ;
 
 array_indexOPTIONAL:
                 OSQUARE Expr CSQUARE        {}
-        |                                   {$$ = NULL;};
+        |                                   {$$ = NULL;}
+        ;
 
 return_expression : 
                 Expr    {}
@@ -176,7 +181,7 @@ operations:
 
 Args_OPTIONAL:
                 Args    {}
-        |               {};
+        |               {$$ = NULL;};
 
 Args:
                 Expr comma_expr     {};
