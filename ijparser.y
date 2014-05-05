@@ -135,7 +135,7 @@ Statement :
         |	IF OCURV Expr CCURV Statement %prec IFX             {}
         |	IF OCURV Expr CCURV Statement ELSE Statement        {}
         |	WHILE OCURV Expr CCURV Statement                    {$$ = insertWhile($3,$5);}
-        |	PRINT OCURV Expr CCURV SEMIC                        {}
+        |	PRINT OCURV Expr CCURV SEMIC                        {$$ = insertPrint($3);}
         |	ID array_indexOPTIONAL ASSIGN Expr SEMIC            {}
         |	RETURN return_expression SEMIC                      {$$ = setAsReturn($2);}
         ;
