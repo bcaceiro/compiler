@@ -107,9 +107,29 @@ Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statement
 
     return newMethod;
 }
+
+
+
 Node* setNext(Node* current, Node* next){
     current->next = next;
     return current;
+}
+
+Node* insertIf(Node* expression, Node* statement1, Node* statement2 ) {
+    Node* insertIf = (Node*) malloc(sizeof(Node));
+    if(insertIf == NULL) {
+        printf("DEU MERDA MALLOC insertIf\n");
+        assert(insertIf != NULL);
+    }     
+
+    insertIf->n_type = NODE_IFELSE;
+    insertIf->n1     = expression;
+    insertIf->n2     = statement1;
+    insertIf->n3     = statement2;
+    insertIf->next   = NULL;
+
+
+    return insertIf;
 }
 
 #endif

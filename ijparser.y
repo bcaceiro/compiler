@@ -133,7 +133,7 @@ statement_declaration_REPETITION:
 Statement : 
                 OBRACE several_statement CBRACE                     {}
         |	IF OCURV Expr CCURV Statement %prec IFX             {}
-        |	IF OCURV Expr CCURV Statement ELSE Statement        {}
+        |	IF OCURV Expr CCURV Statement ELSE Statement        {$$ = insertIf($3, $5, $7);}
         |	WHILE OCURV Expr CCURV Statement                    {}
         |	PRINT OCURV Expr CCURV SEMIC                        {}
         |	ID array_indexOPTIONAL ASSIGN Expr SEMIC            {}
