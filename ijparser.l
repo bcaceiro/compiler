@@ -60,7 +60,7 @@ reserved (abstract|assert|break|byte|case|catch|char|const|continue|default|do|d
 "," {if(DEBUG)printf("COMMA\n");column += yyleng;return COMMA;}
 {reserved} {if(DEBUG)printf("RESERVED(%s)\n",yytext);column += yyleng;return RESERVED;}
 [a-zA-Z_$]([a-zA-Z_$0-9])* {if(DEBUG)printf("ID(%s)\n",yytext);column += yyleng;yylval.token = strdup(yytext);return ID;}
-. {printf("Line %d, col %d: illegal character ('%s')\n",yylineno,column,yytext);column += yyleng;}
+. {printf("Line %d, col %d: illegal character ('%s')\n",yylineno,column,yytext);column += yyleng;return *yytext;}
 
 
 %%

@@ -65,6 +65,9 @@ listID* insertID(Node* currentNode, char* id);
 Node* insertClass(char* id, Node* statements);
 listID* newVarID(char* id, listID* next);
 Node* newVarDecl(int type, char* id, listID* moreIds, Node* next);
+Node* setNext(Node* current, Node* next);
+Node* setStatic(Node* currentNode);
+Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statements);
 
 #endif
 

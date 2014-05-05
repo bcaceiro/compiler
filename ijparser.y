@@ -47,9 +47,9 @@ Node* program = NULL;
 %type<node> IndexableExpr
 %type<node> Expr
 %type<token> operations
-%type<token> not_or_op3
 %type<node> Args_OPTIONAL
 %type<node> Args
+%type<node> comma_expr
 
 
 %token <token> INTLIT BOOLLIT INT BOOL NEW IF ELSE WHILE PRINT PARSEINT CLASS PUBLIC STATIC VOID STRING DOTLENGTH RETURN OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE OP1 OP2 OP3 OP4 NOT ASSIGN SEMIC COMMA RESERVED ID
@@ -120,9 +120,13 @@ Type :
        |        INT                        {$$ = TYPE_INT;}
        |        BOOL                       {$$ = TYPE_BOOL;};
 	
+
+
+
+
 statement_declaration_REPETITION:
-                Statement statement_declaration_REPETITION          {}
-        |                                                           {};
+                Statement statement_declaration_REPETITION          {$$ = setNext($1,$2);}
+        |                                                           {$$ = NULL;};
 
 Statement : 
                 OBRACE several_statement CBRACE                     {}
@@ -135,15 +139,15 @@ Statement :
 
 several_statement:
                 Statement several_statement     {}
-        |                                       {};
+        |                                       {$$ = NULL;};
 
 array_indexOPTIONAL:
                 OSQUARE Expr CSQUARE        {}
-        |                                   {};
+        |                                   {$$ = NULL;};
 
 return_expression : 
                 Expr    {}
-        |               {};
+        |               {$$ = NULL;};
 
 IndexableExpr: 
                 ID                                                  {}
@@ -157,7 +161,8 @@ IndexableExpr:
 
 Expr : 
                 Expr operations Expr %prec OPS_FTW      {}
-        |	not_or_op3 Expr %prec OPS_FTW           {}
+        |	OP3 Expr %prec OPS_FTW                  {}
+        |	NOT Expr %prec OPS_FTW                  {}
         |	NEW INT OSQUARE Expr CSQUARE            {}
         |	NEW BOOL OSQUARE Expr CSQUARE           {}
         |	IndexableExpr                           {};
@@ -169,10 +174,6 @@ operations:
         |	OP3     {}
         |	OP4     {};
 
-not_or_op3:
-                OP3     {}
-        |	NOT     {};
-
 Args_OPTIONAL:
                 Args    {}
         |               {};
@@ -182,7 +183,7 @@ Args:
 
 comma_expr: 
                 COMMA Expr comma_expr       {}
-        |                                   {};
+        |                                   {$$ = NULL;};
 
 
 %%
@@ -210,8 +211,8 @@ int main(int argc, char *argv[]){
 		}
 	}
 
-        //if(printTree)
-                show_program(program);
+        if(printTree)
+            show_program(program);
 	//TODO
 	/*if(printSymbols)
 		printSymbols(symbols);

@@ -1155,7 +1155,7 @@ YY_RULE_SETUP
 case 41:
 YY_RULE_SETUP
 #line 63 "ijparser.l"
-{printf("Line %d, col %d: illegal character ('%s')\n",yylineno,column,yytext);column += yyleng;}
+{printf("Line %d, col %d: illegal character ('%s')\n",yylineno,column,yytext);column += yyleng;return *yytext;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
