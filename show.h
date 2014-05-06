@@ -2,7 +2,6 @@
 #define _SHOW_
 #include "structures.h"
 
-/* Falta o StoreArray e While a seguir ao Store */
 static const char *NODE_STRING[] = {
                  "Program",
                  "VarDecl",
@@ -27,9 +26,12 @@ static const char *NODE_STRING[] = {
                  "NewInt",
                  "NewBool",
                  "ParseArgs"
-                 "NODE_WHILE"
+                 "While",
+                 "StoreArray",
+                 "IntLit",
+                 "BoolLit"
 };
-void show_program(Node*);
+void printAST(Node* AST);
 void printIDs(listID* ids, int tabs);
 /*void show_expression(is_expression*);
 void show_infix_expression(is_infix_expression*);

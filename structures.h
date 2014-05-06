@@ -28,7 +28,10 @@ typedef enum {NODE_PROGRAM,
              NODE_NEWINT,
              NODE_NEWBOOL,
              NODE_PARSEARGS,
-             NODE_WHILE
+             NODE_WHILE,
+             NODE_STOREARRAY,
+             NODE_INTLIT,
+             NODE_BOOLLIT
              } NodeType;
 
 typedef enum {TYPE_VOID, TYPE_INT, TYPE_BOOL, TYPE_INT_ARRAY, TYPE_BOOL_ARRAY, TYPE_STRING_ARRAY} Type;
@@ -60,6 +63,10 @@ typedef struct _Node
 
     //the next node
 	struct _Node* next;
+
+    //for the literals (to store the values)
+    char* value;
+
     char isStatic;
 }Node;
 
