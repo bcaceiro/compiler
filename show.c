@@ -22,8 +22,8 @@ void printTabs(int i) {
 */
 void printNode( Node* currentNode) {
     /* TODO: falta aqui um tipo acho eu */
-    if(currentNode->type == TYPE_BOOL || currentNode->type == TYPE_INT) {
-        printf("%s\n",NODE_STRING[currentNode->n_type], currentNode->id);
+    if(currentNode->n_type|| currentNode->type == TYPE_INT) {
+        printf("%s(%s)\n",NODE_STRING[currentNode->n_type], currentNode->id);
     }
     else {
         printf("%s\n",NODE_STRING[currentNode->n_type]);
