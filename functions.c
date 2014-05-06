@@ -179,4 +179,21 @@ Node* insertPrint(Node* expression){
 
     return newPrint;
 }
+
+Node* insertReturn(Node* expression) {
+    printf("Insert Return\n");
+    Node* newReturn = (Node*) malloc(sizeof(Node));
+
+    if(newReturn == NULL){
+        printf("DEU MERDA malloc insertReturn\n");
+        assert(newReturn != NULL);
+    }
+
+    newReturn->n_type = NODE_RETURN;
+
+    newReturn->n1 = expression;
+
+    return newReturn;
+
+}
 #endif

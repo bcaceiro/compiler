@@ -81,6 +81,7 @@ Node* insertCompound(Node* expression);
 Node* insertIf(Node* expression, Node* statement1, Node* statement2);
 Node* insertPrint(Node* expression);
 Node* insertWhile(Node* expression, Node* statements);
+Node* insertReturn(Node* expression);
 
 #endif
 

@@ -7,7 +7,7 @@
 #include "structures.h"
 //#include "functions.c"
 
-void yyerror(char *s);
+void yyerror(char *var);
 
 //Lex variables
 extern int column;
@@ -137,7 +137,7 @@ Statement :
         |	WHILE OCURV Expr CCURV Statement                    {$$ = insertWhile($3,$5);}
         |	PRINT OCURV Expr CCURV SEMIC                        {$$ = insertPrint($3);}
         |	ID array_indexOPTIONAL ASSIGN Expr SEMIC            {}
-        |	RETURN return_expression SEMIC                      {/*$$ = setAsReturn($2);*/}
+        |	RETURN return_expression SEMIC                      {$$ = insertReturn($2);}
         ;
 
 several_statement:
