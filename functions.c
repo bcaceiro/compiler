@@ -88,6 +88,14 @@ Node* newVarDecl(int type, char* id, listID* moreIds, Node* next){
     return newVar;
 }
 
+Node* newParamDecl(int type, char* id, listID* moreIds, Node* next){
+    Node* newParam;
+    newParam = newVarDecl(type,id,moreIds,next);
+    if(DEBUG)printf("Inserting newVarDecl (%s)\n",id);
+    newParam->n_type = NODE_PARAMDECL;
+    return newParam;
+}
+
 Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statements){
     if(DEBUG)printf("Inserting New method(%s)\n",id);
     Node* newMethod = (Node*) malloc(sizeof(Node));

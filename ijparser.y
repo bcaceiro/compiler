@@ -19,6 +19,7 @@ extern int yyleng;
 
 //program tree
 Node* program = NULL;
+char Error;
 
 //simbol tree
 //ClassTable* symbols = NULL;
@@ -100,12 +101,12 @@ method_type_declaration:
         |	VOID            {$$ = TYPE_VOID;};
 
 FormalParams : 
-                Type ID several_FormalParams        {if(DEBUG)printf("FormalParamsOther\n");$$ = newVarDecl($1,$2,NULL,$3);}
-        |	STRING OSQUARE CSQUARE ID           {if(DEBUG)printf("FormalParamsString\n");$$ = newVarDecl(TYPE_STRING_ARRAY,$4,NULL,NULL);}
+                Type ID several_FormalParams        {if(DEBUG)printf("FormalParamsOther\n");$$ = newParamDecl($1,$2,NULL,$3);}
+        |	STRING OSQUARE CSQUARE ID           {if(DEBUG)printf("FormalParamsString\n");$$ = newParamDecl(TYPE_STRING_ARRAY,$4,NULL,NULL);}
         |                                           {if(DEBUG)printf("NoFormalParams\n");$$ = NULL;};
 
 several_FormalParams : 
-                COMMA Type ID several_FormalParams      {if(DEBUG)printf("SeveralFormalParams\n");$$ = newVarDecl($2,$3,NULL,$4);}
+                COMMA Type ID several_FormalParams      {if(DEBUG)printf("SeveralFormalParams\n");$$ = newParamDecl($2,$3,NULL,$4);}
         |                                               {if(DEBUG)printf("No more formal params\n");$$ = NULL;};
 
 VarDecl :
@@ -197,7 +198,7 @@ comma_expr:
 
 int main(int argc, char *argv[]){
 	int i, printTree, printSymbols;
-
+        Error = 0;
         yyparse();
 
 	
@@ -217,7 +218,8 @@ int main(int argc, char *argv[]){
 			break;
 		}
 	}
-
+        if(Error)
+            return 0;
         if(printTree)
             printAST(program);
 	//TODO
@@ -231,4 +233,5 @@ int main(int argc, char *argv[]){
 
 void yyerror (char *var) {
         printf ("Line %d, col %d: %s: %s\n",yylineno, (int)(column-strlen(yytext)), var, yytext);
+        Error = 1;
 }

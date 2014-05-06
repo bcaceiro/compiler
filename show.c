@@ -27,8 +27,11 @@ void printNode( Node* currentNode, int tabs) {
     }
 
     else {
-        
-        printIDs(currentNode->id,tabs, currentNode->n_type, currentNode->type);
+        printTabs(tabs);
+        printf("%s\n", NODE_STRING[currentNode->n_type]);
+        printTabs(tabs + 1);
+        printf("%s\n",NODE_TYPE_NAMES[currentNode->type]);
+        printIDs(currentNode->id,tabs+1, currentNode->n_type, currentNode->type);
     }
         
 }
@@ -43,11 +46,34 @@ void printSubTree(Node* currentNode, int tabs) {
     //printTabs(tabs);
     printNode(currentNode, tabs);
 
-    if(currentNode->n1 != NULL)
-        printSubTree(currentNode->n1, tabs + 1);
-
-    if(currentNode->n2 != NULL)
-        printSubTree(currentNode->n2, tabs + 1);
+    //NODE_1
+    switch (currentNode->n_type) {
+        case NODE_METHODDECL:
+            printTabs(tabs + 1);
+            printf("%s\n",NODE_STRING[NODE_METHODPARAMS]);
+            if(currentNode->n1 != NULL){
+                printSubTree(currentNode->n1, tabs + 2);
+            }
+            break;
+        default:
+            if(currentNode->n1 != NULL){
+                printSubTree(currentNode->n1, tabs + 1);
+            }
+        }
+    //NODE_2
+    switch (currentNode->n_type) {
+        case NODE_METHODDECL:
+            printTabs(tabs + 1);
+            printf("%s\n",NODE_STRING[NODE_METHODBODY]);
+            if(currentNode->n2 != NULL){
+                printSubTree(currentNode->n2, tabs + 2);
+            }
+            break;
+        default:
+            if(currentNode->n2 != NULL){
+                printSubTree(currentNode->n2, tabs + 1);
+            }
+        }
 
     if(currentNode->n3 != NULL)
         printSubTree(currentNode->n3, tabs + 1);
@@ -61,10 +87,6 @@ void printSubTree(Node* currentNode, int tabs) {
 void printIDs(listID* ids,int tabs, int n_type, int type) {
     while(ids != NULL) {
         printTabs(tabs);
-        printf("%s\n", NODE_STRING[n_type]);
-        printTabs(tabs + 1);
-        printf("%s\n",NODE_TYPE_NAMES[type]);
-        printTabs(tabs + 1);
         printf("Id(%s)\n",ids->id);
         ids = ids->next;
     }
