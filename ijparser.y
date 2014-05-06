@@ -217,7 +217,7 @@ int main(int argc, char *argv[]){
 	}
 
         if(printTree)
-            //printAST(program);
+            printAST(program);
 	//TODO
 	/*if(printSymbols)
 		printSymbols(symbols);
