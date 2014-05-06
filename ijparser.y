@@ -132,12 +132,12 @@ statement_declaration_REPETITION:
 
 Statement : 
                 OBRACE several_statement CBRACE                     {$$ = insertCompound($2);}
-        |	IF OCURV Expr CCURV Statement %prec IFX             {}
-        |	IF OCURV Expr CCURV Statement ELSE Statement        {}
+        |	IF OCURV Expr CCURV Statement %prec IFX             {$$ = insertIf($3,$5,NULL);}
+        |	IF OCURV Expr CCURV Statement ELSE Statement        {$$ = insertIf($3, $5, $7);}
         |	WHILE OCURV Expr CCURV Statement                    {$$ = insertWhile($3,$5);}
         |	PRINT OCURV Expr CCURV SEMIC                        {$$ = insertPrint($3);}
         |	ID array_indexOPTIONAL ASSIGN Expr SEMIC            {}
-        |	RETURN return_expression SEMIC                      {$$ = setAsReturn($2);}
+        |	RETURN return_expression SEMIC                      {/*$$ = setAsReturn($2);*/}
         ;
 
 several_statement:
@@ -227,6 +227,6 @@ int main(int argc, char *argv[]){
     return 0;
 }
 
-void yyerror (char *s) {
-	printf ("Line %d, col %d: %s: %s\n",yylineno, (int)(column-strlen(yytext)), s, yytext);
+void yyerror (char *var) {
+        printf ("Line %d, col %d: %s: %s\n",yylineno, (int)(column-strlen(yytext)), var, yytext);
 }

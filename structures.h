@@ -71,6 +71,9 @@ Node* setNext(Node* current, Node* next);
 Node* setStatic(Node* currentNode);
 Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statements);
 Node* insertCompound(Node* expression);
+Node* insertIf(Node* expression, Node* statement1, Node* statement2);
+Node* insertPrint(Node* expression);
+Node* insertWhile(Node* expression, Node* statements);
 
 #endif
 

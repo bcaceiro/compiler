@@ -13,7 +13,7 @@ static const char *NODE_STRING[] = {
                  "NODE_IFELSE",
                  "NODE_PRINT",
                  "NODE_RETURN",
-                 "NODE_STORE",
+                 "Store",
                  "NODE_MUL",
                  "NODE_DIV",
                  "NODE_MOD",
