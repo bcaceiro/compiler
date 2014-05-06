@@ -5,34 +5,69 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-
-void printTabs(int i){
-    while(i>0){
+/* 
+    Prints tabs for the AST 
+        @Param i -> Number of Tabs to be print  
+*/
+void printTabs(int i) {
+    while(i > 0) {
         printf("\t");
         i--;
     }
 }
 
-void show_program(Node* currentNode)
-{
-    int tabs = 0;
-    while(currentNode!=NULL){
-        printTabs(tabs);
+/*
+    Prints a Node type
+        @Param node Node to be print
+*/
+void printNode( Node* currentNode) {
+    /* TODO: falta aqui um tipo acho eu */
+    if(currentNode->type == TYPE_BOOL || currentNode->type == TYPE_INT) {
+        printf("%s\n",NODE_STRING[currentNode->n_type], currentNode->id);
+    }
+    else {
         printf("%s\n",NODE_STRING[currentNode->n_type]);
-        //TODO
-        if(TRUE)
-            tabs++;
-        printIDs(currentNode->id,tabs);
-        currentNode = currentNode->next;
     }
 }
 
-void printIDs(listID* ids,int tabs){
+/* 
+    Prints the subtree of a given node
+        @Param currentNode root of the subtree
+        @Param tabs number of tabs
+*/
+void printSubTree(Node* currentNode, int tabs) {
+
+    printTabs(tabs);
+    printNode(currentNode);
+
+    if(currentNode->n1!= NULL)
+        printSubTree(currentNode->n1, tabs + 1);
+
+    if(currentNode->n2!= NULL)
+        printSubTree(currentNode->n2, tabs + 1);
+
+    if(currentNode->n3!= NULL)
+        printSubTree(currentNode->n3, tabs + 1);
+
+    if(currentNode->next != NULL)
+        printSubTree(currentNode->next, tabs);
+    
+}
+
+void printIDs(listID* ids,int tabs) {
     while(ids!=NULL){
         printTabs(tabs);
         printf("Id(%s)\n",ids->id);
         ids = ids->next;
     }
+}
+
+/*
+    Prints the AST
+        @Param AST Root of the AST
+*/
+void printAST(Node* AST) {
+    printSubTree(AST,0);
 }
 
 
