@@ -2,30 +2,31 @@
 #define _SHOW_
 #include "structures.h"
 
+/* Falta o StoreArray e While a seguir ao Store */
 static const char *NODE_STRING[] = {
                  "Program",
                  "VarDecl",
                  "MethodDecl",
-                 "NODE_METHODPARAMS",
-                 "NODE_METHODBODY",
-                 "NODE_PARAMDECL",
-                 "NODE_COMPOUNDSTAT",
-                 "NODE_IFELSE",
-                 "NODE_PRINT",
-                 "NODE_RETURN",
+                 "MethodParams",
+                 "MethodBody",
+                 "ParamDeclaration",
+                 "CompoundStat",
+                 "IfElse",
+                 "Print",
+                 "Return",
                  "Store",
-                 "NODE_MUL",
-                 "NODE_DIV",
-                 "NODE_MOD",
-                 "NODE_NOT",
-                 "NODE_MINUS",
-                 "NODE_PLUS",
-                 "NODE_LENGTH",
-                 "NODE_LOADARRAY",
-                 "NODE_CALL",
-                 "NODE_NEWINT",
-                 "NODE_NEWBOOL",
-                 "NODE_PARSEARGS",
+                 "Mul",
+                 "Div",
+                 "Mod",
+                 "Not",
+                 "Minus",
+                 "Plus",
+                 "Length",
+                 "LoadArray",
+                 "Call",
+                 "NewInt",
+                 "NewBool",
+                 "ParseArgs"
                  "NODE_WHILE"
 };
 void show_program(Node*);
