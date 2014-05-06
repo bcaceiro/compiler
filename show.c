@@ -41,13 +41,13 @@ void printSubTree(Node* currentNode, int tabs) {
     printTabs(tabs);
     printNode(currentNode);
 
-    if(currentNode->n1!= NULL)
+    if(currentNode->n1 != NULL)
         printSubTree(currentNode->n1, tabs + 1);
 
-    if(currentNode->n2!= NULL)
+    if(currentNode->n2 != NULL)
         printSubTree(currentNode->n2, tabs + 1);
 
-    if(currentNode->n3!= NULL)
+    if(currentNode->n3 != NULL)
         printSubTree(currentNode->n3, tabs + 1);
 
     if(currentNode->next != NULL)

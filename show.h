@@ -2,8 +2,10 @@
 #define _SHOW_
 #include "structures.h"
 
-static const char *NODE_STRING[] = {
-                 "Program",
+
+
+
+static const char *NODE_STRING[] = {"Program",
                  "VarDecl",
                  "MethodDecl",
                  "MethodParams",
@@ -25,12 +27,12 @@ static const char *NODE_STRING[] = {
                  "Call",
                  "NewInt",
                  "NewBool",
-                 "ParseArgs"
+                 "ParseArgs",
                  "While",
                  "StoreArray",
                  "IntLit",
                  "BoolLit"
-};
+                    };
 void printAST(Node* AST);
 void printIDs(listID* ids, int tabs);
 /*void show_expression(is_expression*);

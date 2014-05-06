@@ -137,7 +137,7 @@ Statement :
         |	WHILE OCURV Expr CCURV Statement                    {$$ = insertWhile($3,$5);}
         |	PRINT OCURV Expr CCURV SEMIC                        {$$ = insertPrint($3);}
         |	ID array_indexOPTIONAL ASSIGN Expr SEMIC            {}
-        |	RETURN return_expression SEMIC                      {/*$$ = setAsReturn($2);*/}
+        |	RETURN return_expr'ession SEMIC                      {/*$$ = setAsReturn($2);*/}
         ;
 
 several_statement:

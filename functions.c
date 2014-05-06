@@ -163,6 +163,7 @@ Node* insertWhile(Node* expression, Node* statements){
     newWhile->n_type = NODE_WHILE;
     newWhile->n1 = expression;
     newWhile->n2 = statements;
+    newWhile->next   = NULL;
 
     return newWhile;
 }
@@ -176,6 +177,7 @@ Node* insertPrint(Node* expression){
 
     newPrint->n_type = NODE_PRINT;
     newPrint->n1 = expression;
+    newPrint->next   = NULL;
 
     return newPrint;
 }
