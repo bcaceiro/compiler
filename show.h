@@ -34,8 +34,23 @@ static const char *NODE_STRING[] = {"Program",
                  "BoolLit",
                  "NODE_ID"
                     };
+
+static const char* NODE_TYPE_NAMES[] = {
+    "Void",
+    "Int",
+    "Bool",
+    "IntArray",
+    "BoolArray",
+    "StringArray",
+    "Id",
+    "IntLit",
+    "BoolLit",
+    "BoolArray",
+};
+
+
 void printAST(Node* AST);
-void printIDs(listID* ids, int tabs);
+void printIDs(listID* ids,int tabs, int n_type, int type);
 /*void show_expression(is_expression*);
 void show_infix_expression(is_infix_expression*);
 void show_unary_expression(is_unary_expression*);

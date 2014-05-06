@@ -20,15 +20,17 @@ void printTabs(int i) {
     Prints a Node type
         @Param node Node to be print
 */
-void printNode( Node* currentNode) {
+void printNode( Node* currentNode, int tabs) {
     /* TODO: falta aqui um tipo acho eu */
-
-    if(currentNode->n_type == NODE_BOOLLIT || currentNode->n_type == NODE_INTLIT)
+    if(currentNode->n_type == NODE_BOOLLIT || currentNode->n_type == NODE_INTLIT) {
         printf("%s(%s)\n",NODE_STRING[currentNode->n_type], currentNode->value);
+    }
 
     else {
-        printf("%s\n",NODE_STRING[currentNode->n_type]);
+        
+        printIDs(currentNode->id,tabs, currentNode->n_type, currentNode->type);
     }
+        
 }
 
 /* 
@@ -38,8 +40,8 @@ void printNode( Node* currentNode) {
 */
 void printSubTree(Node* currentNode, int tabs) {
 
-    printTabs(tabs);
-    printNode(currentNode);
+    //printTabs(tabs);
+    printNode(currentNode, tabs);
 
     if(currentNode->n1 != NULL)
         printSubTree(currentNode->n1, tabs + 1);
@@ -50,14 +52,19 @@ void printSubTree(Node* currentNode, int tabs) {
     if(currentNode->n3 != NULL)
         printSubTree(currentNode->n3, tabs + 1);
 
+
     if(currentNode->next != NULL)
         printSubTree(currentNode->next, tabs);
     
 }
 
-void printIDs(listID* ids,int tabs) {
-    while(ids!=NULL){
+void printIDs(listID* ids,int tabs, int n_type, int type) {
+    while(ids != NULL) {
         printTabs(tabs);
+        printf("%s\n", NODE_STRING[n_type]);
+        printTabs(tabs + 1);
+        printf("%s\n",NODE_TYPE_NAMES[type]);
+        printTabs(tabs + 1);
         printf("Id(%s)\n",ids->id);
         ids = ids->next;
     }
@@ -68,7 +75,15 @@ void printIDs(listID* ids,int tabs) {
         @Param AST Root of the AST
 */
 void printAST(Node* AST) {
-    printSubTree(AST,0);
+    /*printNode(AST, 0);*/
+    if(AST != NULL) {
+        printf("%s\n", NODE_STRING[AST->n_type]);  
+        printTabs(1);
+        printf("Id(%s)\n", AST->id->id);   
+    }
+    
+    if(AST->next != NULL)
+        printSubTree(AST->next,1);
 }
 
 
