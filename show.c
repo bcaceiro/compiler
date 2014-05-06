@@ -11,7 +11,7 @@
 */
 void printTabs(int i) {
     while(i > 0) {
-        printf("\t");
+        printf("  ");
         i--;
     }
 }
@@ -22,9 +22,14 @@ void printTabs(int i) {
 */
 void printNode( Node* currentNode) {
     /* TODO: falta aqui um tipo acho eu */
+
     if(currentNode->n_type|| currentNode->type == TYPE_INT) {
         printf("%s(%s)\n",NODE_STRING[currentNode->n_type], currentNode->id);
     }
+
+    if(currentNode->n_type == NODE_BOOLLIT || currentNode->n_type == NODE_INTLIT)
+        printf("%s(%s)\n",NODE_STRING[currentNode->n_type], currentNode->value);
+
     else {
         printf("%s\n",NODE_STRING[currentNode->n_type]);
     }

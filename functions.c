@@ -32,7 +32,7 @@ listID* insertID(Node* currentNode, char* id){
         currentNode->id = tmp;
     }
     else{
-        printf("DEU MERDA MALLOC insertID\n");
+        printf("DEU MERDA malloc insertID\n");
         assert(tmp!=NULL);
     }
     return tmp;
@@ -42,7 +42,7 @@ Node* insertClass(char* id, Node* statements){
     printf("Inserting Class (%s) \n\n",id);
     Node* newClass = (Node*) malloc(sizeof(Node));
     if(newClass==NULL){
-        printf("DEU MERDA MALLOC insertClass\n");
+        printf("DEU MERDA malloc insertClass\n");
         assert(newClass!=NULL);
     }
 
@@ -56,7 +56,7 @@ Node* insertClass(char* id, Node* statements){
 listID* newVarID(char* id, listID* next){
     listID* tmp;
     if(id==NULL){
-        printf("DEU MERDA MALLOC newVarID\n");
+        printf("DEU MERDA malloc newVarID\n");
         assert(id!=NULL);
     }
     tmp = (listID*) malloc(sizeof(listID));
@@ -66,7 +66,7 @@ listID* newVarID(char* id, listID* next){
         tmp->next = next;
     }
     else{
-        printf("DEU MERDA MALLOC newVarID\n");
+        printf("DEU MERDA malloc newVarID\n");
         assert(tmp!=NULL);
     }
     return tmp;
@@ -76,7 +76,7 @@ Node* newVarDecl(int type, char* id, listID* moreIds, Node* next){
     printf("Inserting newVarDecl (%s)\n",id);
     Node* newVar = (Node*) malloc(sizeof(Node));
     if(newVar==NULL){
-        printf("DEU MERDA MALLOC insertClass\n");
+        printf("DEU MERDA malloc insertClass\n");
         assert(newVar!=NULL);
     }
 
@@ -92,7 +92,7 @@ Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statement
     printf("Inserting New method(%s)\n",id);
     Node* newMethod = (Node*) malloc(sizeof(Node));
     if(newMethod==NULL){
-        printf("DEU MERDA MALLOC insertClass\n");
+        printf("DEU MERDA malloc insertClass\n");
         assert(newMethod!=NULL);
     }
 
@@ -111,8 +111,12 @@ Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statement
 
 
 Node* setNext(Node* current, Node* next){
-    current->next = next;
-    return current;
+    if(current == NULL)
+        return next;
+    else{
+        current->next = next;
+        return current;
+    }
 }
 
 Node* insertIf(Node* expression, Node* statement1, Node* statement2 ) {
@@ -132,4 +136,47 @@ Node* insertIf(Node* expression, Node* statement1, Node* statement2 ) {
     return insertIf;
 }
 
+Node* insertCompound(Node* expression){
+    printf("InsertCompound\n");
+    if(expression == NULL || expression->next == NULL)
+        return expression;
+
+    //create a compoundStatement
+    Node* newCompound = (Node*) malloc(sizeof(Node));
+    if(newCompound==NULL){
+        printf("DEU MERDA malloc insertCompound\n");
+        assert(newCompound!=NULL);
+    }
+    newCompound->n_type = NODE_COMPOUNDSTAT;
+    newCompound->next = expression;
+
+    return newCompound;
+}
+
+Node* insertWhile(Node* expression, Node* statements){
+    Node* newWhile = (Node*) malloc(sizeof(Node));
+    if(newWhile==NULL){
+        printf("DEU MERDA malloc insertCompound\n");
+        assert(newWhile!=NULL);
+    }
+
+    newWhile->n_type = NODE_WHILE;
+    newWhile->n1 = expression;
+    newWhile->n2 = statements;
+
+    return newWhile;
+}
+
+Node* insertPrint(Node* expression){
+    Node* newPrint = (Node*) malloc(sizeof(Node));
+    if(newPrint==NULL){
+        printf("DEU MERDA malloc insertCompound\n");
+        assert(newPrint!=NULL);
+    }
+
+    newPrint->n_type = NODE_PRINT;
+    newPrint->n1 = expression;
+
+    return newPrint;
+}
 #endif

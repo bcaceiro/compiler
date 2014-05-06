@@ -2,6 +2,7 @@ class gcd {
 	static int cristianaFeia, davidLindo, coimbraAwesome;
 	public static void main(String[] args) {
 		int[] x;
+		{}{}{}{}{{}}
 		x = new int[2];
 		x[0] = Integer.parseInt(args[0]);
 		x[1] = Integer.parseInt(args[1]);
