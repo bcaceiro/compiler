@@ -8,7 +8,7 @@
 
 Node* setStatic(Node* currentNode){
     if(currentNode==NULL){
-        printf("NODE NULL insertID\n");
+        if(DEBUG)printf("NODE NULL insertID\n");
         assert(currentNode!=NULL);
     }
     currentNode->isStatic = TRUE;
@@ -16,10 +16,10 @@ Node* setStatic(Node* currentNode){
 }
 
 listID* insertID(Node* currentNode, char* id){
-    printf("InsertingID\n\n");
+    if(DEBUG)printf("InsertingID\n\n");
     //just to be safe
     if(currentNode==NULL){
-        printf("NODE NULL insertID\n");
+        if(DEBUG)printf("NODE NULL insertID\n");
         assert(currentNode!=NULL);
     }
     listID* tmp;
@@ -32,17 +32,17 @@ listID* insertID(Node* currentNode, char* id){
         currentNode->id = tmp;
     }
     else{
-        printf("DEU MERDA malloc insertID\n");
+        if(DEBUG)printf("DEU MERDA malloc insertID\n");
         assert(tmp!=NULL);
     }
     return tmp;
 }
 
 Node* insertClass(char* id, Node* statements){
-    printf("Inserting Class (%s) \n\n",id);
+    if(DEBUG)printf("Inserting Class (%s) \n\n",id);
     Node* newClass = (Node*) malloc(sizeof(Node));
     if(newClass==NULL){
-        printf("DEU MERDA malloc insertClass\n");
+        if(DEBUG)printf("DEU MERDA malloc insertClass\n");
         assert(newClass!=NULL);
     }
 
@@ -56,7 +56,7 @@ Node* insertClass(char* id, Node* statements){
 listID* newVarID(char* id, listID* next){
     listID* tmp;
     if(id==NULL){
-        printf("DEU MERDA malloc newVarID\n");
+        if(DEBUG)printf("DEU MERDA malloc newVarID\n");
         assert(id!=NULL);
     }
     tmp = (listID*) malloc(sizeof(listID));
@@ -66,17 +66,17 @@ listID* newVarID(char* id, listID* next){
         tmp->next = next;
     }
     else{
-        printf("DEU MERDA malloc newVarID\n");
+        if(DEBUG)printf("DEU MERDA malloc newVarID\n");
         assert(tmp!=NULL);
     }
     return tmp;
 }
 
 Node* newVarDecl(int type, char* id, listID* moreIds, Node* next){
-    printf("Inserting newVarDecl (%s)\n",id);
+    if(DEBUG)printf("Inserting newVarDecl (%s)\n",id);
     Node* newVar = (Node*) malloc(sizeof(Node));
     if(newVar==NULL){
-        printf("DEU MERDA malloc insertClass\n");
+        if(DEBUG)printf("DEU MERDA malloc insertClass\n");
         assert(newVar!=NULL);
     }
 
@@ -89,10 +89,10 @@ Node* newVarDecl(int type, char* id, listID* moreIds, Node* next){
 }
 
 Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statements){
-    printf("Inserting New method(%s)\n",id);
+    if(DEBUG)printf("Inserting New method(%s)\n",id);
     Node* newMethod = (Node*) malloc(sizeof(Node));
     if(newMethod==NULL){
-        printf("DEU MERDA malloc insertClass\n");
+        if(DEBUG)printf("DEU MERDA malloc insertClass\n");
         assert(newMethod!=NULL);
     }
 
@@ -122,7 +122,7 @@ Node* setNext(Node* current, Node* next){
 Node* insertIf(Node* expression, Node* statement1, Node* statement2 ) {
     Node* insertIf = (Node*) malloc(sizeof(Node));
     if(insertIf == NULL) {
-        printf("DEU MERDA MALLOC insertIf\n");
+        if(DEBUG)printf("DEU MERDA MALLOC insertIf\n");
         assert(insertIf != NULL);
     }     
 
@@ -137,14 +137,14 @@ Node* insertIf(Node* expression, Node* statement1, Node* statement2 ) {
 }
 
 Node* insertCompound(Node* expression){
-    printf("InsertCompound\n");
+    if(DEBUG)printf("InsertCompound\n");
     if(expression == NULL || expression->next == NULL)
         return expression;
 
     //create a compoundStatement
     Node* newCompound = (Node*) malloc(sizeof(Node));
     if(newCompound==NULL){
-        printf("DEU MERDA malloc insertCompound\n");
+        if(DEBUG)printf("DEU MERDA malloc insertCompound\n");
         assert(newCompound!=NULL);
     }
     newCompound->n_type = NODE_COMPOUNDSTAT;
@@ -156,7 +156,7 @@ Node* insertCompound(Node* expression){
 Node* insertWhile(Node* expression, Node* statements){
     Node* newWhile = (Node*) malloc(sizeof(Node));
     if(newWhile==NULL){
-        printf("DEU MERDA malloc insertCompound\n");
+        if(DEBUG)printf("DEU MERDA malloc insertCompound\n");
         assert(newWhile!=NULL);
     }
 
@@ -171,7 +171,7 @@ Node* insertWhile(Node* expression, Node* statements){
 Node* insertPrint(Node* expression){
     Node* newPrint = (Node*) malloc(sizeof(Node));
     if(newPrint==NULL){
-        printf("DEU MERDA malloc insertCompound\n");
+        if(DEBUG)printf("DEU MERDA malloc insertCompound\n");
         assert(newPrint!=NULL);
     }
 
@@ -181,4 +181,63 @@ Node* insertPrint(Node* expression){
 
     return newPrint;
 }
+
+Node* insertReturn(Node* expression) {
+    if(DEBUG)printf("Insert Return\n");
+    Node* newReturn = (Node*) malloc(sizeof(Node));
+
+    if(newReturn == NULL){
+        if(DEBUG)printf("DEU MERDA malloc insertReturn\n");
+        assert(newReturn != NULL);
+    }
+
+    newReturn->n_type = NODE_RETURN;
+
+    newReturn->n1 = expression;
+
+    return newReturn;
+
+}
+
+Node* insertStore(char* id, Node* arrayIndex, Node* expression){
+
+    if(DEBUG)printf("insertStore\n");
+
+    listID* idArray = (listID*) malloc(sizeof(listID));
+    Node* thisNode =  (Node*) malloc(sizeof(Node));
+    if(thisNode == NULL || idArray == NULL){
+        if(DEBUG)printf("DEU MERDA malloc insertStore\n");
+        assert(thisNode == NULL || idArray == NULL);
+    }
+
+    if(arrayIndex!=NULL)
+        thisNode->n_type = NODE_STORE;
+    else
+        thisNode->n_type = NODE_STOREARRAY;
+
+    idArray->id = id;
+    thisNode->value = NULL;
+
+    thisNode->n1 = arrayIndex;
+    thisNode->n2 = expression;
+    thisNode->next = NULL;
+
+    return thisNode;
+}
+
+Node* createTerminalNode(int n_type, char* token){
+    if(DEBUG)printf("create Terminal\n");
+
+    Node* newTerminal = (Node*) malloc(sizeof(Node));
+    if(newTerminal == NULL){
+        if(DEBUG)printf("DEU MERDA malloc insertReturn\n");
+        assert(newTerminal != NULL);
+    }
+    newTerminal->n_type = n_type;
+    //FIXME POR O ID NO CAMPO id?
+    newTerminal->value = token;
+
+    return newTerminal;
+}
+
 #endif

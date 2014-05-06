@@ -31,7 +31,8 @@ static const char *NODE_STRING[] = {"Program",
                  "While",
                  "StoreArray",
                  "IntLit",
-                 "BoolLit"
+                 "BoolLit",
+                 "NODE_ID"
                     };
 void printAST(Node* AST);
 void printIDs(listID* ids, int tabs);

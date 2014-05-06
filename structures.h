@@ -1,6 +1,6 @@
 #ifndef _STRUCTURES_
 #define _STRUCTURES_
-
+#define DEBUG 0
 
 #define FALSE 0
 #define TRUE !FALSE
@@ -31,7 +31,8 @@ typedef enum {NODE_PROGRAM,
              NODE_WHILE,
              NODE_STOREARRAY,
              NODE_INTLIT,
-             NODE_BOOLLIT
+             NODE_BOOLLIT,
+             NODE_ID
              } NodeType;
 
 typedef enum {TYPE_VOID, TYPE_INT, TYPE_BOOL, TYPE_INT_ARRAY, TYPE_BOOL_ARRAY, TYPE_STRING_ARRAY} Type;
@@ -81,6 +82,9 @@ Node* insertCompound(Node* expression);
 Node* insertIf(Node* expression, Node* statement1, Node* statement2);
 Node* insertPrint(Node* expression);
 Node* insertWhile(Node* expression, Node* statements);
+Node* insertReturn(Node* expression);
+Node* insertStore(char* id, Node* arrayIndex, Node* expression);
+Node* createTerminalNode(int n_type, char* token);
 
 #endif
 

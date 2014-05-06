@@ -7,7 +7,9 @@
 #include "structures.h"
 //#include "functions.c"
 
-void yyerror(char *s);
+#define DEBUG 0
+
+void yyerror(char *var);
 
 //Lex variables
 extern int column;
@@ -78,19 +80,19 @@ us
 %% 
 
 Start :
-                CLASS ID OBRACE field_or_method_declaration CBRACE          {printf("New class\n");$$ = insertClass($2,$4);program = $$;}
+                CLASS ID OBRACE field_or_method_declaration CBRACE          {if(DEBUG)printf("New class\n");$$ = insertClass($2,$4);program = $$;}
         ;
 
 field_or_method_declaration :
-                FieldDecl field_or_method_declaration               {printf("New variable\n");$$ = setNext($1,$2);}
-        | 	MethodDecl field_or_method_declaration              {printf("New Method\n"); $$ = setNext($1,$2);}
-        |                                                           {printf("No more stuff\n");$$ = NULL;};
+                FieldDecl field_or_method_declaration               {if(DEBUG)printf("New variable\n");$$ = setNext($1,$2);}
+        | 	MethodDecl field_or_method_declaration              {if(DEBUG)printf("New Method\n"); $$ = setNext($1,$2);}
+        |                                                           {if(DEBUG)printf("No more stuff\n");$$ = NULL;};
 
 FieldDecl :
-                STATIC VarDecl      {printf("static var\n"); $$ = setStatic($2);};
+                STATIC VarDecl      {if(DEBUG)printf("static var\n"); $$ = setStatic($2);};
 
 MethodDecl :
-                PUBLIC STATIC method_type_declaration ID OCURV FormalParams CCURV OBRACE VarDecl statement_declaration_REPETITION CBRACE        {printf("Create method\n"); $$ = setStatic(newMethod($3,$4,$6,$9,$10));}
+                PUBLIC STATIC method_type_declaration ID OCURV FormalParams CCURV OBRACE VarDecl statement_declaration_REPETITION CBRACE        {if(DEBUG)printf("Create method\n"); $$ = setStatic(newMethod($3,$4,$6,$9,$10));}
         ;
 
 method_type_declaration:
@@ -98,20 +100,20 @@ method_type_declaration:
         |	VOID            {$$ = TYPE_VOID;};
 
 FormalParams : 
-                Type ID several_FormalParams        {printf("FormalParamsOther\n");$$ = newVarDecl($1,$2,NULL,$3);}
-        |	STRING OSQUARE CSQUARE ID           {printf("FormalParamsString\n");$$ = newVarDecl(TYPE_STRING_ARRAY,$4,NULL,NULL);}
-        |                                           {printf("NoFormalParams\n");$$ = NULL;};
+                Type ID several_FormalParams        {if(DEBUG)printf("FormalParamsOther\n");$$ = newVarDecl($1,$2,NULL,$3);}
+        |	STRING OSQUARE CSQUARE ID           {if(DEBUG)printf("FormalParamsString\n");$$ = newVarDecl(TYPE_STRING_ARRAY,$4,NULL,NULL);}
+        |                                           {if(DEBUG)printf("NoFormalParams\n");$$ = NULL;};
 
 several_FormalParams : 
-                COMMA Type ID several_FormalParams      {printf("SeveralFormalParams\n");$$ = newVarDecl($2,$3,NULL,$4);}
-        |                                               {printf("No more formal params\n");$$ = NULL;};
+                COMMA Type ID several_FormalParams      {if(DEBUG)printf("SeveralFormalParams\n");$$ = newVarDecl($2,$3,NULL,$4);}
+        |                                               {if(DEBUG)printf("No more formal params\n");$$ = NULL;};
 
 VarDecl :
-                Type ID several_var_decl_in_same_instructionOPTIONAL SEMIC VarDecl      {printf("new var\n");$$ = newVarDecl($1,$2,$3,$5);}
-        |                                                                               {printf("there are no variables\n");$$ = NULL;};
+                Type ID several_var_decl_in_same_instructionOPTIONAL SEMIC VarDecl      {if(DEBUG)printf("new var\n");$$ = newVarDecl($1,$2,$3,$5);}
+        |                                                                               {if(DEBUG)printf("there are no variables\n");$$ = NULL;};
 
 several_var_decl_in_same_instructionOPTIONAL:
-                COMMA ID several_var_decl_in_same_instructionOPTIONAL       {printf("several var in same decl ID(%s)\n",$2);$$ = newVarID($2,$3);}
+                COMMA ID several_var_decl_in_same_instructionOPTIONAL       {if(DEBUG)printf("several var in same decl ID(%s)\n",$2);$$ = newVarID($2,$3);}
         |                                                                   {$$ = NULL;};
 
 Type :
@@ -136,8 +138,8 @@ Statement :
         |	IF OCURV Expr CCURV Statement ELSE Statement        {$$ = insertIf($3, $5, $7);}
         |	WHILE OCURV Expr CCURV Statement                    {$$ = insertWhile($3,$5);}
         |	PRINT OCURV Expr CCURV SEMIC                        {$$ = insertPrint($3);}
-        |	ID array_indexOPTIONAL ASSIGN Expr SEMIC            {}
-        |	RETURN return_expr'ession SEMIC                      {/*$$ = setAsReturn($2);*/}
+        |	ID array_indexOPTIONAL ASSIGN Expr SEMIC            {$$ = insertStore($1,$2,$4);}
+        |	RETURN return_expression SEMIC                      {$$ = insertReturn($2);}
         ;
 
 several_statement:
@@ -146,18 +148,18 @@ several_statement:
         ;
 
 array_indexOPTIONAL:
-                OSQUARE Expr CSQUARE        {}
+                OSQUARE Expr CSQUARE        {$$ = $2;}
         |                                   {$$ = NULL;}
         ;
 
 return_expression : 
-                Expr    {}
+                Expr    {$$ = $1;}
         |               {$$ = NULL;};
 
 IndexableExpr: 
-                ID                                                  {}
-        |	INTLIT                                              {}
-        |	BOOLLIT                                             {}
+                ID                                                  {$$ = createTerminalNode(NODE_ID,$1);}
+        |	INTLIT                                              {$$ = createTerminalNode(NODE_INTLIT,$1);}
+        |	BOOLLIT                                             {$$ = createTerminalNode(NODE_BOOLLIT,$1);}
         |	ID OCURV Args_OPTIONAL CCURV                        {}
         |	OCURV Expr CCURV                                    {}
         |	Expr DOTLENGTH                                      {}
@@ -187,7 +189,7 @@ Args:
                 Expr comma_expr     {};
 
 comma_expr: 
-                COMMA Expr comma_expr       {}
+                COMMA Expr comma_expr       {$$ = setNext($2,$3);}
         |                                   {$$ = NULL;};
 
 
@@ -217,7 +219,7 @@ int main(int argc, char *argv[]){
 	}
 
         if(printTree)
-            printAST(program);
+            //printAST(program);
 	//TODO
 	/*if(printSymbols)
 		printSymbols(symbols);
