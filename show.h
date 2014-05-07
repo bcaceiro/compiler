@@ -35,18 +35,9 @@ static const char *NODE_STRING[] = {"Program",
                  "NODE_ID"
                     };
 
-static const char* NODE_TYPE_NAMES[] = {
-    "Void",
-    "Int",
-    "Bool",
-    "IntArray",
-    "BoolArray",
-    "StringArray",
-    "Id",
-    "IntLit",
-    "BoolLit",
-    "BoolArray",
-};
+static const char* NODE_TYPE_NAMES[] = {     "Void",     "Int",     "Bool",
+"IntArray",     "BoolArray",     "StringArray",     "Id",     "IntLit",
+"BoolLit",     "BoolArray", };
 
 
 void printAST(Node* AST);
