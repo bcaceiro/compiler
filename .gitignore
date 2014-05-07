@@ -8,3 +8,5 @@ a.creator
 a.creator.user
 a.files
 a.includes
+
+*.plist
