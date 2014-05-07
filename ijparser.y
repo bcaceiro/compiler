@@ -171,7 +171,7 @@ Expr :
                 Expr operations Expr %prec OPS_FTW      {}
         |	OP3 Expr %prec OPS_FTW                  {}
         |	NOT Expr %prec OPS_FTW                  {}
-        |	NEW INT OSQUARE Expr CSQUARE            {}
+        |	NEW INT OSQUARE Expr CSQUARE            {$$ = insertNewInt($4);}
         |	NEW BOOL OSQUARE Expr CSQUARE           {}
         |	IndexableExpr                           {};
 

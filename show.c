@@ -46,8 +46,10 @@ void printSubTree(Node* currentNode, int tabs) {
     //printTabs(tabs);
     printNode(currentNode, tabs);
 
+
     //NODE_1
     switch (currentNode->n_type) {
+
         case NODE_STOREARRAY:
             exit(-1);
             break;
@@ -58,6 +60,7 @@ void printSubTree(Node* currentNode, int tabs) {
                 printSubTree(currentNode->n1, tabs + 2);
             }
             break;
+        
         default:
             if(currentNode->n1 != NULL){
                 printSubTree(currentNode->n1, tabs + 1);

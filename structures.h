@@ -89,6 +89,7 @@ Node* newParamDecl(int type, char* id, listID* moreIds, Node* next);
 Node* insertDotLength(Node* expression);
 Node* insertLoadArray(Node* expression, Node* indexExpression);
 Node* insertParseInt(char* id, Node* indexExpression);
+Node * insertNewInt(Node* expression);
 #endif
 
 

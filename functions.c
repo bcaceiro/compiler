@@ -286,4 +286,20 @@ Node* insertParseInt(char* id, Node* indexExpression){
 
 }
 
+Node * insertNewInt(Node* expression) {
+    Node * newInt = (Node*) malloc (sizeof(Node));
+    if(newInt == NULL) {
+        if(DEBUG)
+            printf("inserDotLength: Error Malloc\n");
+        assert(newInt != NULL);   
+    } 
+
+    newInt-> n_type = NODE_STORE;
+    newInt->n1 = expression;
+    newInt->next = NULL;
+    return newInt;
+}
+
+
+
 #endif
