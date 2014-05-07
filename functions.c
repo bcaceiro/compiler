@@ -286,20 +286,95 @@ Node* insertParseInt(char* id, Node* indexExpression){
 
 }
 
-Node * insertNewInt(Node* expression) {
-    Node * newInt = (Node*) malloc (sizeof(Node));
-    if(newInt == NULL) {
+Node * insertNewArray(int type, Node* expression) {
+    Node * newArray = (Node*) malloc (sizeof(Node));
+    if(newArray == NULL) {
         if(DEBUG)
-            printf("inserDotLength: Error Malloc\n");
-        assert(newInt != NULL);   
+            printf("newArray: Error Malloc\n");
+        assert(newArray != NULL);
     } 
 
-    newInt-> n_type = NODE_STORE;
-    newInt->n1 = expression;
-    newInt->next = NULL;
-    return newInt;
+    newArray-> n_type = NODE_STORE;
+    newArray->type = type;
+    newArray->n1 = expression;
+    newArray->next = NULL;
+    return newArray;
 }
 
+Node* createCall(char* id, Node *args){
+    Node * newCall = (Node*) malloc (sizeof(Node));
+    if(newCall == NULL) {
+        if(DEBUG)
+            printf("newCall: Error Malloc\n");
+        assert(newCall != NULL);
+    }
 
+    newCall-> n_type = NODE_CALL;
+    insertID(newCall, id);
+    newCall->n1 = args;
+    newCall->next = NULL;
+    return newCall;
+}
 
+Node* insertDoubleExpression(Node* exp1,char* op,Node* exp2){
+    Node * newExpression = (Node*) malloc (sizeof(Node));
+    if(newExpression == NULL) {
+        if(DEBUG)
+            printf("newCall: Error Malloc\n");
+        assert(newExpression != NULL);
+    }
+    newExpression-> n_type = getOperatorType(op);
+    newExpression->n1 = exp1;
+    newExpression->n2 = exp2;
+    newExpression->next = NULL;
+    return newExpression;
+
+}
+
+Node* insertExpression(char* op,Node* exp){
+    Node * newExpression = (Node*) malloc (sizeof(Node));
+    if(newExpression == NULL) {
+        if(DEBUG)
+            printf("newCall: Error Malloc\n");
+        assert(newExpression != NULL);
+    }
+    newExpression-> n_type = getOperatorType(op);
+    newExpression->n1 = exp;
+    newExpression->next = NULL;
+    return newExpression;
+
+}
+
+NodeType getOperatorType(char* op){
+    if(strcmp(op, "&&") == 0)
+        return NODE_AND;
+    else if(strcmp(op, "||") == 0)
+        return NODE_OR;
+    else if(strcmp(op, "<") == 0)
+        return NODE_LESS;
+    else if(strcmp(op, ">") == 0)
+        return NODE_GREATER;
+    else if(strcmp(op, "<=") == 0)
+        return NODE_LESSEQUAL;
+    else if(strcmp(op, ">=") == 0)
+        return NODE_GREATEREQUAL;
+    else if(strcmp(op, "!=") == 0)
+        return NODE_DIFFERENT;
+    else if(strcmp(op, "==") == 0)
+        return NODE_EQUAL;
+    else if(strcmp(op, "!") == 0)
+        return NODE_NOT;
+    else if(strcmp(op, "+") == 0)
+        return NODE_PLUS;
+    else if(strcmp(op, "-") == 0)
+        return NODE_MINUS;
+    else if(strcmp(op, "*") == 0)
+        return NODE_MUL;
+    else if(strcmp(op, "/") == 0)
+        return NODE_DIV;
+    else if(strcmp(op, "%") == 0)
+        return NODE_MOD;
+
+    return -1;
+}
 #endif

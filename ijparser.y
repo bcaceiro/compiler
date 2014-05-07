@@ -49,34 +49,37 @@ char Error;
 %type<node> return_expression
 %type<node> IndexableExpr
 %type<node> Expr
-%type<token> operations
 %type<node> Args_OPTIONAL
 %type<node> Args
 %type<node> comma_expr
 
 
-%token <token> INTLIT BOOLLIT INT BOOL NEW IF ELSE WHILE PRINT PARSEINT CLASS PUBLIC STATIC VOID STRING DOTLENGTH RETURN OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE OP1 OP2 OP3 OP4 NOT ASSIGN SEMIC COMMA RESERVED ID
+%token <token> INTLIT BOOLLIT INT BOOL NEW IF ELSE WHILE PRINT PARSEINT CLASS PUBLIC STATIC VOID STRING DOTLENGTH RETURN OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE OP1 OP1OR OP2 OP2EQS OP3 OP4 NOT ASSIGN SEMIC COMMA RESERVED ID
 
-
-%nonassoc REDUCEEXPRESSON1
 
 %nonassoc IFX
 %nonassoc ELSE
 
+/*
+        |       OP1OR   {$$ = $1;   /*||}
+        |       OP1     {$$ = $1;   /*&&}
+        |       OP2EQS  {$$ = $1;   /*("=="|"!="};
+        |	OP2     {$$ = $1;   /*"<"|">"|"<="|">="}
+        |	OP3     {$$ = $1;   /*"+"|"-"}
+        |	OP4     {$$ = $1;   /*"*"|"/"|"%}
+*/
+
+%left OP1OR
 %left OP1
-%left OP3
+%left OP2EQS
 %left OP2
 %left OP4
-%right ASSIGN
-%left OSQUARE
-%left OBRACE
-%left CBRACE
-%left NOT
-%left DOTLENGTH
-%right OPS_FTW
-s
-us
+%left OP3
 
+
+
+%right NOT
+%left OSQUARE DOTLENGTH
 
 %% 
 
@@ -161,33 +164,31 @@ IndexableExpr:
                 ID                                                  {$$ = createTerminalNode(NODE_ID,$1);}
         |	INTLIT                                              {$$ = createTerminalNode(NODE_INTLIT,$1);}
         |	BOOLLIT                                             {$$ = createTerminalNode(NODE_BOOLLIT,$1);}
-        |	ID OCURV Args_OPTIONAL CCURV                        {/*functions*/}
-        |	OCURV Expr CCURV                                    {/*parentises???*/}
+        |	ID OCURV Args_OPTIONAL CCURV                        {$$ = createCall($1,$3);}
+        |	OCURV Expr CCURV                                    {$$ = $2;}
         |	Expr DOTLENGTH                                      {$$ = insertDotLength($1);}
         |	IndexableExpr OSQUARE Expr CSQUARE                  {$$ = insertLoadArray($1,$3);}
         |	PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV        {$$ = insertParseInt($3,$5);};
 
 Expr : 
-                Expr operations Expr %prec OPS_FTW      {}
-        |	OP3 Expr %prec OPS_FTW                  {}
-        |	NOT Expr %prec OPS_FTW                  {}
-        |	NEW INT OSQUARE Expr CSQUARE            {$$ = insertNewInt($4);}
-        |	NEW BOOL OSQUARE Expr CSQUARE           {}
-        |	IndexableExpr                           {};
-
-
-operations:
-                OP1     {}
-        |	OP2     {}
-        |	OP3     {}
-        |	OP4     {};
+                Expr OP1 Expr %prec OP1                 {$$ = insertDoubleExpression($1,$2,$3);}
+        |       Expr OP1OR Expr %prec OP1OR             {$$ = insertDoubleExpression($1,$2,$3);}
+        |       Expr OP4 Expr %prec OP4                 {$$ = insertDoubleExpression($1,$2,$3);}
+        |       Expr OP3 Expr %prec OP3                 {$$ = insertDoubleExpression($1,$2,$3);}
+        |       Expr OP2 Expr %prec OP2                 {$$ = insertDoubleExpression($1,$2,$3);}
+        |       Expr OP2EQS Expr %prec OP2EQS           {$$ = insertDoubleExpression($1,$2,$3);}
+        |	OP3 Expr %prec NOT                      {$$ = insertExpression($1,$2);}
+        |	NOT Expr %prec NOT                      {$$ = insertExpression($1,$2);}
+        |	NEW INT OSQUARE Expr CSQUARE            {$$ = insertNewArray(TYPE_INT,$4);}
+        |	NEW BOOL OSQUARE Expr CSQUARE           {$$ = insertNewArray(TYPE_BOOL,$4);}
+        |	IndexableExpr                           {$$ = $1;};
 
 Args_OPTIONAL:
-                Args    {}
+                Args    {$$ = $1;}
         |               {$$ = NULL;};
 
 Args:
-                Expr comma_expr     {};
+                Expr comma_expr     {$$ = setNext($1,$2);};
 
 comma_expr: 
                 COMMA Expr comma_expr       {$$ = setNext($2,$3);}
@@ -221,7 +222,7 @@ int main(int argc, char *argv[]){
         if(Error)
             return 0;
         if(printTree)
-            printAST(program);
+            //printAST(program);
 	//TODO
 	/*if(printSymbols)
 		printSymbols(symbols);

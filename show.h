@@ -32,7 +32,15 @@ static const char *NODE_STRING[] = {"Program",
                  "StoreArray",
                  "IntLit",
                  "BoolLit",
-                 "NODE_ID"
+                 "NODE_ID",
+                 "NODE_AND",
+                 "NODE_OR",
+                 "NODE_LESS",
+                 "NODE_GREATER",
+                 "NODE_LESSEQUAL",
+                 "NODE_GREATEREQUAL",
+                 "NODE_DIFFERENT",
+                 "NODE_EQUAL"
                     };
 
 static const char* NODE_TYPE_NAMES[] = {     "Void",     "Int",     "Bool",

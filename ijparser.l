@@ -50,8 +50,10 @@ reserved (abstract|assert|break|byte|case|catch|char|const|continue|default|do|d
 "}"						{if(DEBUG)printf("CBRACE\n");column += yyleng;return CBRACE;}
 "["						{if(DEBUG)printf("OSQUARE\n");column += yyleng;return OSQUARE;}
 "]"						{if(DEBUG)printf("CSQUARE\n");column += yyleng;return CSQUARE;}
-("&&"|"||") 			{if(DEBUG)printf("OP1(%s)\n",yytext);column += yyleng;return OP1;}
-("<"|">"|"=="|"!="|"<="|">=") {if(DEBUG)printf("OP2(%s)\n",yytext);column += yyleng;return OP2;}
+"&&"                                    {if(DEBUG)printf("OP1&&(%s)\n",yytext);column += yyleng;return OP1;}
+"||"                                    {if(DEBUG)printf("OP1||(%s)\n",yytext);column += yyleng;return OP1OR;}
+("<"|">"|"<="|">=")                     {if(DEBUG)printf("OP2(%s)\n",yytext);column += yyleng;return OP2;}
+("=="|"!=")                            {if(DEBUG)printf("OP2(%s)\n",yytext);column += yyleng;return OP2EQS;}
 ("+"|"-") {if(DEBUG)printf("OP3(%s)\n",yytext);column += yyleng;return OP3;}
 ("*"|"/"|"%") {if(DEBUG)printf("OP4(%s)\n",yytext);column += yyleng;return OP4;}
 "!" {if(DEBUG)printf("NOT\n");column += yyleng;return NOT;}
