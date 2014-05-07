@@ -112,7 +112,6 @@ Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statement
     newMethod->n2 = varDecl;
     newMethod->n3 = statements;
     newMethod->next = NULL;
-
     return newMethod;
 }
 
@@ -246,6 +245,45 @@ Node* createTerminalNode(int n_type, char* token){
     newTerminal->value = token;
 
     return newTerminal;
+}
+
+Node* insertDotLength(Node* expression){
+    Node* newDotLength = (Node*) malloc(sizeof(Node));
+    if(newDotLength == NULL){
+        if(DEBUG)printf("DEU MERDA malloc insertDotLength");
+        assert(newDotLength != NULL);
+    }
+    newDotLength->n_type = NODE_LENGTH;
+    newDotLength->n1 = expression;
+    newDotLength->next = NULL;
+    return newDotLength;
+}
+
+Node* insertLoadArray(Node* expression, Node* indexExpression){
+    Node* newLoadArray = (Node*) malloc(sizeof(Node));
+    if(newLoadArray == NULL){
+        if(DEBUG)printf("DEU MERDA malloc insertDotLength");
+        assert(newLoadArray != NULL);
+    }
+    newLoadArray->n_type = NODE_LOADARRAY;
+    newLoadArray->n1 = expression;
+    newLoadArray->n2 = indexExpression;
+    newLoadArray->next = NULL;
+    return newLoadArray;
+}
+
+Node* insertParseInt(char* id, Node* indexExpression){
+    Node* newParseInt = (Node*) malloc(sizeof(Node));
+    if(newParseInt == NULL){
+        if(DEBUG)printf("DEU MERDA malloc insertDotLength");
+        assert(newParseInt != NULL);
+    }
+    newParseInt->n_type = NODE_PARSEARGS;
+    newParseInt->id = insertID(newParseInt,id);
+    newParseInt->n1 = indexExpression;
+    newParseInt->next = NULL;
+    return newParseInt;
+
 }
 
 #endif

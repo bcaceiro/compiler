@@ -86,7 +86,9 @@ Node* insertReturn(Node* expression);
 Node* insertStore(char* id, Node* arrayIndex, Node* expression);
 Node* createTerminalNode(int n_type, char* token);
 Node* newParamDecl(int type, char* id, listID* moreIds, Node* next);
-
+Node* insertDotLength(Node* expression);
+Node* insertLoadArray(Node* expression, Node* indexExpression);
+Node* insertParseInt(char* id, Node* indexExpression);
 #endif
 
 

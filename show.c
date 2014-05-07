@@ -48,9 +48,12 @@ void printSubTree(Node* currentNode, int tabs) {
 
     //NODE_1
     switch (currentNode->n_type) {
+        case NODE_STOREARRAY:
+            exit(-1);
+            break;
         case NODE_METHODDECL:
             printTabs(tabs + 1);
-            printf("%s\n",NODE_STRING[NODE_METHgODPARAMS]);
+            printf("%s\n",NODE_STRING[NODE_METHODPARAMS]);
             if(currentNode->n1 != NULL){
                 printSubTree(currentNode->n1, tabs + 2);
             }

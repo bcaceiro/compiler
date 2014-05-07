@@ -161,11 +161,11 @@ IndexableExpr:
                 ID                                                  {$$ = createTerminalNode(NODE_ID,$1);}
         |	INTLIT                                              {$$ = createTerminalNode(NODE_INTLIT,$1);}
         |	BOOLLIT                                             {$$ = createTerminalNode(NODE_BOOLLIT,$1);}
-        |	ID OCURV Args_OPTIONAL CCURV                        {}
-        |	OCURV Expr CCURV                                    {}
-        |	Expr DOTLENGTH                                      {}
-        |	IndexableExpr OSQUARE Expr CSQUARE                  {}
-        |	PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV        {};
+        |	ID OCURV Args_OPTIONAL CCURV                        {/*functions*/}
+        |	OCURV Expr CCURV                                    {/*parentises???*/}
+        |	Expr DOTLENGTH                                      {$$ = insertDotLength($1);}
+        |	IndexableExpr OSQUARE Expr CSQUARE                  {$$ = insertLoadArray($1,$3);}
+        |	PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV        {$$ = insertParseInt($3,$5);};
 
 Expr : 
                 Expr operations Expr %prec OPS_FTW      {}
