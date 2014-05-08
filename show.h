@@ -47,12 +47,9 @@ static const char* NODE_TYPE_NAMES[] = {     "Void",     "Int",     "Bool",
 "IntArray",     "BoolArray",     "StringArray",     "Id",     "IntLit",
 "BoolLit",     "BoolArray", };
 
-
+void printStore ( Node* currentNode , int tabs);
 void printAST(Node* AST);
 void printIDs(listID* ids,int tabs, int n_type, int type);
-/*void show_expression(is_expression*);
-void show_infix_expression(is_infix_expression*);
-void show_unary_expression(is_unary_expression*);
-void show_operator(is_oper);
-void printSymbols(ClassTable* table);*/
+void printSubTree(Node* currentNode, int tabs);
+
 #endif
