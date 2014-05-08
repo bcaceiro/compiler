@@ -1,0 +1,26 @@
+class Test
+{
+
+    public static void voider() {
+        int voider;
+    }
+
+    public static boolean[] main() {}
+    public static int[] main2() { return main2(); }
+    public static int[] banana(boolean a, int b, int c2) {        
+        int var;
+        boolean[] v, d;
+        var = 0xABCD0A;
+        /*var = main2;*/
+        var = main2()[2] + main2()[2];
+        return banana(a,b,c2);
+        
+
+        v[5 % 2] = true;
+
+        if ( main() == main() ) {}        
+
+        v[11] = 5 > 2 && 5 < 2 && 5 == 2 && 5 != 2 && 5 >= 2 && 5-2 <= 3 && 5-2 * 3 + 1 % 5 == 2;
+    }
+    
+}

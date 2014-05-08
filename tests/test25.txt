@@ -1,0 +1,8 @@
+class Test
+{
+    public static void main(int a, int b) {
+        int a1;
+        int b1;
+        int c1,c2;
+    }
+}

@@ -1,0 +1,21 @@
+class Test
+{
+
+    public static void main(int a) {
+        return c;
+        return a+b-2;
+        return (a+b-2*c/3+(5-2)*7 + (c-2).length*3)+(Integer.parseInt(abcd[3]));
+        return (a+b)[3];
+        return f(a,b,c);
+        return f();
+        return f(2+5);
+        {
+        return;
+        }     
+        {
+        return;
+        return;
+        }     
+        {}{}{{{{{{{}}}}}}}
+    }
+}

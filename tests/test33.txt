@@ -1,0 +1,64 @@
+class Test
+{
+	static int a,b, Test;
+    static boolean[] c,d;
+
+    public static int[] banana(boolean a, int b, int c2) {        
+        int wtf;
+        a = !(true && c[2]);
+        System.out.println(c[2]);
+        return banana(a,b,0xABCDE);
+
+        if ( a ) {} else return new int[to_int(!a && !false)];
+
+    }
+
+    public static int to_int(boolean unused) { return 2; }
+    public static boolean to_bool(int unused) { return true; }
+
+    public static void main(String[] a)
+    {
+        int c,d;
+        int[] e;
+        int wtf;
+        boolean f;
+        wtf = Integer.parseInt(a[1 + 2]);
+        c = e[3] + e.length;
+        e[3] = 2;
+        c = 2+3+4/(5+2) + (new int[2])[0] % -e[3] + e.length;
+        c = b + 2;
+        c = d % 3 + c / 3;
+        c = 3;
+
+        if ( a != a ) {}
+
+        if ( true ) {
+            if ( !(new boolean[2])[0] )
+                System.out.println(d);
+        } else {
+            while(true && false) c = 2;
+            return ;
+        }
+
+
+        f = (false) || (!!!!false) && false;
+        e = new int[e.length];
+
+        if ( a.length > e[3]) { a[2] = a[3];} else if ( to_bool(3) == true && 3 != 2 && false && 3 < 2 && 5 >= 2) {}
+
+        e[2] = to_int( (new boolean[banana(true,2,banana(true,0,0)[1] )[2]]) [2] ) / 2 + 3 * to_int(to_bool( e[2]) && true);
+        /*c = banana(true,2,3);*/
+
+    }
+
+    public static int[] get_intarray(int[] a, int[] b) {
+        return new int[a.length + b[2]];
+    }
+
+    public static void main2() {}
+
+    public static void atoutaleur(String[] wut) {
+        while( true ) { a = get_intarray(new int[5], new int[10])[2]; wut[2] = 2; }
+    }
+    
+}

@@ -1,0 +1,9 @@
+class Test
+{
+    /* This has to fail */
+    static int a;
+    int[] b;
+    int[] c, d, e, f;
+    boolean g;
+}
+

@@ -1,0 +1,16 @@
+class Test
+{
+    static int outsideInteger;
+    static int b;
+ 
+    public static void main(String []args)
+    {
+        int a, j, k;
+
+        j = 07;
+
+        a = 2;
+
+        k = 0x8;
+    }
+}

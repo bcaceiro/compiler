@@ -1,0 +1,5 @@
+class Foda_se {
+    public static void puta_que_pariu() {
+        if ( a <= new int[2][3]) a = 2;
+    }
+}
