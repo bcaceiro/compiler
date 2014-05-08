@@ -40,7 +40,8 @@ typedef enum {NODE_PROGRAM,
               NODE_LESSEQUAL,
               NODE_GREATEREQUAL,
               NODE_DIFFERENT,
-              NODE_EQUAL
+              NODE_EQUAL,
+              NODE_NULL
              } NodeType;
 
 typedef enum {TYPE_VOID, TYPE_INT, TYPE_BOOL, TYPE_INT_ARRAY, TYPE_BOOL_ARRAY, TYPE_STRING_ARRAY} Type;
@@ -82,6 +83,7 @@ typedef struct _Node
 listID* insertID(Node* currentNode, char* id);
 listID* newVarID(char* id, listID* next);
 NodeType getOperatorType(char* op);
+Node* createNull();
 Node* insertClass(char* id, Node* statements);
 Node* newVarDecl(int type, char* id, listID* moreIds, Node* next);
 Node* setNext(Node* current, Node* next);

@@ -6,11 +6,31 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+Node* nullNode = NULL;
+
+Node* createNull(){
+    if(nullNode == NULL){
+        Node* newNull = (Node*) malloc(sizeof(Node));
+        if(newNull==NULL){
+            if(DEBUG)printf("DEU MERDA malloc insertClass\n");
+            assert(newNull!=NULL);
+        }
+
+        //set the node type
+        newNull->n_type = NODE_NULL;
+        newNull->n1 = NULL;
+        newNull->n2 = NULL;
+        newNull->n3 = NULL;
+        newNull->next = NULL;
+        nullNode = newNull;
+        return newNull;
+    }
+    return nullNode;
+}
 
 Node* setStatic(Node* currentNode){
     if(currentNode==NULL){
-        if(DEBUG)printf("NODE NULL insertID\n");
-        assert(currentNode!=NULL);
+        return currentNode;
     }
     currentNode->isStatic = TRUE;
     return currentNode;
@@ -112,9 +132,17 @@ Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statement
     newMethod->id = insertID(newMethod, id);
     //printf("Creating method!!!params : %p\n",params);
     newMethod->n1 = params;
+
     //printf("Creating method!!!vardecl:%p\n",varDecl);
     newMethod->n2 = varDecl;
+/*    if(params == NULL)
+        newMethod->n1 = createNull();
+    if(varDecl == NULL)
+        newMethod->n2 = createNull();
+    if(statements == NULL)
+        newMethod->n3 = createNull();*/
     newMethod->n3 = statements;
+
     newMethod->next = NULL;
     return newMethod;
 }
@@ -142,13 +170,20 @@ Node* insertIf(Node* expression, Node* statement1, Node* statement2 ) {
     insertIf->n2     = statement1;
     insertIf->n3     = statement2;
     insertIf->next   = NULL;
-
+    if(expression == NULL)
+        insertIf->n1 = createNull();
+    if(statement1 == NULL)
+        insertIf->n2 = createNull();
+    if(statement2 == NULL)
+        insertIf->n3 = createNull();
 
     return insertIf;
 }
 
 Node* insertCompound(Node* expression){
+
     if(DEBUG)printf("InsertCompound\n");
+    //to check if there is a need for a compound statement
     if(expression == NULL || expression->next == NULL)
         return expression;
 
@@ -159,7 +194,7 @@ Node* insertCompound(Node* expression){
         assert(newCompound!=NULL);
     }
     newCompound->n_type = NODE_COMPOUNDSTAT;
-    newCompound->next = expression;
+    newCompound->n1 = expression;
 
     return newCompound;
 }
@@ -174,6 +209,10 @@ Node* insertWhile(Node* expression, Node* statements){
     newWhile->n_type = NODE_WHILE;
     newWhile->n1 = expression;
     newWhile->n2 = statements;
+    if(expression == NULL)
+        newWhile->n1 = createNull();
+    if(statements == NULL)
+        newWhile->n2 = createNull();
     newWhile->next   = NULL;
 
     return newWhile;
@@ -188,6 +227,10 @@ Node* insertPrint(Node* expression){
 
     newPrint->n_type = NODE_PRINT;
     newPrint->n1 = expression;
+
+    if(expression == NULL)
+        newPrint->n1 = createNull();
+
     newPrint->next   = NULL;
 
     return newPrint;
@@ -206,6 +249,7 @@ Node* insertReturn(Node* expression) {
 
     newReturn->n1 = expression;
 
+
     return newReturn;
 
 }
@@ -218,12 +262,6 @@ Node* insertStore(char* id, Node* arrayIndex, Node* expression){
         assert(thisNode == NULL);
     }
 
-    if(arrayIndex!=NULL)
-        thisNode->n_type = NODE_STOREARRAY;
-    else
-        thisNode->n_type = NODE_STORE;
-
-
     insertID(thisNode,id);
     //printf("ID Store(%s)\n",thisNode->id->id);
 
@@ -231,6 +269,16 @@ Node* insertStore(char* id, Node* arrayIndex, Node* expression){
     thisNode->n1 = arrayIndex;
     //printf("lolada2:%s\n",NODE_STRING[expression->n_type]);
     thisNode->n2 = expression;
+    if(arrayIndex!=NULL){
+        thisNode->n_type = NODE_STOREARRAY;
+        if(arrayIndex == NULL)
+            thisNode->n1 = createNull();
+    }else
+        thisNode->n_type = NODE_STORE;
+
+    if(expression == NULL)
+        thisNode->n2 = createNull();
+
     thisNode->next = NULL;
 
     return thisNode;
@@ -247,7 +295,7 @@ Node* createTerminalNode(int n_type, char* token){
     newTerminal->n_type = n_type;
     //FIXME POR O ID NO CAMPO id?
     newTerminal->value = token;
-    printf("New terminal:%s\n",token);
+    //printf("New terminal:%s\n",token);
 
     return newTerminal;
 }
@@ -260,6 +308,9 @@ Node* insertDotLength(Node* expression){
     }
     newDotLength->n_type = NODE_LENGTH;
     newDotLength->n1 = expression;
+    if(expression == NULL)
+        newDotLength->n1 = createNull();
+
     newDotLength->next = NULL;
     return newDotLength;
 }
@@ -273,6 +324,11 @@ Node* insertLoadArray(Node* expression, Node* indexExpression){
     newLoadArray->n_type = NODE_LOADARRAY;
     newLoadArray->n1 = expression;
     newLoadArray->n2 = indexExpression;
+    if(expression == NULL)
+        newLoadArray->n1 = createNull();
+    if(indexExpression == NULL)
+        newLoadArray->n2 = createNull();;
+
     newLoadArray->next = NULL;
     return newLoadArray;
 }
@@ -286,6 +342,10 @@ Node* insertParseInt(char* id, Node* indexExpression){
     newParseInt->n_type = NODE_PARSEARGS;
     newParseInt->id = insertID(newParseInt,id);
     newParseInt->n1 = indexExpression;
+
+    if(indexExpression == NULL)
+        newParseInt->n1 = createNull();
+
     newParseInt->next = NULL;
     return newParseInt;
 
@@ -301,6 +361,9 @@ Node * insertNewArray(int type, Node* expression) {
 
     newArray-> n_type = type;
     newArray->n1 = expression;
+    if(expression == NULL)
+        newArray->n1 = createNull();
+
     newArray->next = NULL;
     return newArray;
 }
@@ -327,9 +390,17 @@ Node* insertDoubleExpression(Node* exp1,char* op,Node* exp2){
             printf("newCall: Error Malloc\n");
         assert(newExpression != NULL);
     }
+
     newExpression-> n_type = getOperatorType(op);
+    if(newExpression->n_type == -1 )
+        exit(-2);
     newExpression->n1 = exp1;
     newExpression->n2 = exp2;
+    if(exp1 == NULL)
+        newExpression->n1 = createNull();
+    if(exp2 == NULL)
+        newExpression->n2 = createNull();
+
     newExpression->next = NULL;
     return newExpression;
 
@@ -342,8 +413,13 @@ Node* insertExpression(char* op,Node* exp){
             printf("newCall: Error Malloc\n");
         assert(newExpression != NULL);
     }
-    newExpression-> n_type = getOperatorType(op);
+    newExpression->n_type = getOperatorType(op);
+    if(newExpression->n_type == -1 )
+        exit(-2);
     newExpression->n1 = exp;
+    if(exp == NULL)
+        newExpression->n1 = createNull();
+
     newExpression->next = NULL;
     return newExpression;
 

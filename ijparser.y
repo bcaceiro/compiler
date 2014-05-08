@@ -52,13 +52,16 @@ char Error;
 %type<node> Args_OPTIONAL
 %type<node> Args
 %type<node> comma_expr
+%type<node> VarDecl_REPETITION
 
 
 %token <token> INTLIT BOOLLIT INT BOOL NEW IF ELSE WHILE PRINT PARSEINT CLASS PUBLIC STATIC VOID STRING DOTLENGTH RETURN OCURV CCURV OBRACE CBRACE OSQUARE CSQUARE OP1 OP1OR OP2 OP2EQS OP3 OP4 NOT ASSIGN SEMIC COMMA RESERVED ID
 
 
+
 %nonassoc IFX
 %nonassoc ELSE
+
 
 /*
         |       OP1OR   {$$ = $1;   /*||}
@@ -73,13 +76,11 @@ char Error;
 %left OP1
 %left OP2EQS
 %left OP2
-%left OP4
 %left OP3
-
-
-
+%left OP4
 %right NOT
 %left OSQUARE DOTLENGTH
+
 
 %% 
 
@@ -93,10 +94,10 @@ field_or_method_declaration :
         |                                                           {if(DEBUG)printf("No more stuff\n");$$ = NULL;};
 
 FieldDecl :
-                STATIC VarDecl      {if(DEBUG)printf("static var\n"); $$ = setStatic($2);};
+                STATIC VarDecl VarDecl_REPETITION    {if(DEBUG)printf("static var\n"); $$ = setStatic($2);$$ = setNext($2,$3);};
 
 MethodDecl :
-                PUBLIC STATIC method_type_declaration ID OCURV FormalParams CCURV OBRACE VarDecl statement_declaration_REPETITION CBRACE        {if(DEBUG)printf("Create method\n"); $$ = setStatic(newMethod($3,$4,$6,$9,$10));}
+                PUBLIC STATIC method_type_declaration ID OCURV FormalParams CCURV OBRACE VarDecl_REPETITION statement_declaration_REPETITION CBRACE        {if(DEBUG)printf("Create method\n"); $$ = setStatic(newMethod($3,$4,$6,$9,$10));}
         ;
 
 method_type_declaration:
@@ -112,9 +113,13 @@ several_FormalParams :
                 COMMA Type ID several_FormalParams      {if(DEBUG)printf("SeveralFormalParams\n");$$ = newParamDecl($2,$3,NULL,$4);}
         |                                               {if(DEBUG)printf("No more formal params\n");$$ = NULL;};
 
+VarDecl_REPETITION:
+                VarDecl VarDecl_REPETITION      {$$ = setNext($1,$2);}
+         |                                      {$$ = NULL;};
+
 VarDecl :
-                Type ID several_var_decl_in_same_instructionOPTIONAL SEMIC VarDecl      {if(DEBUG)printf("new var\n");$$ = newVarDecl($1,$2,$3,$5);}
-        |                                                                               {if(DEBUG)printf("there are no variables\n");$$ = NULL;};
+                Type ID several_var_decl_in_same_instructionOPTIONAL SEMIC      {if(DEBUG)printf("new var\n");$$ = newVarDecl($1,$2,$3,NULL);}
+        ;
 
 several_var_decl_in_same_instructionOPTIONAL:
                 COMMA ID several_var_decl_in_same_instructionOPTIONAL       {if(DEBUG)printf("several var in same decl ID(%s)\n",$2);$$ = newVarID($2,$3);}

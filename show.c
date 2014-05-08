@@ -24,7 +24,7 @@ void printNode( Node* currentNode, int tabs) {
 
 
     /* TODO: falta aqui um tipo acho eu */
-    if(currentNode->n_type == NODE_BOOLLIT || currentNode->n_type == NODE_INTLIT) {
+    if(currentNode->n_type == NODE_BOOLLIT || currentNode->n_type == NODE_INTLIT || currentNode->n_type == NODE_ID ) {
         printTabs(tabs);
         printf("%s(%s)\n",NODE_STRING[currentNode->n_type], currentNode->value);
     }
@@ -111,8 +111,9 @@ void printSubTree(Node* currentNode, int tabs) {
                 printSubTree(currentNode->n2, tabs + 1);
             }
             //NODE_3
-            if(currentNode->n3 != NULL)
+            if(currentNode->n3 != NULL){
                 printSubTree(currentNode->n3, tabs + 1);
+            }
             break;
         }
 
@@ -130,9 +131,6 @@ void printIDs(listID* ids,int tabs, int n_type, int type) {
         ids = ids->next;
     }
 }
-
-
-
 
 
 

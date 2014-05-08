@@ -8,10 +8,10 @@ class gcd {
       System.out.println(x[1]);
     else
       while (x[1] > 0) {
-        if (x[0] > x[1])
+        if (x[0] < x[1])
           x[0] = x[0] - x[1];
         else
-          x[1] = x[1] - x[0];
+          x[1] = x[1] + x[0];
       }
     System.out.println(x[0]);
   }

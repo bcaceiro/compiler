@@ -1,5 +1,6 @@
 class Test
 {
+    public static void func() {}
     /* These all have to be static. Check the grammar */
     static int a;
     static int[] b;
