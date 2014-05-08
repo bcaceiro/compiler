@@ -27,8 +27,8 @@ reserved (abstract|assert|break|byte|case|catch|char|const|continue|default|do|d
 " "|"\t" 				{column  +=  yyleng;}
 "\n" 					{column = 1;}
 
-(([0-9])+|("0x"[0-9a-fA-F]+)) {if(DEBUG)if(DEBUG)printf("INTLIT(%s)\n",yytext);column += yyleng;/*yylval = atoi(yytext);*/return INTLIT;}
-"true"|"false" 			{if(DEBUG)if(DEBUG)printf("BOOLLIT(%s)\n",yytext);column += yyleng;return BOOLLIT;}
+(([0-9])+|("0x"[0-9a-fA-F]+)) {if(DEBUG)if(DEBUG)printf("INTLIT(%s)\n",yytext);column += yyleng;yylval.token = strdup(yytext);return INTLIT;}
+"true"|"false" 			{if(DEBUG)if(DEBUG)printf("BOOLLIT(%s)\n",yytext);column += yyleng;yylval.token = strdup(yytext);return BOOLLIT;}
 "int" 					{if(DEBUG)printf("INT\n");column += yyleng;return INT;}
 "boolean" 				{if(DEBUG)printf("BOOL\n");column += yyleng;return BOOL;}
 "new" 					{if(DEBUG)printf("NEW\n");column += yyleng;return NEW;}
@@ -61,7 +61,7 @@ reserved (abstract|assert|break|byte|case|catch|char|const|continue|default|do|d
 ";" {if(DEBUG)printf("SEMIC\n");column += yyleng;return SEMIC;}
 "," {if(DEBUG)printf("COMMA\n");column += yyleng;return COMMA;}
 {reserved} {if(DEBUG)printf("RESERVED(%s)\n",yytext);column += yyleng;return RESERVED;}
-[a-zA-Z_$]([a-zA-Z_$0-9])* {if(DEBUG)printf("ID(%s)\n",yytext);column += yyleng;yylval.token = strdup(yytext);return ID;}
+[a-zA-Z_$]([a-zA-Z_$0-9])* {if(DEBUG)printf("ID(%s)\n",yytext);column += yyleng; yylval.token = strdup(yytext); return ID;}
 . {printf("Line %d, col %d: illegal character ('%s')\n",yylineno,column,yytext);column += yyleng;return *yytext;}
 
 

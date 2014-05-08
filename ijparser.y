@@ -128,9 +128,6 @@ Type :
        ;
 	
 
-
-
-
 statement_declaration_REPETITION:
                 Statement statement_declaration_REPETITION          {$$ = setNext($1,$2);}
         |                                                           {$$ = NULL;}
@@ -179,8 +176,8 @@ Expr :
         |       Expr OP2EQS Expr %prec OP2EQS           {$$ = insertDoubleExpression($1,$2,$3);}
         |	OP3 Expr %prec NOT                      {$$ = insertExpression($1,$2);}
         |	NOT Expr %prec NOT                      {$$ = insertExpression($1,$2);}
-        |	NEW INT OSQUARE Expr CSQUARE            {$$ = insertNewArray(TYPE_INT,$4);}
-        |	NEW BOOL OSQUARE Expr CSQUARE           {$$ = insertNewArray(TYPE_BOOL,$4);}
+        |	NEW INT OSQUARE Expr CSQUARE            {$$ = insertNewArray(NODE_NEWINT,$4);}
+        |	NEW BOOL OSQUARE Expr CSQUARE           {$$ = insertNewArray(NODE_NEWBOOL,$4);}
         |	IndexableExpr                           {$$ = $1;};
 
 Args_OPTIONAL:
@@ -193,7 +190,6 @@ Args:
 comma_expr: 
                 COMMA Expr comma_expr       {$$ = setNext($2,$3);}
         |                                   {$$ = NULL;};
-
 
 %%
 
@@ -222,7 +218,7 @@ int main(int argc, char *argv[]){
         if(Error)
             return 0;
         if(printTree)
-            //printAST(program);
+            printAST(program);
 	//TODO
 	/*if(printSymbols)
 		printSymbols(symbols);

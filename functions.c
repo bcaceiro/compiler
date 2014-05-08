@@ -1,6 +1,7 @@
 #ifndef _FUNCTIONS_
 #define _FUNCTIONS_
 #include "structures.h"
+#include "show.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -96,6 +97,7 @@ Node* newParamDecl(int type, char* id, listID* moreIds, Node* next){
     return newParam;
 }
 
+
 Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statements){
     if(DEBUG)printf("Inserting New method(%s)\n",id);
     Node* newMethod = (Node*) malloc(sizeof(Node));
@@ -108,7 +110,9 @@ Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statement
     newMethod->n_type = NODE_METHODDECL;
     newMethod->type = type;
     newMethod->id = insertID(newMethod, id);
+    //printf("Creating method!!!params : %p\n",params);
     newMethod->n1 = params;
+    //printf("Creating method!!!vardecl:%p\n",varDecl);
     newMethod->n2 = varDecl;
     newMethod->n3 = statements;
     newMethod->next = NULL;
@@ -208,24 +212,24 @@ Node* insertReturn(Node* expression) {
 
 Node* insertStore(char* id, Node* arrayIndex, Node* expression){
 
-    if(DEBUG)printf("insertStore\n");
-
-    listID* idArray = (listID*) malloc(sizeof(listID));
     Node* thisNode =  (Node*) malloc(sizeof(Node));
-    if(thisNode == NULL || idArray == NULL){
+    if(thisNode == NULL){
         if(DEBUG)printf("DEU MERDA malloc insertStore\n");
-        assert(thisNode == NULL || idArray == NULL);
+        assert(thisNode == NULL);
     }
 
     if(arrayIndex!=NULL)
-        thisNode->n_type = NODE_STORE;
-    else
         thisNode->n_type = NODE_STOREARRAY;
+    else
+        thisNode->n_type = NODE_STORE;
 
-    idArray->id = id;
+
+    insertID(thisNode,id);
+    //printf("ID Store(%s)\n",thisNode->id->id);
+
     thisNode->value = NULL;
-
     thisNode->n1 = arrayIndex;
+    //printf("lolada2:%s\n",NODE_STRING[expression->n_type]);
     thisNode->n2 = expression;
     thisNode->next = NULL;
 
@@ -243,6 +247,7 @@ Node* createTerminalNode(int n_type, char* token){
     newTerminal->n_type = n_type;
     //FIXME POR O ID NO CAMPO id?
     newTerminal->value = token;
+    printf("New terminal:%s\n",token);
 
     return newTerminal;
 }
@@ -294,8 +299,7 @@ Node * insertNewArray(int type, Node* expression) {
         assert(newArray != NULL);
     } 
 
-    newArray-> n_type = NODE_STORE;
-    newArray->type = type;
+    newArray-> n_type = type;
     newArray->n1 = expression;
     newArray->next = NULL;
     return newArray;
