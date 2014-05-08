@@ -41,7 +41,9 @@ typedef enum {NODE_PROGRAM,
               NODE_GREATEREQUAL,
               NODE_DIFFERENT,
               NODE_EQUAL,
-              NODE_NULL
+              NODE_NULL,
+              NODE_UNARYPLUS,
+              NODE_UNARYMINUS
              } NodeType;
 
 typedef enum {TYPE_VOID, TYPE_INT, TYPE_BOOL, TYPE_INT_ARRAY, TYPE_BOOL_ARRAY, TYPE_STRING_ARRAY} Type;

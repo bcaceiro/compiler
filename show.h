@@ -20,7 +20,7 @@ static const char *NODE_STRING[] = {"Program",
                  "Div",
                  "Mod",
                  "Not",
-                 "Minus",
+                 "Sub",
                  "Add",
                  "Length",
                  "LoadArray",
@@ -41,8 +41,10 @@ static const char *NODE_STRING[] = {"Program",
                  "Geq",
                  "Neq",
                  "Eq",
-                 "Null"
-                    };
+                 "Null",
+                 "Plus",
+                 "Minus"
+                 };
 
 static const char* NODE_TYPE_NAMES[] = {     "Void",     "Int",     "Bool",
 "IntArray",     "BoolArray",     "StringArray",     "Id",     "IntLit",

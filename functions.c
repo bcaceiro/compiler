@@ -416,6 +416,11 @@ Node* insertExpression(char* op,Node* exp){
     newExpression->n_type = getOperatorType(op);
     if(newExpression->n_type == -1 )
         exit(-2);
+
+    if(newExpression->n_type == NODE_PLUS)
+        newExpression->n_type = NODE_UNARYPLUS;
+    if(newExpression->n_type == NODE_MINUS)
+        newExpression->n_type = NODE_UNARYMINUS;
     newExpression->n1 = exp;
     if(exp == NULL)
         newExpression->n1 = createNull();
