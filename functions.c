@@ -462,4 +462,118 @@ NodeType getOperatorType(char* op){
 
     return -1;
 }
+
+Table* createSymbols(Node* ast){
+
+    Table* mainTable = NULL;
+    Table* currentTable = NULL;
+    Table* tempTable = NULL;
+    TableNode* temp = NULL;
+    TableNode * symbol = NULL;
+    TableNode* auxiliar = NULL;
+    Node* aux;
+
+    if(ast!=NULL && ast->n_type == NODE_PROGRAM){
+        if(mainTable == NULL){
+            //create the table
+            mainTable = (Table*) malloc (sizeof(Table));
+            assert(mainTable!=NULL);
+            //create the TableNode and add it to the table
+            temp = (TableNode*) malloc (sizeof(TableNode));
+            assert(temp!=NULL);
+            temp->n_type = TABLE_CLASS;
+            temp->id = ast->id;
+
+            mainTable->table = temp;
+            currentTable = mainTable;
+            symbol = temp;
+        }else{
+            assert(mainTable!=NULL);
+        }
+        ast = ast->next;
+    }
+    while(ast!=NULL){
+        if( ast->n_type == NODE_VARDECL){
+            symbol = addNewDeclTable(0, symbol,ast);
+            ast = ast->next;
+        }
+        else if( ast->n_type == NODE_METHODDECL){
+            //create a local table
+            tempTable = (Table*) malloc (sizeof(Table));
+            assert(tempTable!=NULL);
+
+            //link it to the old table
+            currentTable->next = tempTable;
+            currentTable = tempTable;
+
+            //add the method decl to the old table (it must be the mainTable??)
+            temp = (TableNode*) malloc (sizeof(TableNode));
+            assert(temp!=NULL);
+            symbol->next = temp;
+            symbol = temp;
+            symbol->n_type = TABLE_METHOD;
+            symbol->type = ast->type;
+            symbol->id = ast->id;
+            auxiliar = temp;
+
+            //create the first and the second symbol of the new table
+            temp = (TableNode*) malloc (sizeof(TableNode));
+            assert(temp!=NULL);
+            currentTable->table = temp;
+            symbol = temp;
+            symbol->n_type = TABLE_METHOD;
+            symbol->type = ast->type;
+            symbol->id = ast->id;
+
+            //add the params of the method to the method decl
+            if(ast->n1!=NULL){
+                aux = ast->n1;
+                while(aux!=NULL){
+                    symbol = addNewDeclTable(1,symbol,aux);
+                    aux = aux->next;
+               }
+            }
+            //add the decls of the method to the method decl
+            if(ast->n2!=NULL){
+                aux = ast->n2;
+                while(aux!=NULL){
+                    symbol = addNewDeclTable(0,symbol,aux);
+                    aux = aux->next;
+                }
+            }
+            symbol = auxiliar;
+            ast = ast->next;
+        }
+    }
+    return mainTable;
+}
+
+TableNode* addNewDeclTable(char isparam, TableNode* symbol, Node* ast){
+    TableNode* temp;
+    listID* aux;
+    temp = (TableNode*) malloc (sizeof(TableNode));
+    assert(temp!=NULL);
+    symbol->next = temp;
+    symbol = temp;
+    symbol->n_type = TABLE_DECL;
+    symbol->type = ast->type;
+    symbol->id = ast->id;
+    symbol->isParam = isparam;
+    //if more than a id has been declared in the same line
+    if(symbol->id->next!=NULL){
+        aux = symbol->id->next;
+        while(aux!=NULL){
+            temp = (TableNode*) malloc (sizeof(TableNode));
+            assert(temp!=NULL);
+            symbol->next = temp;
+            symbol = temp;
+            symbol->n_type = TABLE_DECL;
+            symbol->type = ast->type;
+            symbol->id = aux;
+            aux = aux->next;
+        }
+    }
+    return temp;
+}
+
 #endif

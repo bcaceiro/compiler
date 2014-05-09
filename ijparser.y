@@ -22,7 +22,7 @@ Node* program = NULL;
 char Error;
 
 //simbol tree
-//ClassTable* symbols = NULL;
+Table* symbols = NULL;
 
 %}
 %union{
@@ -199,35 +199,35 @@ comma_expr:
 %%
 
 int main(int argc, char *argv[]){
-	int i, printTree, printSymbols;
+        int i, printTree, pSymbols;
         Error = 0;
         yyparse();
 
 	
-	printTree = printSymbols = 0;
+        printTree = pSymbols = 0;
 	for(i=0; i < argc; i++)
 	{
 		//caso a flag -s esteja presente
 		if(strcmp(argv[i], "-s") == 0)
 		{
-			printSymbols = 1;
-			break;
+                        pSymbols = 1;
 		}
 		//caso a flag -t esteja presente
 		else if(strcmp(argv[i], "-t") == 0)
 		{
 			printTree = 1;
-			break;
 		}
 	}
         if(Error)
             return 0;
         if(printTree)
             printAST(program);
-	//TODO
-	/*if(printSymbols)
-		printSymbols(symbols);
-	*/
+        if(pSymbols){
+            symbols = createSymbols(program);
+            printSymbols(symbols);
+
+
+        }
 	//TODO:LIMPAR MEMÓRIA???
 		
     return 0;

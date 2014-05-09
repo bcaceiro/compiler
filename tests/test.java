@@ -1,6 +1,8 @@
 class gcd {
+	static int a,b;
   public static void main(String[] args) {
     int[] x;
+	boolean[] x;
     x = new int[2];
     x[0] = Integer.parseInt(args[0]);
     x[1] = Integer.parseInt(args[1]);
@@ -15,4 +17,5 @@ class gcd {
       }
     System.out.println(x[0]);
   }
+static boolean c;
 }

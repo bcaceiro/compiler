@@ -151,4 +151,31 @@ void printAST(Node* AST) {
 }
 
 
+void printSymbols(Table* table){
+    if(table!=NULL){
+        if(table->table->n_type == TABLE_CLASS){
+            printf("===== Class %s Symbol Table =====\n",table->table->id->id);
+            printSymbolsDecl(table->table->next);
+        }
+        else if(table->table->n_type == TABLE_METHOD){
+            printf("\n===== Method %s Symbol Table =====\nreturn\t%s\n",table->table->id->id,SYMBOLS_TYPE_NAMES[table->table->type]);
+            printSymbolsDecl(table->table->next);
+        }
+        printSymbols(table->next);
+    }
+}
+void printSymbolsDecl(TableNode* tableNode){
+    if(tableNode!=NULL){
+        if(tableNode->n_type == TABLE_METHOD)
+            printf("%s\tmethod\n",tableNode->id->id);
+        else{
+            if(tableNode->isParam)
+                printf("%s\t%s\tparam\n",tableNode->id->id,SYMBOLS_TYPE_NAMES[tableNode->type]);
+            else
+                printf("%s\t%s\n",tableNode->id->id,SYMBOLS_TYPE_NAMES[tableNode->type]);
+        }
+        printSymbolsDecl(tableNode->next);
+    }
+}
+
 #endif

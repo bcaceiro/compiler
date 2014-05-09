@@ -48,6 +48,7 @@ typedef enum {NODE_PROGRAM,
 
 typedef enum {TYPE_VOID, TYPE_INT, TYPE_BOOL, TYPE_INT_ARRAY, TYPE_BOOL_ARRAY, TYPE_STRING_ARRAY} Type;
 
+typedef enum {TABLE_CLASS, TABLE_METHOD, TABLE_DECL, TABLE_RETURN} TableType;
 
 //LinkList de IDs (para multiplas declarações de variaveis)
 typedef struct _idList
@@ -62,7 +63,7 @@ typedef struct _Node
     //Type of the Node (to identify the tipe of the node)
 	NodeType n_type;
 
-    //Type of the struct (int, void, string)
+    //Type of the struct (int, void, string,...)
 	Type type;
 
     //id or list of ids
@@ -70,17 +71,37 @@ typedef struct _Node
 
     //the tree next nodes (for if and stuff)
     struct _Node* n1;
-	struct _Node* n2;
-	struct _Node* n3;
+    struct _Node* n2;
+    struct _Node* n3;
 
     //the next node
-	struct _Node* next;
+    struct _Node* next;
 
     //for the literals (to store the values)
     char* value;
 
     char isStatic;
 }Node;
+
+
+typedef struct _TableNode
+{
+    //Type of the Node (to identify the tipe of the node)
+    TableType n_type;
+    //Type of the struct (int, void, string,...)
+    Type type;
+    //id or list of ids
+    listID* id;
+    //the next node
+    struct _TableNode* next;
+    //if is a param
+    char isParam;
+}TableNode;
+
+typedef struct _Table{
+    TableNode* table;
+    struct _Table* next;
+}Table;
 
 listID* insertID(Node* currentNode, char* id);
 listID* newVarID(char* id, listID* next);
@@ -106,6 +127,9 @@ Node* insertNewArray(int type, Node* expression);
 Node* createCall(char* id, Node *args);
 Node* insertExpression(char* op,Node* exp);
 Node* insertDoubleExpression(Node* exp1,char* op,Node* exp2);
+
+TableNode* addNewDeclTable(char isparam, TableNode* symbol, Node* ast);
+Table* createSymbols(Node* ast);
 
 #endif
 
