@@ -150,7 +150,11 @@ Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statement
         newMethod->n2 = createNull();
     if(statements == NULL)
         newMethod->n3 = createNull();*/
-    newMethod->n3 = statements;
+    tmp = (Node*) malloc(sizeof(Node));
+    assert(tmp!=NULL);
+    tmp->n_type = NODE_DONTPRINT;
+    newMethod->n3 = tmp;
+    tmp->n1 = statements;
 
     newMethod->next = NULL;
     return newMethod;

@@ -22,9 +22,11 @@ void printTabs(int i) {
 */
 void printNode( Node* currentNode, int tabs) {
 
+    if(currentNode->n_type == NODE_DONTPRINT)
+           return;
 
     /* TODO: falta aqui um tipo acho eu */
-    if(currentNode->n_type == NODE_BOOLLIT || currentNode->n_type == NODE_INTLIT || currentNode->n_type == NODE_ID ) {
+    else if(currentNode->n_type == NODE_BOOLLIT || currentNode->n_type == NODE_INTLIT || currentNode->n_type == NODE_ID ) {
         printTabs(tabs);
         printf("%s(%s)\n",NODE_STRING[currentNode->n_type], currentNode->value);
     }
