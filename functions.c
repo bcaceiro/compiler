@@ -120,6 +120,7 @@ Node* newParamDecl(int type, char* id, listID* moreIds, Node* next){
 
 Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statements){
     if(DEBUG)printf("Inserting New method(%s)\n",id);
+    Node* tmp;
     Node* newMethod = (Node*) malloc(sizeof(Node));
     if(newMethod==NULL){
         if(DEBUG)printf("DEU MERDA malloc insertClass\n");
@@ -131,10 +132,18 @@ Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statement
     newMethod->type = type;
     newMethod->id = insertID(newMethod, id);
     //printf("Creating method!!!params : %p\n",params);
-    newMethod->n1 = params;
+    tmp = (Node*) malloc(sizeof(Node));
+    assert(tmp!=NULL);
+    tmp->n_type = NODE_METHODPARAMS;
+    newMethod->n1 = tmp;
+    tmp->n1 = params;
 
     //printf("Creating method!!!vardecl:%p\n",varDecl);
-    newMethod->n2 = varDecl;
+    tmp = (Node*) malloc(sizeof(Node));
+    assert(tmp!=NULL);
+    tmp->n_type = NODE_METHODBODY;
+    newMethod->n2 = tmp;
+    tmp->n1 = varDecl;
 /*    if(params == NULL)
         newMethod->n1 = createNull();
     if(varDecl == NULL)
@@ -494,7 +503,7 @@ Table* createSymbols(Node* ast){
     }
     while(ast!=NULL){
         if( ast->n_type == NODE_VARDECL){
-            symbol = addNewDeclTable(0, symbol,ast);
+            symbol = addNewDeclTable(0, symbol,ast, mainTable);
             ast = ast->next;
         }
         else if( ast->n_type == NODE_METHODDECL){
@@ -506,6 +515,7 @@ Table* createSymbols(Node* ast){
             currentTable->next = tempTable;
             currentTable = tempTable;
 
+            checkIfExists(ast->id->id,mainTable);
             //add the method decl to the old table (it must be the mainTable??)
             temp = (TableNode*) malloc (sizeof(TableNode));
             assert(temp!=NULL);
@@ -526,18 +536,18 @@ Table* createSymbols(Node* ast){
             symbol->id = ast->id;
 
             //add the params of the method to the method decl
-            if(ast->n1!=NULL){
-                aux = ast->n1;
+            if(ast->n1->n1!=NULL){
+                aux = ast->n1->n1;
                 while(aux!=NULL){
-                    symbol = addNewDeclTable(1,symbol,aux);
+                    symbol = addNewDeclTable(1,symbol,aux, currentTable);
                     aux = aux->next;
                }
             }
             //add the decls of the method to the method decl
-            if(ast->n2!=NULL){
-                aux = ast->n2;
+            if(ast->n2->n1!=NULL){
+                aux = ast->n2->n1;
                 while(aux!=NULL){
-                    symbol = addNewDeclTable(0,symbol,aux);
+                    symbol = addNewDeclTable(0,symbol,aux, currentTable);
                     aux = aux->next;
                 }
             }
@@ -548,9 +558,10 @@ Table* createSymbols(Node* ast){
     return mainTable;
 }
 
-TableNode* addNewDeclTable(char isparam, TableNode* symbol, Node* ast){
+TableNode* addNewDeclTable(char isparam, TableNode* symbol, Node* ast,Table* table){
     TableNode* temp;
     listID* aux;
+    checkIfExists(ast->id->id,table);
     temp = (TableNode*) malloc (sizeof(TableNode));
     assert(temp!=NULL);
     symbol->next = temp;
@@ -559,10 +570,11 @@ TableNode* addNewDeclTable(char isparam, TableNode* symbol, Node* ast){
     symbol->type = ast->type;
     symbol->id = ast->id;
     symbol->isParam = isparam;
-    //if more than a id has been declared in the same line
+    //if more than a id has been        if() declared in the same line
     if(symbol->id->next!=NULL){
         aux = symbol->id->next;
         while(aux!=NULL){
+            checkIfExists(aux->id,table);
             temp = (TableNode*) malloc (sizeof(TableNode));
             assert(temp!=NULL);
             symbol->next = temp;
@@ -574,6 +586,19 @@ TableNode* addNewDeclTable(char isparam, TableNode* symbol, Node* ast){
         }
     }
     return temp;
+}
+//variaveis globais mesmo nome que métodos não pode ter
+void checkIfExists(char* id, Table* table){
+    //printf("checking %s(where = %s)\n",id,table->table->id->id);
+    //
+    TableNode* local = table->table->next;
+    while(local!=NULL){
+        if((local->n_type == TABLE_DECL || local->n_type == TABLE_METHOD) && strcmp(id,local->id->id)==0){
+            printf("Symbol %s already defined\n",id);
+            exit(0);
+        }
+        local = local->next;
+    }
 }
 
 #endif

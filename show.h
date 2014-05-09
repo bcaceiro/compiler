@@ -54,7 +54,6 @@ static const char* SYMBOLS_TYPE_NAMES[] = {     "void",     "int",     "boolean"
 "int[]",     "boolean[]",     "String[]",     "Id",     "IntLit",
 "BoolLit",     "BoolArray", };
 
-void printStore ( Node* currentNode , int tabs);
 void printAST(Node* AST);
 void printIDs(listID* ids,int tabs, int n_type, int type);
 void printSubTree(Node* currentNode, int tabs);

@@ -128,8 +128,12 @@ Node* createCall(char* id, Node *args);
 Node* insertExpression(char* op,Node* exp);
 Node* insertDoubleExpression(Node* exp1,char* op,Node* exp2);
 
-TableNode* addNewDeclTable(char isparam, TableNode* symbol, Node* ast);
+TableNode* addNewDeclTable(char isparam, TableNode* symbol, Node* ast,Table* table);
 Table* createSymbols(Node* ast);
+
+
+void checkIfExists(char* id, Table* local);
+
 
 #endif
 
