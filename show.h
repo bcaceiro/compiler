@@ -46,13 +46,54 @@ static const char *NODE_STRING[] = {"Program",
                  "Minus"
                  };
 
+static const char *OPERATOR_STRING[] = {"Program",
+                 "VarDecl",
+                 "MethodDecl",
+                 "MethodParams",
+                 "MethodBody",
+                 "ParamDeclaration",
+                 "CompoundStat",
+                 "if",
+                 "System.out.println",
+                 "return",
+                 "=",
+                 "*",
+                 "/",
+                 "%",
+                 "!",
+                 "-",
+                 "+",
+                 ".length",
+                 "[",
+                 "call",
+                 "new int",
+                 "new boolean",
+                 "Integer.parseInt",
+                 "while",
+                 "=",
+                 "IntLit",
+                 "BoolLit",
+                 "Id",
+                 "&&",
+                 "||",
+                 "<",
+                 ">",
+                 "<=",
+                 ">=",
+                 "!=",
+                 "==",
+                 "null",
+                 "+",
+                 "-"
+                 };
+
 static const char* NODE_TYPE_NAMES[] = {     "Void",     "Int",     "Bool",
 "IntArray",     "BoolArray",     "StringArray",     "Id",     "IntLit",
 "BoolLit",     "BoolArray", };
 
 static const char* SYMBOLS_TYPE_NAMES[] = {     "void",     "int",     "boolean",
 "int[]",     "boolean[]",     "String[]",     "Id",     "IntLit",
-"BoolLit",     "BoolArray", };
+"BoolLit",     "BoolArray",  };
 
 void printAST(Node* AST);
 void printIDs(listID* ids,int tabs, int n_type, int type);

@@ -7,6 +7,7 @@
 #include <string.h>
 #include <assert.h>
 Node* nullNode = NULL;
+Table* tabelafofinha = NULL;
 
 Node* createNull(){
     if(nullNode == NULL){
@@ -275,22 +276,24 @@ Node* insertStore(char* id, Node* arrayIndex, Node* expression){
         assert(thisNode == NULL);
     }
 
-    insertID(thisNode,id);
+    //insertID(thisNode,id);
     //printf("ID Store(%s)\n",thisNode->id->id);
 
     thisNode->value = NULL;
-    thisNode->n1 = arrayIndex;
+    thisNode->n1 = createTerminalNode(NODE_ID,id);
+
+    thisNode->n2 = arrayIndex;
     //printf("lolada2:%s\n",NODE_STRING[expression->n_type]);
-    thisNode->n2 = expression;
     if(arrayIndex!=NULL){
         thisNode->n_type = NODE_STOREARRAY;
         if(arrayIndex == NULL)
-            thisNode->n1 = createNull();
+            thisNode->n2 = createNull();
     }else
         thisNode->n_type = NODE_STORE;
 
+    thisNode->n3 = expression;
     if(expression == NULL)
-        thisNode->n2 = createNull();
+        thisNode->n3 = createNull();
 
     thisNode->next = NULL;
 
@@ -306,6 +309,10 @@ Node* createTerminalNode(int n_type, char* token){
         assert(newTerminal != NULL);
     }
     newTerminal->n_type = n_type;
+    if(n_type == NODE_INTLIT)
+        newTerminal->type = TYPE_INT;
+    else if(n_type == NODE_BOOLLIT)
+        newTerminal->type = TYPE_BOOL;
     //FIXME POR O ID NO CAMPO id?
     newTerminal->value = token;
     //printf("New terminal:%s\n",token);
@@ -353,11 +360,14 @@ Node* insertParseInt(char* id, Node* indexExpression){
         assert(newParseInt != NULL);
     }
     newParseInt->n_type = NODE_PARSEARGS;
-    newParseInt->id = insertID(newParseInt,id);
-    newParseInt->n1 = indexExpression;
+    //newParseInt->id = insertID(newParseInt,id);
 
+    newParseInt->n1 = createTerminalNode(NODE_ID,id);
+
+
+    newParseInt->n2 = indexExpression;
     if(indexExpression == NULL)
-        newParseInt->n1 = createNull();
+        newParseInt->n2 = createNull();
 
     newParseInt->next = NULL;
     return newParseInt;
@@ -376,7 +386,10 @@ Node * insertNewArray(int type, Node* expression) {
     newArray->n1 = expression;
     if(expression == NULL)
         newArray->n1 = createNull();
-
+    if(type == NODE_NEWBOOL)
+            newArray->type = TYPE_BOOL_ARRAY;
+    if(type == NODE_NEWINT)
+            newArray->type = TYPE_INT_ARRAY;
     newArray->next = NULL;
     return newArray;
 }
@@ -603,6 +616,312 @@ void checkIfExists(char* id, Table* table){
         }
         local = local->next;
     }
+}
+
+void checkSemanticErrors(Node* ast, Table* local, Table* main){
+
+    if(ast->n_type == NODE_METHODDECL){
+        local = getMethodTable(main,ast->id->id);
+        setTable(local);
+    }
+
+    //ISTO PARECE DEMASIADO PREDREIRO!!!ISTO FUNCIONA SEQUER?
+    //if(ast->n_type == NODE_STORE || ast->n_type == NODE_STOREARRAY)
+        //checkErrors(ast,local,main);
+
+    if(ast->n1 != NULL){
+        checkSemanticErrors(ast->n1, local, main);
+    }
+    //NODE_2
+    if(ast->n2 != NULL){
+        checkSemanticErrors(ast->n2, local, main);
+    }
+    //NODE_3
+    if(ast->n3 != NULL){
+        checkSemanticErrors(ast->n3, local, main);
+    }
+
+    checkErrors(ast,local,main);
+
+    //next Node
+    if(ast->next != NULL)
+        checkSemanticErrors(ast->next, local, main);
+
+    //ISTO PARECE DEMASIADO PREDREIRO!!!ISTO FUNCIONA SEQUER?
+    //if(ast->n_type != NODE_STORE && ast->n_type != NODE_STOREARRAY)
+
+    return;
+}
+
+void checkErrors(Node* ast, Table* symbols, Table* main){
+    /*if(ast->n_type == NODE_STORE || ast->n_type == NODE_STOREARRAY){
+        ast->type = checkifIDExists(ast->n1->value,TABLE_DECL,symbols,main);
+    }
+    else */
+    if(ast->n_type == NODE_CALL){
+        ast->type = checkifIDExists(ast->id->id,TABLE_METHOD,symbols,main);
+    }
+    else if(ast->n_type == NODE_ID){
+        ast->type = checkifIDExists(ast->value,TABLE_DECL,symbols,main);
+        //printf("dfsdf : %s,%s\n",ast->value,SYMBOLS_TYPE_NAMES[ast->type]);
+    }
+    /*else if(ast->n_type == NODE_PARSEARGS){
+        ast->type = checkifIDExists(ast->id->id,TABLE_DECL,symbols,main);
+    }*/
+    else if(ast->n_type == NODE_INTLIT){
+        validIntLit(ast->value);
+    }
+    checkTypes(ast);
+
+}
+
+//chech it it exists and if exists, it returns the type
+int checkifIDExists(char* id,TableType type, Table* table, Table* main){
+    TableNode* local = table->table->next;
+    while(local!=NULL){
+        //printf("ID:%s\n",local->id->id);
+        if((local->n_type == type) && strcmp(id,local->id->id)==0){
+            return local->type;
+        }
+        local = local->next;
+    }
+    local = main->table->next;
+    while(local!=NULL){
+        //printf("ID:%s\n",local->id->id);
+        if((local->n_type == type) && strcmp(id,local->id->id)==0){
+            return local->type;
+        }
+        local = local->next;
+    }
+
+    printf("Cannot find symbol %s\n",id);
+    exit(0);
+}
+
+Table* getMethodTable(Table* main, char* methodID){
+    while(main!=NULL){
+        if(main->table->n_type == TABLE_METHOD && strcmp(methodID,main->table->id->id)==0)
+            return main;
+        else
+            main = main->next;
+   }
+    assert(main!=NULL);
+    return NULL;
+}
+
+void validIntLit(char* lit){
+
+    //printf("Verify IntLit %s\n",lit);
+    int len = strlen(lit);
+
+    //is a decimal
+    if(lit[0]!='0')
+        return;
+
+    //if it is a hexadecimal
+    if(len>0 && lit[1] == 'x')
+        return;
+
+    //it is octal
+    while(len>0){
+        if(lit[len] > '7'){
+            printf("Invalid literal %s\n",lit);
+            exit(0);
+        }
+        len--;
+    }
+    return;
+}
+
+
+void checkTypes(Node* ast){
+
+    if(ast->n_type == NODE_GREATER || ast->n_type == NODE_LESS || ast->n_type == NODE_GREATEREQUAL || ast->n_type == NODE_LESSEQUAL ){
+        //printf("Cenas:%s(%s) %s(%s)\n",NODE_STRING[ast->n1->n_type],SYMBOLS_TYPE_NAMES[ast->n1->type],NODE_STRING[ast->n2->n_type],SYMBOLS_TYPE_NAMES[ast->n2->type]);
+        if(ast->n1->type != TYPE_INT || ast->n2->type != TYPE_INT){
+            operatorError2Types(ast->n_type,ast->n1->type,ast->n2->type);
+        }
+        ast->type = TYPE_BOOL;
+    }
+    else if(ast->n_type == NODE_PLUS || ast->n_type == NODE_MINUS || ast->n_type == NODE_DIV || ast->n_type == NODE_MUL || ast->n_type == NODE_MOD){
+        //printf("Cenas:%s(%s) %s(%s)\n",NODE_STRING[ast->n1->n_type],SYMBOLS_TYPE_NAMES[ast->n1->type],NODE_STRING[ast->n2->n_type],SYMBOLS_TYPE_NAMES[ast->n2->type]);
+        if(ast->n1->type != TYPE_INT || ast->n2->type != TYPE_INT){
+            operatorError2Types(ast->n_type,ast->n1->type,ast->n2->type);
+        }
+        ast->type = TYPE_INT;
+    }
+    else if(ast->n_type == NODE_EQUAL || ast->n_type == NODE_DIFFERENT){
+        //printf("Cenas:%s(%s) %s(%s)\n",NODE_STRING[ast->n1->n_type],SYMBOLS_TYPE_NAMES[ast->n1->type],NODE_STRING[ast->n2->n_type],SYMBOLS_TYPE_NAMES[ast->n2->type]);
+        if(ast->n1->type != ast->n2->type){
+            operatorError2Types(ast->n_type,ast->n1->type,ast->n2->type);
+        }
+        ast->type = TYPE_BOOL;
+    }
+    else if(ast->n_type == NODE_AND || ast->n_type == NODE_OR){
+        //printf("Cenas:%s(%s) %s(%s)\n",NODE_STRING[ast->n1->n_type],SYMBOLS_TYPE_NAMES[ast->n1->type],NODE_STRING[ast->n2->n_type],SYMBOLS_TYPE_NAMES[ast->n2->type]);
+        if(ast->n1->type != TYPE_BOOL || ast->n2->type != TYPE_BOOL){
+            operatorError2Types(ast->n_type,ast->n1->type,ast->n2->type);
+        }
+        ast->type = TYPE_BOOL;
+    }
+    else if(ast->n_type == NODE_LOADARRAY ){
+        //printf("LOADARRAY:%s(%s) %s(%s)\n",NODE_STRING[ast->n1->n_type],SYMBOLS_TYPE_NAMES[ast->n1->type],NODE_STRING[ast->n2->n_type],SYMBOLS_TYPE_NAMES[ast->n2->type]);
+        if(ast->n2->type != TYPE_INT || (ast->n1->type != TYPE_BOOL_ARRAY && ast->n1->type != TYPE_INT_ARRAY && ast->n1->type != TYPE_STRING_ARRAY)){
+            operatorError2Types(ast->n_type,ast->n1->type,ast->n2->type);
+        }
+        if(ast->n1->type == TYPE_INT_ARRAY)
+            ast->type = TYPE_INT;
+        else if(ast->n1->type == TYPE_BOOL_ARRAY)
+            ast->type = TYPE_BOOL;
+        else{
+            //printf("hsdfsdfsdfsd\n");
+            ast->type = ast->n1->type;
+        }
+    }
+    else if( ast->n_type == NODE_NEWINT || ast->n_type == NODE_NEWBOOL ){
+        assert(ast->n1!=NULL);
+        if(ast->n1->type != TYPE_INT){
+            operatorError1Types(ast->n_type,ast->n1->type);
+        }
+        if(ast->n_type == NODE_NEWINT)
+            ast->type = TYPE_INT_ARRAY;
+        else
+            ast->type = TYPE_BOOL_ARRAY;
+    }
+    else if( ast->n_type == NODE_LENGTH){
+        if((ast->n1->type != TYPE_BOOL_ARRAY && ast->n1->type != TYPE_INT_ARRAY && ast->n1->type != TYPE_STRING_ARRAY)){
+            //printf("SOMETHING\n");
+            operatorError1Types(ast->n_type,ast->n1->type);
+        }
+        ast->type = TYPE_INT;
+    }
+    else if( ast->n_type == NODE_UNARYPLUS || ast->n_type == NODE_UNARYMINUS){
+        if((ast->n1->type != TYPE_INT)){
+            //printf("SOMETHING\n");
+            operatorError1Types(ast->n_type,ast->n1->type);
+        }
+        ast->type = TYPE_BOOL;
+    }
+    else if(ast->n_type == NODE_NOT){
+        if((ast->n1->type != TYPE_BOOL)){
+            //printf("SOMETHING\n");
+            operatorError1Types(ast->n_type,ast->n1->type);
+        }
+        ast->type = TYPE_BOOL;
+    }
+    else if( ast->n_type == NODE_PARSEARGS){
+        if((ast->n1->type != TYPE_STRING_ARRAY || ast->n2->type != TYPE_INT)){
+            //printf("SOMETHING\n");
+            operatorError2Types(ast->n_type,ast->n1->type,ast->n2->type);
+        }
+        ast->type = TYPE_INT;
+    }
+    else if (ast->n_type == NODE_CALL){
+        int i = 0;
+        char* id = ast->id->id;
+        Table* aux= getMethodTable(tabelafofinha, id);
+        TableNode* table = aux->table->next;
+        ast = ast->n1;
+        while(ast!=NULL || table!=NULL){
+            if(ast->type != table->type){
+                getErrorCall(i,id, ast->type, table->type);
+            }
+            i++;
+            ast = ast->next;
+            table = table->next;
+        }
+
+    }
+    //statements
+    else if( ast->n_type == NODE_IFELSE || ast->n_type == NODE_WHILE){
+        if((ast->n1->type != TYPE_BOOL)){
+            //printf("SOMETHING\n");
+            statementError(ast->n_type,ast->n1->type,TYPE_BOOL);
+        }
+    }
+    else if( ast->n_type == NODE_PRINT){
+        if((ast->n1->type != TYPE_BOOL && ast->n1->type != TYPE_INT)){
+            //printf("SOMETHING\n");
+            statementError1oranother(ast->n_type,ast->n1->type,TYPE_BOOL,TYPE_INT);
+        }
+        ast->type = TYPE_INT;
+    }else if(ast->n_type == NODE_COMPOUNDSTAT){
+        ast->type = ast->n1->type;
+    }
+    else if(ast->n_type == NODE_STORE || ast->n_type == NODE_STOREARRAY){
+        //printf("hasddghasjfdghsdgfhjaskfhasdfkjhasdfjasdhfuj:%s(%s) %s(%s)\n",NODE_STRING[ast->n1->n_type],SYMBOLS_TYPE_NAMES[ast->n1->type],NODE_STRING[ast->n2->n_type],SYMBOLS_TYPE_NAMES[ast->n2->type]);
+
+        //if has index (se é STORE ARRAY)
+        if(ast->n2!=NULL){
+            if(ast->n2->type != TYPE_INT || (ast->n1->type != TYPE_BOOL_ARRAY && ast->n1->type != TYPE_INT_ARRAY && ast->n1->type != TYPE_STRING_ARRAY)){
+                assignmentErrorArray(ast->n1->value,ast->n1->type,ast->n2->type);
+            }
+
+            if(ast->n1->type == TYPE_INT_ARRAY)
+                ast->n1->type = TYPE_INT;
+            else if(ast->n1->type == TYPE_BOOL_ARRAY)
+                ast->n1->type = TYPE_BOOL;
+        }
+        //se o id é igual à expressao
+        if(ast->n1->type != ast->n3->type){
+            //printf("SOMETHING\n");
+            if(ast->n_type == NODE_STORE)
+                assignmentError(ast->n1->value,ast->n1->type,ast->n3->type);
+            else
+                assignmentErrorArray(ast->n1->value,ast->n1->type,ast->n3->type);
+        }
+        ast->type = ast->n1->type;
+    }
+    else if( ast->n_type == NODE_RETURN){
+        if(ast->n1!=NULL){
+            if((ast->n1->type != getFunctionType())){
+                //printf("SOMETHING\n");
+                statementError(ast->n_type,ast->n1->type,getFunctionType());
+            }
+        }else if(getFunctionType()!=TYPE_VOID){
+            statementError(ast->n_type,TYPE_VOID,getFunctionType());
+        }
+    }
+}
+void statementError(int op, int n1,int n2){
+     printf("Incompatible type in %s statement (got %s, required %s)\n",OPERATOR_STRING[op],SYMBOLS_TYPE_NAMES[n1],SYMBOLS_TYPE_NAMES[n2]);
+     exit(0);
+}
+void statementError1oranother(int op, int n1, int n2, int n3){
+    printf("Incompatible type in %s statement (got %s, required %s or %s)\n",OPERATOR_STRING[op],SYMBOLS_TYPE_NAMES[n1],SYMBOLS_TYPE_NAMES[n2],SYMBOLS_TYPE_NAMES[n3]);
+     exit(0);
+}
+
+void operatorError2Types(int op,int n1, int n2){
+    printf("Operator %s cannot be applied to types %s, %s\n",OPERATOR_STRING[op],SYMBOLS_TYPE_NAMES[n1],SYMBOLS_TYPE_NAMES[n2]);
+    exit(0);
+}
+
+void operatorError1Types(int op,int n1){
+    printf("Operator %s cannot be applied to type %s\n",OPERATOR_STRING[op],SYMBOLS_TYPE_NAMES[n1]);
+    exit(0);
+}
+void assignmentError(char* var, int n1, int n2){
+    printf("Incompatible type in assignment to %s (got %s, required %s)\n",var,SYMBOLS_TYPE_NAMES[n1],SYMBOLS_TYPE_NAMES[n2]);
+    exit(0);
+}
+void assignmentErrorArray(char* var, int n1, int n2){
+    printf("Incompatible type in assignment to %s[] (got %s, required %s)\n",var,SYMBOLS_TYPE_NAMES[n1],SYMBOLS_TYPE_NAMES[n2]);
+    exit(0);
+}
+void getErrorCall(int i,char* name, int n1, int n2){
+    printf("Incompatible type of argument %d in call to method %s (got %s, required %s)\n",i,name,SYMBOLS_TYPE_NAMES[n1],SYMBOLS_TYPE_NAMES[n2]);
+    exit(0);
+}
+
+int getFunctionType(){
+    return tabelafofinha->table->type;
+}
+char* getFunctionName(){
+    return tabelafofinha->table->id->id;
+}
+void setTable(Table * oi){
+    tabelafofinha = oi;
 }
 
 #endif

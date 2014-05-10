@@ -134,7 +134,22 @@ Table* createSymbols(Node* ast);
 
 
 void checkIfExists(char* id, Table* local);
-
+void checkSemanticErrors(Node* ast, Table* local, Table* main);
+void checkErrors(Node* ast, Table* symbols, Table* main);
+int checkifIDExists(char* id,TableType type, Table* table, Table* main);
+Table* getMethodTable(Table* main, char* methodID);
+void validIntLit(char* lit);
+void checkTypes(Node* ast);
+void operatorError2Types(int op,int n1, int n2);
+void operatorError1Types(int op,int n1);
+void assignmentError(char* var, int n1, int n2);
+void assignmentErrorArray(char* var, int n1, int n2);
+void setTable(Table * oi);
+int getFunctionType();
+void statementError(int op, int n1,int n2);
+void statementError1oranother(int op, int n1, int n2, int n3);
+char* getFunctionName();
+void getErrorCall(int i,char* name, int n1, int n2);
 
 #endif
 

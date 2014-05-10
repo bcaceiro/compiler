@@ -224,6 +224,9 @@ int main(int argc, char *argv[]){
             printAST(program);
         if(pSymbols){
             symbols = createSymbols(program);
+            if(program!=NULL)
+                setTable(symbols);
+                checkSemanticErrors(program, symbols, symbols);
             printSymbols(symbols);
 
 
