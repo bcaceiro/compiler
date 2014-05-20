@@ -1,21 +1,13 @@
 class gcd {
-	static int a,b;
-  public static void main() {
-    int[] x;
-	boolean[] x;
-    x = new int[2];
-    x[0] = Integer.parseInt(args[0]);
-    x[1] = Integer.parseInt(args[1]);
-    if (x[0] == 0)
-      System.out.println(x[1]);
-    else
-      while (x[1] > 0) {
-        if (x[0] < x[1])
-          x[0] = x[0] - x[1];
-        else
-          x[1] = x[1] + x[0];
-      }
-    System.out.println(x[0]);
-  }
-static boolean c;
+	public static void main(String[] b) {
+		boolean x;
+		int huehue;
+		//b[0] = true;
+		huehue = main(1,2,3);
+	}
+	public static int lol(int a, int b){
+		boolean c;
+	}
+	public static int cardoso(){
+	}
 }

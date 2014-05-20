@@ -139,7 +139,7 @@ void checkErrors(Node* ast, Table* symbols, Table* main);
 int checkifIDExists(char* id,TableType type, Table* table, Table* main);
 Table* getMethodTable(Table* main, char* methodID);
 void validIntLit(char* lit);
-void checkTypes(Node* ast);
+void checkTypes(Node* ast,Table* main);
 void operatorError2Types(int op,int n1, int n2);
 void operatorError1Types(int op,int n1);
 void assignmentError(char* var, int n1, int n2);

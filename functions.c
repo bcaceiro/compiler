@@ -626,9 +626,9 @@ void checkSemanticErrors(Node* ast, Table* local, Table* main){
     }
 
     //ISTO PARECE DEMASIADO PREDREIRO!!!ISTO FUNCIONA SEQUER?
-    //if(ast->n_type == NODE_STORE || ast->n_type == NODE_STOREARRAY)
-        //checkErrors(ast,local,main);
-
+    /*if(ast->n_type == NODE_STORE || ast->n_type == NODE_STOREARRAY)
+        checkErrors(ast,local,main);
+    */
     if(ast->n1 != NULL){
         checkSemanticErrors(ast->n1, local, main);
     }
@@ -671,7 +671,7 @@ void checkErrors(Node* ast, Table* symbols, Table* main){
     else if(ast->n_type == NODE_INTLIT){
         validIntLit(ast->value);
     }
-    checkTypes(ast);
+    checkTypes(ast,main);
 
 }
 
@@ -705,8 +705,8 @@ Table* getMethodTable(Table* main, char* methodID){
         else
             main = main->next;
    }
-    assert(main!=NULL);
-    return NULL;
+   //assert(NULL!=NULL);
+   return main;
 }
 
 void validIntLit(char* lit){
@@ -734,7 +734,7 @@ void validIntLit(char* lit){
 }
 
 
-void checkTypes(Node* ast){
+void checkTypes(Node* ast, Table *main){
 
     if(ast->n_type == NODE_GREATER || ast->n_type == NODE_LESS || ast->n_type == NODE_GREATEREQUAL || ast->n_type == NODE_LESSEQUAL ){
         //printf("Cenas:%s(%s) %s(%s)\n",NODE_STRING[ast->n1->n_type],SYMBOLS_TYPE_NAMES[ast->n1->type],NODE_STRING[ast->n2->n_type],SYMBOLS_TYPE_NAMES[ast->n2->type]);
@@ -766,7 +766,7 @@ void checkTypes(Node* ast){
     }
     else if(ast->n_type == NODE_LOADARRAY ){
         //printf("LOADARRAY:%s(%s) %s(%s)\n",NODE_STRING[ast->n1->n_type],SYMBOLS_TYPE_NAMES[ast->n1->type],NODE_STRING[ast->n2->n_type],SYMBOLS_TYPE_NAMES[ast->n2->type]);
-        if(ast->n2->type != TYPE_INT || (ast->n1->type != TYPE_BOOL_ARRAY && ast->n1->type != TYPE_INT_ARRAY && ast->n1->type != TYPE_STRING_ARRAY)){
+        if(ast->n2->type != TYPE_INT || (ast->n1->type != TYPE_BOOL_ARRAY && ast->n1->type != TYPE_INT_ARRAY)){
             operatorError2Types(ast->n_type,ast->n1->type,ast->n2->type);
         }
         if(ast->n1->type == TYPE_INT_ARRAY)
@@ -800,7 +800,7 @@ void checkTypes(Node* ast){
             //printf("SOMETHING\n");
             operatorError1Types(ast->n_type,ast->n1->type);
         }
-        ast->type = TYPE_BOOL;
+        ast->type = TYPE_INT;
     }
     else if(ast->n_type == NODE_NOT){
         if((ast->n1->type != TYPE_BOOL)){
@@ -818,17 +818,43 @@ void checkTypes(Node* ast){
     }
     else if (ast->n_type == NODE_CALL){
         int i = 0;
+        Type astType, tableType;
+        //assert(ast->id->id!=NULL);
         char* id = ast->id->id;
-        Table* aux= getMethodTable(tabelafofinha, id);
-        TableNode* table = aux->table->next;
+        Table* aux= getMethodTable(main, id);
+        TableNode* table;
+        /*if(aux!=NULL)
+            if(aux->table!=NULL)*/
+        table = aux->table->next;
+
+        ast->type = aux->table->type;
         ast = ast->n1;
         while(ast!=NULL || table!=NULL){
-            if(ast->type != table->type){
-                getErrorCall(i,id, ast->type, table->type);
+            astType = TYPE_VOID;
+            tableType = TYPE_VOID;
+
+            if(ast!=NULL){
+                //assert(ast!=NULL);
+                astType = ast->type;
+                ast = ast->next;
+            }
+
+            if(table!=NULL){
+                //if is a param
+                //assert(table!=NULL);
+                if(table->isParam == 1){
+                    //assert(table!=NULL);
+                    tableType = table->type;
+                    table = table->next;
+                }else{
+                    table = NULL;
+                }
+            }
+
+            if(astType != tableType){
+                getErrorCall(i,id, astType, tableType);
             }
             i++;
-            ast = ast->next;
-            table = table->next;
         }
 
     }
@@ -853,8 +879,9 @@ void checkTypes(Node* ast){
 
         //if has index (se é STORE ARRAY)
         if(ast->n2!=NULL){
-            if(ast->n2->type != TYPE_INT || (ast->n1->type != TYPE_BOOL_ARRAY && ast->n1->type != TYPE_INT_ARRAY && ast->n1->type != TYPE_STRING_ARRAY)){
-                assignmentErrorArray(ast->n1->value,ast->n1->type,ast->n2->type);
+            if(ast->n2->type != TYPE_INT || (ast->n1->type != TYPE_BOOL_ARRAY && ast->n1->type != TYPE_INT_ARRAY)){
+                operatorError2Types(NODE_LOADARRAY,ast->n1->type,ast->n2->type);
+                //assignmentErrorArray(ast->n1->value,ast->n1->type,ast->n2->type);
             }
 
             if(ast->n1->type == TYPE_INT_ARRAY)
@@ -866,12 +893,13 @@ void checkTypes(Node* ast){
         if(ast->n1->type != ast->n3->type){
             //printf("SOMETHING\n");
             if(ast->n_type == NODE_STORE)
-                assignmentError(ast->n1->value,ast->n1->type,ast->n3->type);
+                assignmentError(ast->n1->value,ast->n3->type,ast->n1->type);
             else
-                assignmentErrorArray(ast->n1->value,ast->n1->type,ast->n3->type);
+                assignmentErrorArray(ast->n1->value,ast->n3->type,ast->n1->type);
         }
         ast->type = ast->n1->type;
     }
+
     else if( ast->n_type == NODE_RETURN){
         if(ast->n1!=NULL){
             if((ast->n1->type != getFunctionType())){
