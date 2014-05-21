@@ -1,0 +1,66 @@
+RELATÓRIO CHECK LIST:
+
+---------------------------------------------------------------------------------------------
+
+1 - Modificar a gramática:
+	 - pk?
+	 - para k?
+
+- Tornar a gramática numa gramática regular (recursiva à esquerda)
+
+- A gramática é ambígua, por isso tem de resolver as ambiguidades de modo a resolver os conflitos de shift reduce que eram causados, através de precedências (if e if/else), criar novas regras na gramática(separar o AND do OR, O = !=, >= <=), separar operadores (porque tinham diferentes prioridades (agrupar à esquerda/direita))
+
+Mudar a gramática para resolver as a
+
+---------------------------------------------------------------------------------------------
+
+2 - Geração de código:
+	 - coisas que fizemos todas fofas (inicializar o valor de retorno,...) 
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+3 - limpar memória
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+4 - Usar uma estrutura, pq?
+
+
+
+---------------------------------------------------------------------------------------------
+
+5 - Análise da linguagem (opcional)
+	 - coisas que a linguagem não preve e que dá erro em java
+	 - cenas do mal
+	 - como resolver cenas da linguagem
+
+
+
+---------------------------------------------------------------------------------------------
+
+6 - Garbage collection
+
+
+
+
+---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
