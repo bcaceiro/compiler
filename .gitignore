@@ -10,3 +10,5 @@ a.files
 a.includes
 
 *.plist
+
+lex.yy.c
