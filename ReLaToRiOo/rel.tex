@@ -62,6 +62,44 @@ Este projecto consiste no desenvolvimento de um compilador para a linguagem \emp
 
 O projecto foi estruturado em 3 fases, primeiramente foi feita a Análise Lexical, implementada na linguagem \emph{C} e utilizando a ferramenta \emph{lex}. A segunda fase consistiu na análise sintática, com a  construção da árvore de sintaxe abstrata e análise semântica (tabelas de símbolos, deteção de erros semânticos). No final foi feita a geração de código.
 
+\begin{figure}[H]
+       \centering
+       \includegraphics[keepaspectratio=true, width=300px]{fasesCompilacao.png}
+       \caption{Fases de Compilação}
+       \end{figure}
+
+
+\section{Análise Lexical}
+
+A Análise Lexical consiste em analisar a entrada de linhas de caracteres e produzir uma sequência de símbolos (\emph{tokens}) que podem ser manipulados mais facilmente por um \emph{parser}. É uma forma de verificar um determinado alfabeto, neste caso o alfabeto da linguagem \emph{iJava}.
+Esta análise pode ser dividida em três fases:
+\begin{itemize}
+	\item Extração e classificação de \emph{tokens};
+	\item Eliminação de delimitadores e comentários;
+	\item Tratamento de erros;
+\end{itemize}
+
+O \emph{iJava} é um subconjunto da linguagem \emph{Java}, como tal, existe um conjunto de funcionalidades que embora não sejam suportadas, têm de ser consideradas. Assim, foi necessário tratar todo um conjunto de palavras reservadas 
+
+
+\section{Análise Sintática e Semântica}
+
+\subsection{Árvore de Sintaxe Abstrata}
+
+\subsection{Tratamento de Erros Lexicais}
+
+\subsection{Análise Semântica}
+
+\subsection{Tabela de Símbolos}
+
+\subsection{Tratamento de Erros Semânticos}
+
+
+
+
+
+
+
 
 
 	
