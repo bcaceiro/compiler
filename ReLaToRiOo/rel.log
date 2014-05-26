@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  26 MAY 2014 16:04
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  26 MAY 2014 17:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -380,15 +380,17 @@ LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
 (/usr/local/texlive/2012/texmf-dist/tex/generic/babel/babel.sty
 Package: babel 2008/07/08 v3.8m The Babel package
 
-(/usr/local/texlive/2012/texmf-dist/tex/generic/babel/portuges.ldf
-Language: portuges 2008/03/18 v1.2q Portuguese support from the babel system
+(/usr/local/texlive/2012/texmf-dist/tex/generic/babel/english.ldf
+Language: english 2005/03/30 v3.3o English support from the babel system
 
 (/usr/local/texlive/2012/texmf-dist/tex/generic/babel/babel.def
 File: babel.def 2008/07/08 v3.8m Babel common definitions
 \babel@savecnt=\count103
 \U@D=\dimen122
 )
-Package babel Info: Making " an active character on input line 145.
+\l@canadian = a dialect from \language\l@american 
+\l@australian = a dialect from \language\l@british 
+\l@newzealand = a dialect from \language\l@british 
 ))
 (/usr/local/texlive/2012/texmf-dist/tex/latex/float/float.sty
 Package: float 2001/11/08 v1.3d Float enhancements (AL)
@@ -412,18 +414,18 @@ File: dvipsnam.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
 (./rel.aux)
 \openout1 = `rel.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 13.
-LaTeX Font Info:    ... okay on input line 13.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 16.
+LaTeX Font Info:    ... okay on input line 16.
  (/usr/local/texlive/2012/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count105
@@ -515,72 +517,71 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 20--23
-
- []
-
-
-Overfull \hbox (17.62482pt too wide) in paragraph at lines 25--28
-[][] 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 25--28
-
- []
-
-LaTeX Font Info:    Try loading font information for U+msa on input line 34.
+LaTeX Font Info:    Try loading font information for U+msa on input line 38.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 34.
+LaTeX Font Info:    Try loading font information for U+msb on input line 38.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
-)
-Underfull \hbox (badness 10000) in paragraph at lines 29--42
-
- []
-
-[1
+) [1
 
 {/usr/local/texlive/2012/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-[2] <fasesCompilacao.png, id=13, 442.65375pt x 387.4475pt>
+<fasesCompilacao.png, id=10, 442.65375pt x 387.4475pt>
 File: fasesCompilacao.png Graphic file (type png)
 
 <use fasesCompilacao.png>
-Package pdftex.def Info: fasesCompilacao.png used on input line 58.
+Package pdftex.def Info: fasesCompilacao.png used on input line 62.
 (pdftex.def)             Requested size: 301.1261pt x 263.58496pt.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 68.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 72.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 68.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 72.
  [1 <./fasesCompilacao.png>] [2]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 106.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 110.
 
  (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <12> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 106.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 110.
 
-Underfull \hbox (badness 10000) in paragraph at lines 179--182
+Underfull \hbox (badness 10000) in paragraph at lines 183--186
 
  []
 
-[3] [4] (./rel.aux) ) 
+[3]
+Overfull \hbox (23.25262pt too wide) in paragraph at lines 193--194
+\OT1/cmr/m/n/12 Params $\OML/cmm/m/it/12 CCURV$ $OBRACE$ \OT1/cmr/m/n/12 VarDec
+l[]REPETITION state-ment[]declaration[]REPETITION
+ []
+
+
+Overfull \hbox (151.95056pt too wide) in paragraph at lines 211--212
+[]\OT1/cmr/m/n/12 several[]var[]decl[]in[]same[]instructionOPTIONAL $[][]\OMS/c
+msy/m/n/12 !$ $\OML/cmm/m/it/12 COMMA$ $ID$ \OT1/cmr/m/n/12 sev-eral[]var[]decl
+[]in[]same[]instructionOPTIONAL 
+ []
+
+
+Overfull \hbox (23.19917pt too wide) in paragraph at lines 220--221
+[]\OT1/cmr/m/n/12 statement[]declaration[]REPETITION $[][]\OMS/cmsy/m/n/12 !$ \
+OT1/cmr/m/n/12 State-ment state-ment[]declaration[]REPETITION 
+ []
+
+[4] [5] (./rel.aux) ) 
 Here is how much of TeX's memory you used:
- 3593 strings out of 493488
- 49022 string characters out of 3141326
- 119153 words of memory out of 3000000
- 6818 multiletter control sequences out of 15000+200000
+ 3530 strings out of 493488
+ 48028 string characters out of 3141326
+ 121507 words of memory out of 3000000
+ 6756 multiletter control sequences out of 15000+200000
  12307 words of font info for 45 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
- 38i,6n,32p,444b,235s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 38i,6n,32p,444b,250s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmbx12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsf
 onts/cm/cmcsc10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsf
@@ -588,7 +589,7 @@ onts/cm/cmmi12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfo
 nts/cm/cmr12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmsy10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmti12.pfb>
-Output written on rel.pdf (6 pages, 109530 bytes).
+Output written on rel.pdf (6 pages, 114524 bytes).
 PDF statistics:
  50 PDF objects out of 1000 (max. 8388607)
  33 compressed objects within 1 object stream

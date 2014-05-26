@@ -5,7 +5,10 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{indentfirst}
 \usepackage{amsfonts}
-\usepackage[portuguese]{babel}
+%for english
+\usepackage[english]{babel}
+%for portuguese
+%\usepackage[portuguese]{babel}
 \usepackage{float}
 \usepackage[usenames,dvipsnames]{color}
 
@@ -15,32 +18,33 @@
 \begin{titlepage}
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
+\center 
+ 
 
-
-\textsc{\LARGE universidade de coimbra}\\[1.5cm] % Name of your university/college
-\textsc{\Large departamento de engenharia informática}\\[4cm] % Major heading such as course name
-\textsc{\large compiladores}\\[1cm] % Minor heading such as course title
+\textsc{\LARGE Universidade de Coimbra}\\[1.5cm] % Name of your university/college
+\textsc{\Large Departamento de Engenharia Informática}\\[4cm] % Major heading such as course name
+\textsc{\large Compiladores}\\[1cm] % Minor heading such as course title
 
 
 \HRule \\[0.5cm]
-{ \huge \bfseries Compilador para a linguagem iJava}\\[0.4cm] 
+{ \huge \bfseries Compilador para linguagem iJava}\\[0.4cm] 
 \HRule \\[8cm]
  
 \begin{minipage}{0.4\textwidth}
 \begin{flushleft} \large
 \emph{Autor:}\\
-Bruno \textsc{Caceiro}  \\caceiro@student.dei.uc.pt
+David \textsc{Cardoso}  \\Número: 2011164039
 \end{flushleft}
 \end{minipage}
 ~
 \begin{minipage}{0.4\textwidth}
 \begin{flushright} \large
 \emph{Autor:} \\
-David \textsc{Cardoso}  \\davidfpc@student.dei.uc.pt
+Bruno \textsc{Caceiro}  \\Número: 2008107991
 \end{flushright}
 \end{minipage}\\[2cm]
 
-
+{\large \today}\\[3cm]
 
 \vfill
 
@@ -181,18 +185,87 @@ Desenvolver uma gramática não ambígua é um dos passos mais importantes para 
 A gramática que nos foi dada era ambígua e por isso tivémos de efectuar diversas alterações para permiter a análise sintática ascendente com o \emph{yacc}.\\
 
 
-$START$ $\longrightarrow$ $CLASS$ $ID$  $OBRACE$ field\_or\_method\_declaration  $CBRACE$  
-
-field\_or\_method\_declaration $\longrightarrow$  $FieldDecl$ field\_or\_method\_declaration \par$|$ $MethodDecl$  field\_or\_method\_declaration 
-
-$FieldDecl$ $\longrightarrow$ $STATIC$ $VarDecl$  VarDecl\_REPETITION 
-
-
-$MethodDecl$ $\longrightarrow$ $PUBLIC$ $STATIC$ method\_type\_declaration $ID$  $OCURV$ FormalParams $CCURV$ $OBRACE$ VarDecl\_REPETITION statement\_declaration\_REPETITION $CBRACE$
-
-method\_type\_declaration $\longrightarrow$ Type $|$ $VOID$
-
-
+\begin{itemize}
+  \item[] START $\longrightarrow$ $CLASS$ $ID$  $OBRACE$ 
+  \item[]  field\_or\_method\_declaration $\longrightarrow$  $FieldDecl$ field\_or\_method\_declaration \par$|$ $MethodDecl$  field\_or\_method\_declaration 
+  \item[] $FieldDecl$ $\longrightarrow$ $STATIC$ $VarDecl$  VarDecl\_REPETITION
+  
+  \item[] $MethodDecl$ $\longrightarrow$ $PUBLIC$ $STATIC$ method\_type\_declaration $ID$  $OCURV$ FormalParams $CCURV$ $OBRACE$ VarDecl\_REPETITION statement\_declaration\_REPETITION $CBRACE$
+  
+  \item[] method\_type\_declaration $\longrightarrow$ Type 
+  \begin{itemize}
+	\item[] $|$ $VOID$
+  \end{itemize}
+  
+  \item[] FormalParams $\longrightarrow$ Type $ID$ several\_FormalParams 
+  \begin{itemize}
+ 	\item[]$|$ $STRING$    $OSQUARE$ $CSQUARE$  $ID$  
+  \end{itemize}
+  
+  \item[] several\_FormalParams $\longrightarrow$ $COMMA$ Type $ID$ several\_FormalParams  
+  
+  \item[] VarDecl\_REPETITION $\longrightarrow$ VarDecl VarDecl\_REPETITION 
+ 
+  \item[] VarDecl $\longrightarrow$ Type $ID$ several\_var\_decl\_in\_same\_instructionOPTIONAL $SEMIC$
+  
+  \item[]several\_var\_decl\_in\_same\_instructionOPTIONAL $\longrightarrow$ $COMMA$ $ID$ several\_var\_decl\_in\_same\_instructionOPTIONAL 
+  
+  \item[]Type $\longrightarrow$ $INT$ $OSQUARE$ $CSQUARE$ 
+  \begin{itemize}
+  \item[]$|$ $BOOL$ $OSQUARE$ $CSQUARE$ 
+  \\$|$ $INT$ 
+  \\$|$ $BOOL$
+  \end{itemize}
+  
+  \item[] statement\_declaration\_REPETITION $\longrightarrow$ Statement statement\_declaration\_REPETITION
+  
+  \item[] Statement $\longrightarrow$ $OBRACE$ several\_statement $CBRACE$
+  \begin{itemize}
+  \item[]$|$ $IF$ $OCURV$ Expr $CCURV$ Statement $\%prec$ $IFX$ 
+  \\$|$ $IF$ $OCURV$ Expr $CCURV$ Statement $ELSE$ Statement 
+  \\$|$ $WHILE$ $OCURV$ Expr $CCURV$ Statement 
+  \\$|$ $PRINT$ $OCURV$ Expr $CCURV$ $SEMIC$ 
+  \\$|$ $ID$ array\_indexOPTIONAL $ASSIGN$ Expr $SEMIC$ 
+  \\$|$ $RETURN$ return\_expression $SEMIC$  
+    \end{itemize}
+  
+  \item[] several\_statement $\longrightarrow$ Statement several\_statement  
+  
+  \item[] array\_indexOPTIONAL $\longrightarrow$  $OSQUARE$ Expr $CSQUARE$
+  
+  \item[] return\_expression $\longrightarrow$  Expr
+  
+  \item[] IndexableExpr $\longrightarrow$ $ID$ 
+  \begin{itemize}
+  \item[]$|$ $INTLIT$ $BOOLLIT$ $ID$ $OCURV$ Args\_OPTIONAL $CCURV$ 
+  \\$|$ $OCURV$ Expr $CCURV$ 
+  \\$|$ Expr $DOTLENGTH$ 
+  \\$|$ IndexableExpr $OSQUARE$ Expr $CSQUARE$ 
+  \\$|$ $PARSEINT$ $OCURV$ $ID$ $OSQUARE$ Expr $CSQUARE$ $CCURV$
+    \end{itemize}
+  
+  \item[] Expr $\longrightarrow$ Expr $OP1$ Expr $\%prec$ $OP1$ 
+  \begin{itemize}
+		\item[] $|$      Expr $OP1OR$ Expr $\%prec$ $OP1OR$
+		\\$|$ Expr $OP4$ Expr $\%prec$ $OP4$ 
+		\\$|$ Expr $OP3$ Expr $\%prec$ $OP3$  
+		\\$|$ Expr $OP2$ Expr $\%prec$ $OP2$ 
+		\\$|$ Expr $OP2EQS$ Expr $\%prec$ $OP2EQS$
+		\\$|$ $OP3$ Expr $\%prec$ $NOT$
+		\\$|$ $NOT$ Expr $\%prec$ $NOT$
+		\\$|$ $NEW$ $INT$ $OSQUARE$ Expr $CSQUARE$
+		\\$|$ $NEW$ $BOOL$ $OSQUARE$ Expr $CSQUARE$
+		\\$|$ IndexableExpr
+  \end{itemize}
+  
+  \item[] Args\_OPTIONAL $\longrightarrow$ Args
+  
+  \item[] Args $\longrightarrow$ Expr comma\_expr
+  
+  \item[] comma\_expr $\longrightarrow$ $COMMA$ Expr comma\_expr               
+  
+  
+\end{itemize}
 
 
 \subsection{Árvore de Sintaxe Abstrata}
