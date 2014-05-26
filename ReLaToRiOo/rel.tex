@@ -1,4 +1,3 @@
-
 \documentclass[12pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -11,18 +10,12 @@
 \usepackage[usenames,dvipsnames]{color}
 
 
-
-
-
-
-
 \begin{document}
 
 \begin{titlepage}
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
-\center 
- 
+
 
 \textsc{\LARGE universidade de coimbra}\\[1.5cm] % Name of your university/college
 \textsc{\Large departamento de engenharia informática}\\[4cm] % Major heading such as course name
@@ -48,8 +41,6 @@ David \textsc{Cardoso}  \\davidfpc@student.dei.uc.pt
 \end{minipage}\\[2cm]
 
 
-
-{\large \today}\\[3cm]
 
 \vfill
 
@@ -182,6 +173,27 @@ Esta análise pode ser dividida em três fases:
 
 
 \section{Análise Sintática e Semântica}
+
+\subsection{Gramática}
+
+A gramática é a maneira formal de especificar a sintaxe de uma linguagem. 
+Desenvolver uma gramática não ambígua é um dos passos mais importantes para o sucesso do compilador. Para a gramática da linguagem \emph{iJava} usámos a notação \textbf{EBNF} \emph{(Extended Backus Naur Form)}. 
+A gramática que nos foi dada era ambígua e por isso tivémos de efectuar diversas alterações para permiter a análise sintática ascendente com o \emph{yacc}.\\
+
+
+$START$ $\longrightarrow$ $CLASS$ $ID$  $OBRACE$ field\_or\_method\_declaration  $CBRACE$  
+
+field\_or\_method\_declaration $\longrightarrow$  $FieldDecl$ field\_or\_method\_declaration \par$|$ $MethodDecl$  field\_or\_method\_declaration 
+
+$FieldDecl$ $\longrightarrow$ $STATIC$ $VarDecl$  VarDecl\_REPETITION 
+
+
+$MethodDecl$ $\longrightarrow$ $PUBLIC$ $STATIC$ method\_type\_declaration $ID$  $OCURV$ FormalParams $CCURV$ $OBRACE$ VarDecl\_REPETITION statement\_declaration\_REPETITION $CBRACE$
+
+method\_type\_declaration $\longrightarrow$ Type $|$ $VOID$
+
+
+
 
 \subsection{Árvore de Sintaxe Abstrata}
 
