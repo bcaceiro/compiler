@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  26 MAY 2014 17:02
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  26 MAY 2014 17:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -555,29 +555,99 @@ Underfull \hbox (badness 10000) in paragraph at lines 183--186
  []
 
 [3]
-Overfull \hbox (23.25262pt too wide) in paragraph at lines 193--194
+Underfull \hbox (badness 10000) in paragraph at lines 189--191
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 191--193
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 193--195
+
+ []
+
+
+Overfull \hbox (23.25262pt too wide) in paragraph at lines 195--197
 \OT1/cmr/m/n/12 Params $\OML/cmm/m/it/12 CCURV$ $OBRACE$ \OT1/cmr/m/n/12 VarDec
 l[]REPETITION state-ment[]declaration[]REPETITION
  []
 
 
-Overfull \hbox (151.95056pt too wide) in paragraph at lines 211--212
+Underfull \hbox (badness 10000) in paragraph at lines 195--197
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 207--209
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 209--211
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 211--213
+
+ []
+
+
+Overfull \hbox (151.95056pt too wide) in paragraph at lines 213--215
 []\OT1/cmr/m/n/12 several[]var[]decl[]in[]same[]instructionOPTIONAL $[][]\OMS/c
 msy/m/n/12 !$ $\OML/cmm/m/it/12 COMMA$ $ID$ \OT1/cmr/m/n/12 sev-eral[]var[]decl
 []in[]same[]instructionOPTIONAL 
  []
 
 
-Overfull \hbox (23.19917pt too wide) in paragraph at lines 220--221
+Underfull \hbox (badness 10000) in paragraph at lines 213--215
+
+ []
+
+
+Overfull \hbox (23.19917pt too wide) in paragraph at lines 222--224
 []\OT1/cmr/m/n/12 statement[]declaration[]REPETITION $[][]\OMS/cmsy/m/n/12 !$ \
 OT1/cmr/m/n/12 State-ment state-ment[]declaration[]REPETITION 
  []
 
-[4] [5] (./rel.aux) ) 
+
+Underfull \hbox (badness 10000) in paragraph at lines 222--224
+
+ []
+
+[4]
+Underfull \hbox (badness 10000) in paragraph at lines 234--236
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 236--238
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 238--240
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 263--265
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 265--267
+
+ []
+
+[5] [6] (./rel.aux) ) 
 Here is how much of TeX's memory you used:
  3530 strings out of 493488
  48028 string characters out of 3141326
- 121507 words of memory out of 3000000
+ 120507 words of memory out of 3000000
  6756 multiletter control sequences out of 15000+200000
  12307 words of font info for 45 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
@@ -589,10 +659,10 @@ onts/cm/cmmi12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfo
 nts/cm/cmr12.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmsy10.pfb></usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts
 /cm/cmti12.pfb>
-Output written on rel.pdf (6 pages, 114524 bytes).
+Output written on rel.pdf (7 pages, 114802 bytes).
 PDF statistics:
- 50 PDF objects out of 1000 (max. 8388607)
- 33 compressed objects within 1 object stream
+ 55 PDF objects out of 1000 (max. 8388607)
+ 37 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 

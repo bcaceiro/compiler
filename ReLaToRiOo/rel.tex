@@ -186,30 +186,32 @@ A gramática que nos foi dada era ambígua e por isso tivémos de efectuar diver
 
 
 \begin{itemize}
-  \item[] START $\longrightarrow$ $CLASS$ $ID$  $OBRACE$ 
-  \item[]  field\_or\_method\_declaration $\longrightarrow$  $FieldDecl$ field\_or\_method\_declaration \par$|$ $MethodDecl$  field\_or\_method\_declaration 
+  \item[] START $\longrightarrow$ $CLASS$ $ID$  $OBRACE$ field\_or\_method\_declaration $CBRACE$
+\\
+  \item[]  field\_or\_method\_declaration $\longrightarrow$  $FieldDecl$ field\_or\_method\_declaration \par$|$ $MethodDecl$  field\_or\_method\_declaration
+\\   
   \item[] $FieldDecl$ $\longrightarrow$ $STATIC$ $VarDecl$  VarDecl\_REPETITION
-  
+  \\
   \item[] $MethodDecl$ $\longrightarrow$ $PUBLIC$ $STATIC$ method\_type\_declaration $ID$  $OCURV$ FormalParams $CCURV$ $OBRACE$ VarDecl\_REPETITION statement\_declaration\_REPETITION $CBRACE$
-  
+  \\
   \item[] method\_type\_declaration $\longrightarrow$ Type 
   \begin{itemize}
 	\item[] $|$ $VOID$
   \end{itemize}
-  
+
   \item[] FormalParams $\longrightarrow$ Type $ID$ several\_FormalParams 
   \begin{itemize}
  	\item[]$|$ $STRING$    $OSQUARE$ $CSQUARE$  $ID$  
   \end{itemize}
   
   \item[] several\_FormalParams $\longrightarrow$ $COMMA$ Type $ID$ several\_FormalParams  
-  
+  \\
   \item[] VarDecl\_REPETITION $\longrightarrow$ VarDecl VarDecl\_REPETITION 
- 
+ \\
   \item[] VarDecl $\longrightarrow$ Type $ID$ several\_var\_decl\_in\_same\_instructionOPTIONAL $SEMIC$
-  
+  \\
   \item[]several\_var\_decl\_in\_same\_instructionOPTIONAL $\longrightarrow$ $COMMA$ $ID$ several\_var\_decl\_in\_same\_instructionOPTIONAL 
-  
+  \\
   \item[]Type $\longrightarrow$ $INT$ $OSQUARE$ $CSQUARE$ 
   \begin{itemize}
   \item[]$|$ $BOOL$ $OSQUARE$ $CSQUARE$ 
@@ -218,7 +220,7 @@ A gramática que nos foi dada era ambígua e por isso tivémos de efectuar diver
   \end{itemize}
   
   \item[] statement\_declaration\_REPETITION $\longrightarrow$ Statement statement\_declaration\_REPETITION
-  
+  \\
   \item[] Statement $\longrightarrow$ $OBRACE$ several\_statement $CBRACE$
   \begin{itemize}
   \item[]$|$ $IF$ $OCURV$ Expr $CCURV$ Statement $\%prec$ $IFX$ 
@@ -230,11 +232,11 @@ A gramática que nos foi dada era ambígua e por isso tivémos de efectuar diver
     \end{itemize}
   
   \item[] several\_statement $\longrightarrow$ Statement several\_statement  
-  
+  \\
   \item[] array\_indexOPTIONAL $\longrightarrow$  $OSQUARE$ Expr $CSQUARE$
-  
+  \\
   \item[] return\_expression $\longrightarrow$  Expr
-  
+  \\
   \item[] IndexableExpr $\longrightarrow$ $ID$ 
   \begin{itemize}
   \item[]$|$ $INTLIT$ $BOOLLIT$ $ID$ $OCURV$ Args\_OPTIONAL $CCURV$ 
@@ -243,7 +245,7 @@ A gramática que nos foi dada era ambígua e por isso tivémos de efectuar diver
   \\$|$ IndexableExpr $OSQUARE$ Expr $CSQUARE$ 
   \\$|$ $PARSEINT$ $OCURV$ $ID$ $OSQUARE$ Expr $CSQUARE$ $CCURV$
     \end{itemize}
-  
+
   \item[] Expr $\longrightarrow$ Expr $OP1$ Expr $\%prec$ $OP1$ 
   \begin{itemize}
 		\item[] $|$      Expr $OP1OR$ Expr $\%prec$ $OP1OR$
@@ -257,11 +259,11 @@ A gramática que nos foi dada era ambígua e por isso tivémos de efectuar diver
 		\\$|$ $NEW$ $BOOL$ $OSQUARE$ Expr $CSQUARE$
 		\\$|$ IndexableExpr
   \end{itemize}
-  
+
   \item[] Args\_OPTIONAL $\longrightarrow$ Args
-  
+  \\
   \item[] Args $\longrightarrow$ Expr comma\_expr
-  
+  \\
   \item[] comma\_expr $\longrightarrow$ $COMMA$ Expr comma\_expr               
   
   
