@@ -19,6 +19,7 @@
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
 
+
 \lstset{ %
   backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
   basicstyle=\footnotesize,        % the size of the fonts that are used for the code
@@ -51,6 +52,9 @@
 
 
 \begin{document}
+\renewcommand*\contentsname{Índice}
+
+
 
 
 
@@ -90,6 +94,11 @@ Bruno \textsc{Caceiro}  \\Número: 2008107991
 
 \end{titlepage}
 
+
+\tableofcontents
+
+\vfill
+\pagebreak
 
 
 \section{Introdução}
@@ -214,16 +223,25 @@ Esta análise pode ser dividida em três fases:
 
 
 
-
+\pagebreak
 
 \section{Análise Sintática e Semântica}
 
 \subsection{Gramática}
 
 A gramática é a maneira formal de especificar a sintaxe de uma linguagem. 
-Desenvolver uma gramática não ambígua é um dos passos mais importantes para o sucesso do compilador. Para a gramática da linguagem \emph{iJava} usámos a notação \textbf{EBNF} \emph{(Extended Backus Naur Form)}. 
+Desenvolver uma gramática não ambígua é um dos passos mais importantes para o sucesso do compilador. Para a gramática da linguagem \emph{iJava} usámos a notação \textbf{BNF} \emph{( Backus Naur Form)}. 
 A gramática que nos foi dada era ambígua e por isso tivémos de efectuar diversas alterações para permiter a análise sintática ascendente com o \emph{yacc}.\\
+Algumas das alterações que efectuámos foram:
+\begin{itemize}
+	\item Usar recursividade à direita, nas regras onde era possível existirem uma ou mais repetições
+	\item Criação de estados adicionais para as regras que continham \emph{tokens} opcionais
+\end{itemize}
 
+
+
+\subsubsection{Estado Final da Gramática}
+A gramática final, utilizada no \emph{yacc} é a seguinte apresentada.
 
 \begin{itemize}
   \item[] START $\longrightarrow$ $CLASS$ $ID$  $OBRACE$ field\_or\_method\_declaration $CBRACE$
@@ -312,7 +330,9 @@ A gramática que nos foi dada era ambígua e por isso tivémos de efectuar diver
 
 \subsection{Árvore de Sintaxe Abstrata}
 
-Estruturas utilizadas para a criação da árvore de sintaxe abstrata
+Para a árvore de sintaxe abstrata optámos por utilizar um nó genérico (\emph{Node}) com a a seguinte estrutura: 
+
+
 \begin{lstlisting}
 /* General Node */
 typedef struct _Node
