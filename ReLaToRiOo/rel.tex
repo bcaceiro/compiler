@@ -112,7 +112,7 @@ O projecto foi estruturado em 3 fases, primeiramente foi feita a Análise Lexica
        \caption{Fases de Compilação}
        \end{figure}
 
-
+\pagebreak
 \section{Análise Lexical}
 
 A Análise Lexical consiste em analisar a entrada de linhas de caracteres e produzir uma sequência de símbolos (\emph{tokens}) que podem ser manipulados mais facilmente por um \emph{parser}. É uma forma de verificar um determinado alfabeto, neste caso o alfabeto da linguagem \emph{iJava}.
@@ -396,6 +396,25 @@ A árvore gerada é a seguinte:
 
 \subsection{Análise Semântica}
 A Análise Semântica tem como principais objectivos a ligação das definições de variáveis com a sua utilização, a verificação da correcção de tipos, declarações e chamadas de funções.
+Esta análise é dividida em duas fases:
+\begin{enumerate}
+	\item Para cada \emph{scope no programa:}
+	\begin{itemize}
+		\item Processar as declarações:
+		\begin{itemize}
+			\item Adicionar novas entradas na tabela de símbolos
+			\item Apresentar mensagem de erro caso haja variáveis repetidas
+		\end{itemize}
+		\item Processar os \emph{statements}
+		\begin{itemize}
+			\item Procurar variáveis que não foram declaradas neste \emph{scope} ou no \emph{scope} global, e caso não tenham sido, apresentar mensagem de erro
+		\end{itemize}
+	\end{itemize}
+	\item Processar todos os \emph{statements} do programa outra vez
+	\begin{itemize}
+		\item Usar a tabela de símbolos para determinar o tipo de cada expressão e procurar erros de tipo (atribuições, cálculos, contagem e tipos de argumentos correctos,...)
+	\end{itemize}
+\end{enumerate}
 
 \subsection{Tabela de Símbolos}
 
@@ -432,18 +451,8 @@ typedef struct _Table{
 
 
 \subsection{Tratamento de Erros Semânticos}
-1º Passagem:
-Verificar se as variáveis existem (incluindo nomes de funções). Percorrer 2 scopes, o scope da função que chamou essa variável, caso não seja encontrado aí vai se procurar no scope global, caso não exista aí, então é porque estamos a chamar uma merda que não existe  e então dá erro.
 
-2ª Passagem (tudo em simultâneio)
-Percorrer a árvore e analisar os statements (esquerdo/direito), depois ramifica-se para analisar os filhos
-
-
-
-
-
-
-	
+\section{Geração de Código}
 	
 
 

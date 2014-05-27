@@ -1,13 +1,14 @@
 \select@language {portuguese}
 \contentsline {section}{\numberline {1}Introdu\IeC {\c c}\IeC {\~a}o}{2}
-\contentsline {section}{\numberline {2}An\IeC {\'a}lise Lexical}{2}
+\contentsline {section}{\numberline {2}An\IeC {\'a}lise Lexical}{3}
 \contentsline {subsection}{\numberline {2.1}Tokens}{3}
-\contentsline {subsubsection}{\numberline {2.1.1}Tratamento de Erros}{4}
-\contentsline {section}{\numberline {3}An\IeC {\'a}lise Sint\IeC {\'a}tica e Sem\IeC {\^a}ntica}{5}
-\contentsline {subsection}{\numberline {3.1}Gram\IeC {\'a}tica}{5}
-\contentsline {subsubsection}{\numberline {3.1.1}Estado Final da Gram\IeC {\'a}tica}{5}
-\contentsline {subsection}{\numberline {3.2}\IeC {\'A}rvore de Sintaxe Abstrata}{7}
-\contentsline {subsubsection}{\numberline {3.2.1}Exemplo}{8}
-\contentsline {subsection}{\numberline {3.3}An\IeC {\'a}lise Sem\IeC {\^a}ntica}{8}
-\contentsline {subsection}{\numberline {3.4}Tabela de S\IeC {\'\i }mbolos}{9}
-\contentsline {subsection}{\numberline {3.5}Tratamento de Erros Sem\IeC {\^a}nticos}{9}
+\contentsline {subsubsection}{\numberline {2.1.1}Tratamento de Erros}{5}
+\contentsline {section}{\numberline {3}An\IeC {\'a}lise Sint\IeC {\'a}tica e Sem\IeC {\^a}ntica}{6}
+\contentsline {subsection}{\numberline {3.1}Gram\IeC {\'a}tica}{6}
+\contentsline {subsubsection}{\numberline {3.1.1}Estado Final da Gram\IeC {\'a}tica}{6}
+\contentsline {subsection}{\numberline {3.2}\IeC {\'A}rvore de Sintaxe Abstrata}{8}
+\contentsline {subsubsection}{\numberline {3.2.1}Exemplo}{9}
+\contentsline {subsection}{\numberline {3.3}An\IeC {\'a}lise Sem\IeC {\^a}ntica}{9}
+\contentsline {subsection}{\numberline {3.4}Tabela de S\IeC {\'\i }mbolos}{10}
+\contentsline {subsection}{\numberline {3.5}Tratamento de Erros Sem\IeC {\^a}nticos}{10}
+\contentsline {section}{\numberline {4}Gera\IeC {\c c}\IeC {\~a}o de C\IeC {\'o}digo}{10}
