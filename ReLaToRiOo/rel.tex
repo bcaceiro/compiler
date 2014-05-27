@@ -6,7 +6,7 @@
 \usepackage{indentfirst}
 \usepackage{amsfonts}
 %for english
-\usepackage[english]{babel}
+\usepackage[portuguese]{babel}
 %for portuguese
 %\usepackage[portuguese]{babel}
 \usepackage{float}
@@ -332,7 +332,7 @@ A gramática final, utilizada no \emph{yacc} é a seguinte apresentada.
 
 Para a árvore de sintaxe abstrata optámos por utilizar um nó genérico (\emph{Node}) com a a seguinte estrutura: 
 
-
+\lstset{language=C,caption={Estruturas para representação de Nós da Árvore},label=Estruturas}
 \begin{lstlisting}
 /* General Node */
 typedef struct _Node
@@ -370,6 +370,30 @@ typedef struct _idList
 
 \end{lstlisting}
  
+
+
+Considerando o seguinte programa:
+
+
+\lstset{language=java,caption={Programa Exemplo},label=Estruturas}
+\begin{lstlisting}
+ class gcd {
+ 	public static void main(String[] args) {
+    	int x;
+	} 		
+}
+\end{lstlisting}
+
+A árvore gerada é a seguinte:
+
+\begin{figure}[H]
+       \centering
+       \includegraphics[keepaspectratio=true, scale = 0.5]{arvore.png}
+       \caption{Árvore de Sintaxe Abstrata para o Programa Exemplo}
+       \end{figure}
+
+ 
+
 
 
 \subsection{Tratamento de Erros Lexicais}
