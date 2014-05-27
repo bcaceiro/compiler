@@ -7,7 +7,7 @@
 \contentsline {subsection}{\numberline {3.1}Gram\IeC {\'a}tica}{5}
 \contentsline {subsubsection}{\numberline {3.1.1}Estado Final da Gram\IeC {\'a}tica}{5}
 \contentsline {subsection}{\numberline {3.2}\IeC {\'A}rvore de Sintaxe Abstrata}{7}
-\contentsline {subsection}{\numberline {3.3}Tratamento de Erros Lexicais}{8}
-\contentsline {subsection}{\numberline {3.4}An\IeC {\'a}lise Sem\IeC {\^a}ntica}{8}
-\contentsline {subsection}{\numberline {3.5}Tabela de S\IeC {\'\i }mbolos}{8}
-\contentsline {subsection}{\numberline {3.6}Tratamento de Erros Sem\IeC {\^a}nticos}{8}
+\contentsline {subsubsection}{\numberline {3.2.1}Exemplo}{8}
+\contentsline {subsection}{\numberline {3.3}An\IeC {\'a}lise Sem\IeC {\^a}ntica}{8}
+\contentsline {subsection}{\numberline {3.4}Tabela de S\IeC {\'\i }mbolos}{9}
+\contentsline {subsection}{\numberline {3.5}Tratamento de Erros Sem\IeC {\^a}nticos}{9}

@@ -330,7 +330,7 @@ A gramática final, utilizada no \emph{yacc} é a seguinte apresentada.
 
 \subsection{Árvore de Sintaxe Abstrata}
 
-Para a árvore de sintaxe abstrata optámos por utilizar um nó genérico (\emph{Node}) com a a seguinte estrutura: 
+Para a árvore de sintaxe abstrata optámos por utilizar um nó genérico (\emph{Node}) com a  seguinte estrutura: 
 
 \lstset{language=C,caption={Estruturas para representação de Nós da Árvore},label=Estruturas}
 \begin{lstlisting}
@@ -361,7 +361,7 @@ typedef struct _Node
 }Node;
 
 
-//Linked list of ID's (for multiple declaration of variables)
+/* Linked list of ID's (for multiple declaration of variables) */
 typedef struct _idList
 {
 	char* id;
@@ -371,7 +371,7 @@ typedef struct _idList
 \end{lstlisting}
  
 
-
+\subsubsection{Exemplo}
 Considerando o seguinte programa:
 
 
@@ -394,18 +394,49 @@ A árvore gerada é a seguinte:
 
  
 
-
-
-\subsection{Tratamento de Erros Lexicais}
-
 \subsection{Análise Semântica}
+A Análise Semântica tem como principais objectivos a ligação das definições de variáveis com a sua utilização, a verificação da correcção de tipos, declarações e chamadas de funções.
 
 \subsection{Tabela de Símbolos}
 
+Para representação da tabela de símbolos, foram utilizadas as seguintes estruturas:
+\lstset{language=C,caption={Estruturas para representação da Tabela de Símbolos},label=Estruturas}
+\begin{lstlisting}
+/* Table Node */
+typedef struct _TableNode
+{
+    //Type of the Node (to identify the type of the node)
+    TableType n_type;
+    
+    //Type of the Struct (Int, Void, String,...)
+    Type type;
+    
+    //ID or list of id's
+    listID* id;
+    
+    //Next node
+    struct _TableNode* next;
+    
+    //If is a param
+    char isParam;
+}TableNode;
+
+/* Table */
+typedef struct _Table{
+    TableNode* table;
+    struct _Table* next;
+}Table;
+
+\end{lstlisting}
+
+
+
 \subsection{Tratamento de Erros Semânticos}
+1º Passagem:
+Verificar se as variáveis existem (incluindo nomes de funções). Percorrer 2 scopes, o scope da função que chamou essa variável, caso não seja encontrado aí vai se procurar no scope global, caso não exista aí, então é porque estamos a chamar uma merda que não existe  e então dá erro.
 
-
-
+2ª Passagem (tudo em simultâneio)
+Percorrer a árvore e analisar os statements (esquerdo/direito), depois ramifica-se para analisar os filhos
 
 
 
