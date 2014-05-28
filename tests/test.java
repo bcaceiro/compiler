@@ -3,7 +3,7 @@ class gcd {
 		boolean x;
 		int huehue;
 		//b[0] = true;
-		huehue = main(1,2,3);
+		
 	}
 	public static boolean lol(int a, int b){
 		boolean c;
@@ -16,5 +16,6 @@ class gcd {
 	static int[] cenasdomal3;
 	static boolean[] cenasdomal4;
 	public static void cardoso(){
+		aa = 1+2;
 	}
 }

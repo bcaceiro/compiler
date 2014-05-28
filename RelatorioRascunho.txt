@@ -61,5 +61,31 @@ Mudar a gramática para resolver as a
 
 
 
+falta:
+
+análise lexical:
+expressão regular para os IDS e para os intlit
+
+pk foi necessário separar as prioridades
+
+o caso do "++" e do "--"
+
+como foi realizado o tratamento de erros
+(contar linhas e colunas)
+como foi feita a parte de ignorar os comentários (visto que podem estar no meio do cod)
+
+
+análise sintática:
+como é que o yaac vai buscar as cenas ao lex
+recursividade
+	temos à direita, mas era preferivel ser à esquerda
+como resolvemos os conflitos shift reduce (do if/else e assim)
+como resolvemos a questão da indexação de arrays (não poderem existir arrays bidimensionais)
+
+
+arvore sintaxe
+	pk utilizar apenas só uma estrutura(temos duas, mas é como se fosse só uma...)?
+	como tratamos os nos obrigatórios (têm de imprimir null)
+	como tratamos a questão do methodo (que tem aquelas cenas do methidparams e do methodbody)
 
 

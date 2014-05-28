@@ -12,17 +12,20 @@ char insideFunction  = FALSE;
 int tabs = 0;
 int varIndex = 0;
 char alreadyOneParam = FALSE;
+char returnValue[20];
+char value1[20];
+char value2[20];
 
-void generateCode(Node* ast){
+char* generateCode(Node* ast){
     listID* aux;
     if(ast!=NULL){
         //printf("LOLADA:%s\n",NODE_STRING[ast->n_type]);
-        //printf("%s\n\t%s\n",NODE_STRING[ast->n_type],NODE_TYPE_NAMES[ast->type]);
+        //printf("DEBUG:%s\n\t%s\n",NODE_STRING[ast->n_type],NODE_TYPE_NAMES[ast->type]);
         if(ast->n_type == NODE_METHODDECL){
             insideFunction = TRUE;
             tabs++;
             if(strcmp(ast->id->id,"main")==0){
-                printf("\ndefine i32 @%s(i32 arvc,i8* argv){\n\tret i32 0\n}\n",ast->id->id);
+                printf("\ndefine i32 @main(i32 %%argc, i8** %%argv) {\n\tret i32 0x1\n}\n");
                 //printf("\tret i32 0\n}\n");
             }
             else
@@ -32,6 +35,7 @@ void generateCode(Node* ast){
                     alreadyOneParam = FALSE;
                     printf("){\n");
                     generateCode(ast->n2->n1);
+                    generateCode(ast->n3->n1);
                     printf("\tret void\n}\n");
                 }
                 else{
@@ -40,7 +44,8 @@ void generateCode(Node* ast){
                     alreadyOneParam = FALSE;
                     printf("){\n");
                     generateCode(ast->n2->n1);
-                    printf("\tret MERDAS, POR ISTO BEM SENÃO DÁ MERDA\n}\n");
+                    generateCode(ast->n3->n1);
+                    printf("\tret i1 1; MERDAS, POR ISTO BEM SENÃO DÁ MERDA\n}\n");
                 }
             tabs--;
             insideFunction = FALSE;
@@ -64,13 +69,33 @@ void generateCode(Node* ast){
             alreadyOneParam = TRUE;
             printf("%s %%%s",SYMBOLS_TYPE_SIZE[ast->type],ast->id->id);
         }
+        else if(ast->n_type == NODE_STORE){
+            generateCode(ast->n3);
+            exit(-1);
+            //printf("%s %%%s",SYMBOLS_TYPE_SIZE[ast->type],ast->id->id);
+        }
+        else if(ast->n_type == NODE_PLUS){
+            strcpy(value1,generateCode(ast->n1));
+            strcpy(value2,generateCode(ast->n2));
+            printTabs(tabs);
+            varIndex++;
+            printf("%%%d = add %s %%%s %%%s\n",varIndex,SYMBOLS_TYPE_SIZE[ast->type],value1,value2);   //<result> = add <ty> <op1>, <op2>
+        }
+        else if(ast->n_type == NODE_INTLIT){
+            printTabs(tabs);
+            varIndex++;
+            printf("%%%d = add i32 0 %s\n",varIndex,ast->value);
+            sprintf(returnValue,"%d",varIndex);
+            return returnValue;
+        }
+
 
 
 
 
         generateCode(ast->next);
     }
-
+    return NULL;
 
 }
 

@@ -222,11 +222,12 @@ int main(int argc, char *argv[]){
             return 0;
         if(printTree)
             printAST(program);
+
+        symbols = createSymbols(program);
+        if(program!=NULL)
+            setTable(symbols);
+            checkSemanticErrors(program, symbols, symbols);
         if(pSymbols){
-            symbols = createSymbols(program);
-            if(program!=NULL)
-                setTable(symbols);
-                checkSemanticErrors(program, symbols, symbols);
             printSymbols(symbols);
         }
 
