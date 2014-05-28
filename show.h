@@ -43,7 +43,8 @@ static const char *NODE_STRING[] = {"Program",
                  "Eq",
                  "Null",
                  "Plus",
-                 "Minus"
+                 "Minus",
+                 "DON'T PRINT THIS SHIT!"
                  };
 
 static const char *OPERATOR_STRING[] = {"Program",
@@ -94,7 +95,7 @@ static const char* NODE_TYPE_NAMES[] = {     "Void",     "Int",     "Bool",
 static const char* SYMBOLS_TYPE_NAMES[] = {     "void",     "int",     "boolean",
 "int[]",     "boolean[]",     "String[]",     "Id",     "IntLit",
 "BoolLit",     "BoolArray",  };
-
+void printTabs(int i);
 void printAST(Node* AST);
 void printIDs(listID* ids,int tabs, int n_type, int type);
 void printSubTree(Node* currentNode, int tabs);
