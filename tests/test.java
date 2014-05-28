@@ -2,6 +2,7 @@ class gcd {
 	public static void main(String[] b) {
 		boolean x;
 		int huehue;
+		System.out.println(665+1);
 		//b[0] = true;
 		
 	}
@@ -16,6 +17,7 @@ class gcd {
 	static int[] cenasdomal3;
 	static boolean[] cenasdomal4;
 	public static void cardoso(){
-		aa = 1+2;
+		aa = 061+2;
+		aa = 0xF-2;
 	}
 }
