@@ -5,9 +5,16 @@ class gcd {
 		//b[0] = true;
 		huehue = main(1,2,3);
 	}
-	public static int lol(int a, int b){
+	public static boolean lol(int a, int b){
 		boolean c;
+		int merdaParaIsto; 
+		int[] loladamerda;
+		boolean[] huehuehueuehuee;
 	}
-	public static int cardoso(){
+	static int cenasdomal,aa,aaa,aaaa,aaaaa;
+	static boolean cenasdomal2;
+	static int[] cenasdomal3;
+	static boolean[] cenasdomal4;
+	public static void cardoso(){
 	}
 }

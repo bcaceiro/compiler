@@ -228,9 +228,10 @@ int main(int argc, char *argv[]){
                 setTable(symbols);
                 checkSemanticErrors(program, symbols, symbols);
             printSymbols(symbols);
-
-
         }
+
+        generateCode(program);
+
 	//TODO:LIMPAR MEMÓRIA???
 		
     return 0;
