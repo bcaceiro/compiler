@@ -366,9 +366,10 @@ comma_expr:
 \end{lstlisting}
 
 
-
+\pagebreak
 \subsection{Árvore de Sintaxe Abstrata}
 
+\subsubsection{Estruturas}
 Para a árvore de sintaxe abstrata optámos por utilizar um nó genérico (\emph{Node}) com a  seguinte estrutura: 
 
 \lstset{language=C,caption={Estruturas para representação de Nós da Árvore},label=Estruturas,numbers=left,frame=single}
@@ -409,6 +410,34 @@ typedef struct _idList
 
 \end{lstlisting}
  
+ \subsubsection{Criação da Árvore}
+\lstset{language=C,caption={Funções para a criação da árvore},label=Estruturas,numbers=left,frame=single} 
+\begin{lstlisting}
+listID* insertID(Node* currentNode, char* id);
+listID* newVarID(char* id, listID* next);
+NodeType getOperatorType(char* op);
+Node* createNull();
+Node* insertClass(char* id, Node* statements);
+Node* newVarDecl(int type, char* id, listID* moreIds, Node* next);
+Node* setNext(Node* current, Node* next);
+Node* setStatic(Node* currentNode);
+Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statements);
+Node* insertCompound(Node* expression);
+Node* insertIf(Node* expression, Node* statement1, Node* statement2);
+Node* insertPrint(Node* expression);
+Node* insertWhile(Node* expression, Node* statements);
+Node* insertReturn(Node* expression);
+Node* insertStore(char* id, Node* arrayIndex, Node* expression);
+Node* createTerminalNode(int n_type, char* token);
+Node* newParamDecl(int type, char* id, listID* moreIds, Node* next);
+Node* insertDotLength(Node* expression);
+Node* insertLoadArray(Node* expression, Node* indexExpression);
+Node* insertParseInt(char* id, Node* indexExpression);
+Node* insertNewArray(int type, Node* expression);
+Node* createCall(char* id, Node *args);
+Node* insertExpression(char* op,Node* exp);
+Node* insertDoubleExpression(Node* exp1,char* op,Node* exp2);
+ \end{lstlisting}
 
 \subsubsection{Exemplo}
 Considerando o seguinte programa:
