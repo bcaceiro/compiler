@@ -247,6 +247,7 @@ Esta análise pode ser dividida em três fases:
 \pagebreak
 
 \section{Análise Sintática e Semântica}
+O \emph{lex} vai reconhecer os \emph{tokens} para de seguida o \emph{yacc} verificar se estes pertencem à gramática da linguagem.
 
 
 \begin{figure}[H]
@@ -254,19 +255,32 @@ Esta análise pode ser dividida em três fases:
        \includegraphics[keepaspectratio=true, scale = 0.82]{lex_yacc.png}
        \caption{Relacionamento entre \emph{lex} e \emph{yacc}, retirado de \emph{http://pt.wikipedia.org/wiki/Yacc}}
        \end{figure}
+       
+Para realizar a ligação entre o yacc e o lex foram definimos tokens no  yacc ,posteriormente importados pelo lex. Sempre que o lex uma sequência de caracteres correspondente a um token válido retorna-o, sendo este valor enviado para o yacc.     
+\par É a variável \emph{yylval} que contém tipicamente o valor do \emph{token} encontrado num dado momento. Uma vez que pretendemos enviar vários de dados, tivémos e utilizar uma \emph{union}, definida no \emph{yacc},que permite partilhar, no mesmo espaço de memória, vários tipos diferentes.
+\lstset{language=c,caption={Union},label=Estruturas}
+\begin{lstlisting}
+%union{
+    struct _Node* node;
+    char* token;
+    struct _idList* listId;
+    int type;
+}
+\end{lstlisting}       
+
 
 \subsection{Gramática}
 
 A gramática é a maneira formal de especificar a sintaxe de uma linguagem. 
 Desenvolver uma gramática não ambígua é um dos passos mais importantes para o sucesso do compilador. Para a gramática da linguagem \emph{iJava} usámos a notação \textbf{BNF} \emph{( Backus Naur Form)}. 
-A gramática que nos foi dada era ambígua e por isso tivemos de efetuar diversas alterações para permitir a análise sintática ascendente com o \emph{yacc}.\\
-Algumas das alterações que efeituámos foram:
+\par A gramática que nos foi dada era ambígua e por isso tivemos de efetuar diversas alterações para permitir a análise sintática ascendente com o \emph{yacc}.\\
+Algumas das alterações que efetuámos foram:
 \begin{itemize}
 	\item Usar recursividade à direita, nas regras onde era possível existirem uma ou mais repetições
 	\item Criação de estados adicionais para as regras que continham \emph{tokens} opcionais
 \end{itemize}
 
-
+Deveríamos ter usado recursividade  à esquerda pois assim teríamos em memória apenas os elementos que estaríamos a analisar visto que estamos a efectuar reduções à medida que estamos a ler o \emph{input}.
 
 \subsubsection{Estado Final da Gramática}
 A gramática final, utilizada no \emph{yacc} é a seguinte apresentada.
@@ -490,7 +504,7 @@ A árvore gerada é a seguinte:
        \centering
        \includegraphics[keepaspectratio=true, scale = 0.5]{arvore.png}
        \caption{Árvore de Sintaxe Abstrata para o Programa Exemplo}
-       \end{figure}
+\end{figure}
 
  
 
@@ -585,7 +599,7 @@ char*  getFunctionName();
 void   getErrorCall(int i,char* name, int n1, int n2);
 
 \end{lstlisting}
-
+\pagebreak
 \section{Geração de Código}
 	
 
