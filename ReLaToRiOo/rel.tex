@@ -230,7 +230,7 @@ Esta análise pode ser dividida em três fases:
 		< COMMENT > .       {}
 		"/*"	            {BEGIN COMMENT}
 		\end{lstlisting}
-		Caso seja detectado (/*) todo o código é ignorado até que seja encontrado o seu correspondente (*/). Caso seja detectado o EOF então é apresentada uma mensagem de erro: "Line \%d, col \%d: unterminated comment"
+		Caso seja detectado (/*) todo o código é ignorado até que seja encontrado o seu correspondente (*/). Caso seja detectado o EOF então é apresentada uma mensagem de erro: "Line \%d, col \%d: unterminated comment". Foi criado um estado adicional no \emph{lex} para poder esta situação.
 		
 		
 		
@@ -241,7 +241,8 @@ Esta análise pode ser dividida em três fases:
             \item "Line\textless num linha\textgreater,col\textless num coluna\textgreater:unterminated comment\textbackslash n"
         \end{itemize}
         Para podermos imprimir as mensagens de erro com o número da linha e coluna criámos uma variável \emph{column} para poder contar as colunas e utilizamos a variável \emph{yylineno} disponibilizada pelo \emph{yacc} para sabermos o número das linhas.
-        Para a contagem de colunas aumentamos a variável consoante o tamanho de cada \emph{token}, quando há uma mudança de linha, inicializa-se o contador das colunas a 1. No caso dos comentários criámos duas variáveis adicionais (\emph{Commentline,Commentcolumn}) para poder guardar a coluna e linha onde o comentário é inicializado.
+        Para a contagem de colunas aumentamos a variável referente às colunas consoante o tamanho de cada \emph{token}. Quando há uma mudança de linha, inicializa-se o contador das colunas a 1. \\Para tratar o caso dos comentários criámos duas variáveis adicionais (\emph{Commentline,Commentcolumn}) para poder guardar a coluna e linha onde o comentário é inicializado.
+        
 	
 \pagebreak
 
