@@ -144,8 +144,11 @@ Esta análise pode ser dividida em três fases:
 	        \item \textbf{CBRACE:} "\}"
 	        \item \textbf{OSQUARE:} "["
 	        \item \textbf{CSQUARE:} "]"	 
+	        \item \textbf{ASSIGN:} "="
+	        \item \textbf{SEMIC:} ";"
+	        \item \textbf{COMMA:} ","
 	      \end{itemize}
-	      \pagebreak
+	      
 	    Foi necessário separar alguns \emph{tokens} devido às diferentes prioridades que cada operador tem.
 		\begin{itemize}  
 	        \item \textbf{OP1:} "\&\&"  
@@ -155,10 +158,10 @@ Esta análise pode ser dividida em três fases:
 	        \item \textbf{OP3:} "+" \text{\textbar} "-"
 	        \item \textbf{OP4:} "*" \text{\textbar} "/" \text{\textbar} "\%"
 	        \item \textbf{NOT:} "!"
-	        \item \textbf{ASSIGN:} "="
-	        \item \textbf{SEMIC:} ";"
-	        \item \textbf{COMMA:} ","
-	        \item \textbf{RESERVED:} O \emph{iJava} é um subconjunto da linguagem \emph{Java}, como tal, existe um conjunto de funcionalidades que embora não sejam suportadas, têm de ser consideradas. Assim, foi necessário tratar todo um conjunto de palavras reservadas de forma a permitir que sejam lexicalmente válidas mas não sintaticamente. 
+	        \end{itemize}
+	         O \emph{iJava} é um subconjunto da linguagem \emph{Java}, como tal, existe um conjunto de funcionalidades que embora não sejam suportadas, têm de ser consideradas. Assim, foi necessário tratar todo um conjunto de palavras reservadas de forma a permitir que sejam lexicalmente válidas mas não sintaticamente.
+	         \begin{itemize} 
+	        \item \textbf{RESERVED:}
 	       	            \begin{itemize}
 	       	                \item abstract
 	       	                \text{\textbar} assert 
