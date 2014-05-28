@@ -54,11 +54,6 @@
 \begin{document}
 \renewcommand*\contentsname{Índice}
 
-
-
-
-
-
 \begin{titlepage}
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
@@ -67,7 +62,7 @@
 
 \textsc{\LARGE Universidade de Coimbra}\\[1.5cm] % Name of your university/college
 \textsc{\Large Departamento de Engenharia Informática}\\[4cm] % Major heading such as course name
-\textsc{\large Compiladores}\\[1cm] % Minor heading such as course title
+\textsc{\large Compiladores 2013/2014}\\[1cm] % Minor heading such as course title
 
 
 \HRule \\[0.5cm]
@@ -96,7 +91,6 @@ Bruno \textsc{Caceiro}  \\Número: 2008107991
 
 
 \tableofcontents
-
 \vfill
 \pagebreak
 
@@ -449,8 +443,42 @@ typedef struct _Table{
 \end{lstlisting}
 
 
-
+\pagebreak
 \subsection{Tratamento de Erros Semânticos}
+Para o tratamento de erros semânticos utilizamos as seguintes funções:
+\lstset{language=C,caption={Funções para tratamento de erros semânticos},label=Estruturas}
+\begin{lstlisting}
+/* Check if global variables have the same name as the Methods:
+		- If they have print error message: "Symbol %s already defined" and exit 
+*/
+void   checkIfExists(char* id, Table* local);
+void   checkSemanticErrors(Node* ast, Table* local, Table* main);
+void   checkErrors(Node* ast, Table* symbols, Table* main);
+
+/* Check if ID exists:
+	- If exists return the Type 
+	- If doesn't exist, print error message: "Cannot find symbol %s\n" and exit 
+*/
+int    checkifIDExists(char* id,TableType type, Table* table, Table* main);
+Table* getMethodTable(Table* main, char* methodID);
+
+/* Check if the Literal is valid (decimal / hexadecimal / octal)
+	- If it is invalid print error message: "Invalid literal %s\n" and exit
+*/
+void   validIntLit(char* lit);
+void   checkTypes(Node* ast,Table* main);
+void   operatorError2Types(int op,int n1, int n2);
+void   operatorError1Types(int op,int n1);
+void   assignmentError(char* var, int n1, int n2);
+void   assignmentErrorArray(char* var, int n1, int n2);
+void   setTable(Table * oi);
+int    getFunctionType();
+void   statementError(int op, int n1,int n2);
+void   statementError1oranother(int op, int n1, int n2, int n3);
+char*  getFunctionName();
+void   getErrorCall(int i,char* name, int n1, int n2);
+
+\end{lstlisting}
 
 \section{Geração de Código}
 	

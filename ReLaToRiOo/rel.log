@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  27 MAY 2014 18:51
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012) (format=pdflatex 2012.6.30)  28 MAY 2014 10:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -446,6 +446,9 @@ LaTeX Warning: Label `Estruturas' multiply defined.
 
 LaTeX Warning: Label `Estruturas' multiply defined.
 
+
+LaTeX Warning: Label `Estruturas' multiply defined.
+
 )
 \openout1 = `rel.aux'.
 
@@ -553,11 +556,11 @@ e
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 \c@lstlisting=\count119
-LaTeX Font Info:    Try loading font information for U+msa on input line 82.
+LaTeX Font Info:    Try loading font information for U+msa on input line 77.
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2009/06/22 v3.00 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 82.
+LaTeX Font Info:    Try loading font information for U+msb on input line 77.
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2009/06/22 v3.00 AMS symbols B
@@ -573,50 +576,72 @@ toc)
 File: fasesCompilacao.png Graphic file (type png)
 
 <use fasesCompilacao.png>
-Package pdftex.def Info: fasesCompilacao.png used on input line 111.
+Package pdftex.def Info: fasesCompilacao.png used on input line 105.
 (pdftex.def)             Requested size: 301.1261pt x 263.58496pt.
  [2 <./fasesCompilacao.png>]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 121.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 115.
 
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 121.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 115.
  [3] [4]
-LaTeX Font Info:    Try loading font information for OML+cmr on input line 159.
+LaTeX Font Info:    Try loading font information for OML+cmr on input line 153.
 
 
 (/usr/local/texlive/2012/texmf-dist/tex/latex/base/omlcmr.fd
 File: omlcmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OML/cmr/m/n' in size <12> not available
-(Font)              Font shape `OML/cmm/m/it' tried instead on input line 159.
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 153.
  [5]
-Underfull \hbox (badness 10000) in paragraph at lines 247--249
+Underfull \hbox (badness 10000) in paragraph at lines 241--243
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 249--251
+Underfull \hbox (badness 10000) in paragraph at lines 243--245
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 251--253
+Underfull \hbox (badness 10000) in paragraph at lines 245--247
 
  []
 
 
-Overfull \hbox (23.25262pt too wide) in paragraph at lines 253--255
+Overfull \hbox (23.25262pt too wide) in paragraph at lines 247--249
 \OT1/cmr/m/n/12 Pa-rams $\OML/cmm/m/it/12 CCURV$ $OBRACE$ \OT1/cmr/m/n/12 Var-D
 ecl[]REPETITION sta-te-ment[]declaration[]REPETITION
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 253--255
+Underfull \hbox (badness 10000) in paragraph at lines 247--249
 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 259--261
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 261--263
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 263--265
+
+ []
+
+
+Overfull \hbox (151.95056pt too wide) in paragraph at lines 265--267
+[]\OT1/cmr/m/n/12 several[]var[]decl[]in[]same[]instructionOPTIONAL $[][]\OMS/c
+msy/m/n/12 !$ $\OML/cmm/m/it/12 COMMA$ $ID$ \OT1/cmr/m/n/12 se-ve-ral[]var[]dec
+l[]in[]same[]instructionOPTIONAL 
  []
 
 
@@ -624,85 +649,63 @@ Underfull \hbox (badness 10000) in paragraph at lines 265--267
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 267--269
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 269--271
-
- []
-
-
-Overfull \hbox (151.95056pt too wide) in paragraph at lines 271--273
-[]\OT1/cmr/m/n/12 several[]var[]decl[]in[]same[]instructionOPTIONAL $[][]\OMS/c
-msy/m/n/12 !$ $\OML/cmm/m/it/12 COMMA$ $ID$ \OT1/cmr/m/n/12 se-ve-ral[]var[]dec
-l[]in[]same[]instructionOPTIONAL 
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 271--273
-
- []
-
 [6]
-Overfull \hbox (23.19917pt too wide) in paragraph at lines 280--282
+Overfull \hbox (23.19917pt too wide) in paragraph at lines 274--276
 []\OT1/cmr/m/n/12 statement[]declaration[]REPETITION $[][]\OMS/cmsy/m/n/12 !$ \
 OT1/cmr/m/n/12 Sta-te-ment sta-te-ment[]declaration[]REPETITION 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 280--282
+Underfull \hbox (badness 10000) in paragraph at lines 274--276
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 292--294
+Underfull \hbox (badness 10000) in paragraph at lines 286--288
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 294--296
+Underfull \hbox (badness 10000) in paragraph at lines 288--290
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 296--298
+Underfull \hbox (badness 10000) in paragraph at lines 290--292
 
  []
 
 [7]
-Underfull \hbox (badness 10000) in paragraph at lines 321--323
+Underfull \hbox (badness 10000) in paragraph at lines 315--317
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 323--325
+Underfull \hbox (badness 10000) in paragraph at lines 317--319
 
  []
 
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 337.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 331.
 [8] (/usr/local/texlive/2012/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2004/09/05 1.3 listings language file
 )
 <arvore.png, id=42, 472.76625pt x 716.6775pt>
 File: arvore.png Graphic file (type png)
  <use arvore.png>
-Package pdftex.def Info: arvore.png used on input line 391.
+Package pdftex.def Info: arvore.png used on input line 385.
 (pdftex.def)             Requested size: 236.38254pt x 358.33788pt.
- [9 <./arvore.png>] [10] (./rel.aux)
+ [9 <./arvore.png>] [10] [11] (./rel.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 5417 strings out of 493488
- 72933 string characters out of 3141326
- 252108 words of memory out of 3000000
- 8618 multiletter control sequences out of 15000+200000
- 12307 words of font info for 45 fonts, out of 3000000 for 9000
+ 5481 strings out of 493488
+ 73893 string characters out of 3141326
+ 326109 words of memory out of 3000000
+ 8680 multiletter control sequences out of 15000+200000
+ 14006 words of font info for 53 fonts, out of 3000000 for 9000
  957 hyphenation exceptions out of 8191
  38i,7n,49p,444b,1187s stack positions out of 5000i,500n,10000p,200000b,50000s
 </usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
@@ -713,10 +716,10 @@ usr/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></us
 r/local/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/l
 ocal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/lo
 cal/texlive/2012/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
-Output written on rel.pdf (11 pages, 175338 bytes).
+Output written on rel.pdf (12 pages, 182013 bytes).
 PDF statistics:
- 77 PDF objects out of 1000 (max. 8388607)
- 51 compressed objects within 1 object stream
+ 80 PDF objects out of 1000 (max. 8388607)
+ 53 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
