@@ -280,7 +280,7 @@ Algumas das alterações que efetuámos foram:
 	\item Criação de estados adicionais para as regras que continham \emph{tokens} opcionais
 \end{itemize}
 
-
+Deveríamos ter usado recursividade  à esquerda pois assim teríamos em memória apenas os elementos que estaríamos a analisar visto que estamos a efectuar reduções à medida que estamos a ler o \emph{input}.
 
 \subsubsection{Estado Final da Gramática}
 A gramática final, utilizada no \emph{yacc} é a seguinte apresentada.
@@ -504,7 +504,7 @@ A árvore gerada é a seguinte:
        \centering
        \includegraphics[keepaspectratio=true, scale = 0.5]{arvore.png}
        \caption{Árvore de Sintaxe Abstrata para o Programa Exemplo}
-       \end{figure}
+\end{figure}
 
  
 
