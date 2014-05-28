@@ -6,7 +6,7 @@
 \contentsline {subsubsection}{\numberline {2.1.2}Tratamento de Erros}{5}
 \contentsline {section}{\numberline {3}An\IeC {\'a}lise Sint\IeC {\'a}tica e Sem\IeC {\^a}ntica}{6}
 \contentsline {subsection}{\numberline {3.1}Gram\IeC {\'a}tica}{6}
-\contentsline {subsubsection}{\numberline {3.1.1}Estado Final da Gram\IeC {\'a}tica}{6}
+\contentsline {subsubsection}{\numberline {3.1.1}Estado Final da Gram\IeC {\'a}tica}{7}
 \contentsline {subsection}{\numberline {3.2}\IeC {\'A}rvore de Sintaxe Abstrata}{10}
 \contentsline {subsubsection}{\numberline {3.2.1}Estruturas}{10}
 \contentsline {subsubsection}{\numberline {3.2.2}Cria\IeC {\c c}\IeC {\~a}o da \IeC {\'A}rvore}{10}
