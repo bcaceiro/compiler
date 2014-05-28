@@ -228,8 +228,8 @@ Esta análise pode ser dividida em três fases:
 
 A gramática é a maneira formal de especificar a sintaxe de uma linguagem. 
 Desenvolver uma gramática não ambígua é um dos passos mais importantes para o sucesso do compilador. Para a gramática da linguagem \emph{iJava} usámos a notação \textbf{BNF} \emph{( Backus Naur Form)}. 
-A gramática que nos foi dada era ambígua e por isso tivémos de efectuar diversas alterações para permiter a análise sintática ascendente com o \emph{yacc}.\\
-Algumas das alterações que efectuámos foram:
+A gramática que nos foi dada era ambígua e por isso tivemos de efetuar diversas alterações para permitir a análise sintática ascendente com o \emph{yacc}.\\
+Algumas das alterações que efeituámos foram:
 \begin{itemize}
 	\item Usar recursividade à direita, nas regras onde era possível existirem uma ou mais repetições
 	\item Criação de estados adicionais para as regras que continham \emph{tokens} opcionais
@@ -240,96 +240,138 @@ Algumas das alterações que efectuámos foram:
 \subsubsection{Estado Final da Gramática}
 A gramática final, utilizada no \emph{yacc} é a seguinte apresentada.
 
-\begin{itemize}
-  \item[] START $\longrightarrow$ $CLASS$ $ID$  $OBRACE$ field\_or\_method\_declaration $CBRACE$
-\\
-  \item[]  field\_or\_method\_declaration $\longrightarrow$  $FieldDecl$ field\_or\_method\_declaration \par$|$ $MethodDecl$  field\_or\_method\_declaration
-\\   
-  \item[] $FieldDecl$ $\longrightarrow$ $STATIC$ $VarDecl$  VarDecl\_REPETITION
-  \\
-  \item[] $MethodDecl$ $\longrightarrow$ $PUBLIC$ $STATIC$ method\_type\_declaration $ID$  $OCURV$ FormalParams $CCURV$ $OBRACE$ VarDecl\_REPETITION statement\_declaration\_REPETITION $CBRACE$
-  \\
-  \item[] method\_type\_declaration $\longrightarrow$ Type 
-  \begin{itemize}
-	\item[] $|$ $VOID$
-  \end{itemize}
+\lstset{language=java,caption={Gramática Final},label=Estruturas,numbers=none, frame=none}
+\begin{lstlisting}
 
-  \item[] FormalParams $\longrightarrow$ Type $ID$ several\_FormalParams 
-  \begin{itemize}
- 	\item[]$|$ $STRING$    $OSQUARE$ $CSQUARE$  $ID$  
-  \end{itemize}
-  
-  \item[] several\_FormalParams $\longrightarrow$ $COMMA$ Type $ID$ several\_FormalParams  
-  \\
-  \item[] VarDecl\_REPETITION $\longrightarrow$ VarDecl VarDecl\_REPETITION 
- \\
-  \item[] VarDecl $\longrightarrow$ Type $ID$ several\_var\_decl\_in\_same\_instructionOPTIONAL $SEMIC$
-  \\
-  \item[]several\_var\_decl\_in\_same\_instructionOPTIONAL $\longrightarrow$ $COMMA$ $ID$ several\_var\_decl\_in\_same\_instructionOPTIONAL 
-  \\
-  \item[]Type $\longrightarrow$ $INT$ $OSQUARE$ $CSQUARE$ 
-  \begin{itemize}
-  \item[]$|$ $BOOL$ $OSQUARE$ $CSQUARE$ 
-  \\$|$ $INT$ 
-  \\$|$ $BOOL$
-  \end{itemize}
-  
-  \item[] statement\_declaration\_REPETITION $\longrightarrow$ Statement statement\_declaration\_REPETITION
-  \\
-  \item[] Statement $\longrightarrow$ $OBRACE$ several\_statement $CBRACE$
-  \begin{itemize}
-  \item[]$|$ $IF$ $OCURV$ Expr $CCURV$ Statement $\%prec$ $IFX$ 
-  \\$|$ $IF$ $OCURV$ Expr $CCURV$ Statement $ELSE$ Statement 
-  \\$|$ $WHILE$ $OCURV$ Expr $CCURV$ Statement 
-  \\$|$ $PRINT$ $OCURV$ Expr $CCURV$ $SEMIC$ 
-  \\$|$ $ID$ array\_indexOPTIONAL $ASSIGN$ Expr $SEMIC$ 
-  \\$|$ $RETURN$ return\_expression $SEMIC$  
-    \end{itemize}
-  
-  \item[] several\_statement $\longrightarrow$ Statement several\_statement  
-  \\
-  \item[] array\_indexOPTIONAL $\longrightarrow$  $OSQUARE$ Expr $CSQUARE$
-  \\
-  \item[] return\_expression $\longrightarrow$  Expr
-  \\
-  \item[] IndexableExpr $\longrightarrow$ $ID$ 
-  \begin{itemize}
-  \item[]$|$ $INTLIT$ $BOOLLIT$ $ID$ $OCURV$ Args\_OPTIONAL $CCURV$ 
-  \\$|$ $OCURV$ Expr $CCURV$ 
-  \\$|$ Expr $DOTLENGTH$ 
-  \\$|$ IndexableExpr $OSQUARE$ Expr $CSQUARE$ 
-  \\$|$ $PARSEINT$ $OCURV$ $ID$ $OSQUARE$ Expr $CSQUARE$ $CCURV$
-    \end{itemize}
 
-  \item[] Expr $\longrightarrow$ Expr $OP1$ Expr $\%prec$ $OP1$ 
-  \begin{itemize}
-		\item[] $|$      Expr $OP1OR$ Expr $\%prec$ $OP1OR$
-		\\$|$ Expr $OP4$ Expr $\%prec$ $OP4$ 
-		\\$|$ Expr $OP3$ Expr $\%prec$ $OP3$  
-		\\$|$ Expr $OP2$ Expr $\%prec$ $OP2$ 
-		\\$|$ Expr $OP2EQS$ Expr $\%prec$ $OP2EQS$
-		\\$|$ $OP3$ Expr $\%prec$ $NOT$
-		\\$|$ $NOT$ Expr $\%prec$ $NOT$
-		\\$|$ $NEW$ $INT$ $OSQUARE$ Expr $CSQUARE$
-		\\$|$ $NEW$ $BOOL$ $OSQUARE$ Expr $CSQUARE$
-		\\$|$ IndexableExpr
-  \end{itemize}
+Start :
+            CLASS ID OBRACE field_or_method_declaration CBRACE;
 
-  \item[] Args\_OPTIONAL $\longrightarrow$ Args
-  \\
-  \item[] Args $\longrightarrow$ Expr comma\_expr
-  \\
-  \item[] comma\_expr $\longrightarrow$ $COMMA$ Expr comma\_expr               
-  
-  
-\end{itemize}
+field_or_method_declaration :
+            FieldDecl field_or_method_declaration               
+        |   MethodDecl field_or_method_declaration              
+        | 
+        ;
+
+FieldDecl :
+            STATIC VarDecl VarDecl_REPETITION;
+
+MethodDecl :
+            PUBLIC STATIC method_type_declaration ID OCURV FormalParams CCURV OBRACE VarDecl_REPETITION statement_declaration_REPETITION CBRACE;
+
+method_type_declaration:
+            Type            
+        |   VOID            
+        ;
+
+FormalParams : 
+            Type ID several_FormalParams        
+        |   STRING OSQUARE CSQUARE ID           
+        |                                           
+        ;
+
+several_FormalParams : 
+            COMMA Type ID several_FormalParams      
+        |                                               
+        ;
+
+VarDecl_REPETITION:
+            VarDecl VarDecl_REPETITION      
+         |                                      
+         ;
+
+VarDecl :
+            Type ID several_var_decl_in_same_instructionOPTIONAL SEMIC;
+
+several_var_decl_in_same_instructionOPTIONAL:
+            COMMA ID several_var_decl_in_same_instructionOPTIONAL       
+        |                                                                   
+        ;
+
+Type :
+            INT OSQUARE CSQUARE        
+       |    BOOL OSQUARE CSQUARE       
+       |    INT                        
+       |    BOOL                       
+       ;
+    
+
+statement_declaration_REPETITION:
+            Statement statement_declaration_REPETITION          
+        |                                                           
+        ;
+
+Statement : 
+            OBRACE several_statement CBRACE                     
+        |   IF OCURV Expr CCURV Statement %prec IFX             
+        |   IF OCURV Expr CCURV Statement ELSE Statement        
+        |   WHILE OCURV Expr CCURV Statement                    
+        |   PRINT OCURV Expr CCURV SEMIC                        
+        |   ID array_indexOPTIONAL ASSIGN Expr SEMIC            
+        |   RETURN return_expression SEMIC                      
+        ;
+
+several_statement:
+            Statement several_statement     
+        |                                       
+        ;
+
+array_indexOPTIONAL:
+            OSQUARE Expr CSQUARE        
+        |                                   
+        ;
+
+return_expression : 
+            Expr    
+        |               
+        ;
+
+IndexableExpr: 
+            ID                                                  
+        |   INTLIT                                              
+        |   BOOLLIT                                             
+        |   ID OCURV Args_OPTIONAL CCURV                        
+        |   OCURV Expr CCURV                                    
+        |   Expr DOTLENGTH                                      
+        |   IndexableExpr OSQUARE Expr CSQUARE                  
+        |   PARSEINT OCURV ID OSQUARE Expr CSQUARE CCURV        
+        ;
+
+Expr : 
+            Expr OP1 Expr %prec OP1                 
+        |   Expr OP1OR Expr %prec OP1OR             
+        |   Expr OP4 Expr %prec OP4                 
+        |   Expr OP3 Expr %prec OP3                 
+        |   Expr OP2 Expr %prec OP2                 
+        |   Expr OP2EQS Expr %prec OP2EQS           
+        |   OP3 Expr %prec NOT                      
+        |   NOT Expr %prec NOT                      
+        |   NEW INT OSQUARE Expr CSQUARE            
+        |   NEW BOOL OSQUARE Expr CSQUARE           
+        |   IndexableExpr                           
+        ;
+
+Args_OPTIONAL:
+            Args    
+        |               
+        ;
+
+Args:
+            Expr comma_expr;
+
+comma_expr: 
+            COMMA Expr comma_expr       
+        |                                  
+        ;
+\end{lstlisting}
+
 
 
 \subsection{Árvore de Sintaxe Abstrata}
 
 Para a árvore de sintaxe abstrata optámos por utilizar um nó genérico (\emph{Node}) com a  seguinte estrutura: 
 
-\lstset{language=C,caption={Estruturas para representação de Nós da Árvore},label=Estruturas}
+\lstset{language=C,caption={Estruturas para representação de Nós da Árvore},label=Estruturas,numbers=left,frame=single}
 \begin{lstlisting}
 /* General Node */
 typedef struct _Node
@@ -372,7 +414,7 @@ typedef struct _idList
 Considerando o seguinte programa:
 
 
-\lstset{language=java,caption={Programa Exemplo},label=Estruturas}
+\lstset{language=java,caption={Programa Exemplo},label=Estruturas,numbers=left,frame=single}
 \begin{lstlisting}
  class gcd {
  	public static void main(String[] args) {
@@ -417,7 +459,7 @@ Esta análise é dividida em duas fases:
 \subsection{Tabela de Símbolos}
 
 Para representação da tabela de símbolos, foram utilizadas as seguintes estruturas:
-\lstset{language=C,caption={Estruturas para representação da Tabela de Símbolos},label=Estruturas}
+\lstset{language=C,caption={Estruturas para representação da Tabela de Símbolos},label=Estruturas,frame=single}
 \begin{lstlisting}
 /* Table Node */
 typedef struct _TableNode
@@ -450,7 +492,7 @@ typedef struct _Table{
 \pagebreak
 \subsection{Tratamento de Erros Semânticos}
 Para o tratamento de erros semânticos utilizamos as seguintes funções:
-\lstset{language=C,caption={Funções para tratamento de erros semânticos},label=Estruturas}
+\lstset{language=C,caption={Funções para tratamento de erros semânticos},label=Estruturas,frame=single}
 \begin{lstlisting}
 /* Check if global variables have the same name as the Methods:
 		- If they have print error message: "Symbol %s already defined" and exit 
