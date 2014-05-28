@@ -120,8 +120,15 @@ Esta análise pode ser dividida em três fases:
 
 \subsection{Tokens}
 \begin{itemize}
-	        \item \textbf{ID:} Sequências alfanuméricas começadas por uma letra, onde os símbolos "\_" e "\$" contam como letras. Maiúsculas e minúsculas são consideradas letras diferentes 
+	        \item \textbf{ID:} Sequências alfanuméricas começadas por uma letra, onde os símbolos "\_" e "\$" contam como letras. Maiúsculas e minúsculas são consideradas letras diferentes
+	        \begin{itemize}
+				\item \textbf{Expressão Regular}: $[a-zA-Z\_\$]([a-zA-Z\_\$0-9])* $
+	        \end{itemize}
+	         
 	        \item \textbf{INTLIT:} Sequências de dígitos decimais e sequências de dígitos hexadecimais (incluindo a-f e A-F) precedidas de "0x"
+	        \begin{itemize}
+	        	\item \textbf{Expressão Regular:}  $(([0-9])+|("0x"[0-9a-$f$A-F]+))$  
+	        \end{itemize}
 	        \item \textbf{BOOLLIT:} "true" \text{\textbar} "false" 
 	        \item \textbf{INT:} "int"
 	        \item \textbf{BOOL:} "boolean"
@@ -205,8 +212,26 @@ Esta análise pode ser dividida em três fases:
 		       	             \text{\textbar} null
 	       	                 \text{\textbar} ++
 	       	                 \text{\textbar} --
-	       	            \end{itemize}      	        
+	       	            \end{itemize}      	 
 		\end{itemize}
+		
+		\subsubsection{Comentários}
+		Existem duas maneiras de fazer comentários:
+		\begin{itemize}
+			\item Comentar apenas uma linha //\textless código\textgreater. \\Caso seja detectado (//)  todo o código que se segue é ignorado até encontrar uma mudança de linha.
+			\subitem \textbf{Expressão Regular:} "//".*
+			\item Comentar um bloco de código  /*\textless código\textgreater */
+		\end{itemize} 
+		\lstset{language=C,caption={Detecção de Comentários},label=Estruturas,frame=single}
+		\begin{lstlisting}
+		< COMMENT > <<EOF>> {BEGIN 0}
+		< COMMENT > "*/"    {BEGIN 0}
+		< COMMENT > "\n"    {}
+		< COMMENT > .       {}
+		"/*"	            {BEGIN COMMENT}
+		\end{lstlisting}
+		Caso seja detectado (/*) todo o código é ignorado até que seja encontrado o seu correspondente (*/). Caso seja detectado o EOF então é apresentada uma mensagem de erro: "Line \%d, col \%d: unterminated comment"
+		
 		
 		
 		\subsubsection{Tratamento de Erros}
@@ -215,11 +240,9 @@ Esta análise pode ser dividida em três fases:
             \item "Line\textless num linha\textgreater,col\textless num coluna\textgreater:illegal character('\textless c \textgreater'\textbackslash n)"
             \item "Line\textless num linha\textgreater,col\textless num coluna\textgreater:unterminated comment\textbackslash n"
         \end{itemize}
-		
-
-
-
-
+        Para podermos imprimir as mensagens de erro com o número da linha e coluna criámos uma variável \emph{column} para poder contar as colunas e utilizamos a variável \emph{yylineno} disponibilizada pelo \emph{yacc} para sabermos o número das linhas.
+        Para a contagem de colunas aumentamos a variável consoante o tamanho de cada \emph{token}, quando há uma mudança de linha, inicializa-se o contador das colunas a 1. No caso dos comentários criámos duas variáveis adicionais (\emph{Commentline,Commentcolumn}) para poder guardar a coluna e linha onde o comentário é inicializado.
+	
 \pagebreak
 
 \section{Análise Sintática e Semântica}
