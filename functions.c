@@ -134,14 +134,14 @@ Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statement
     Node* tmp;
     Node* newMethod = (Node*) malloc(sizeof(Node));
     if(newMethod==NULL){
-        if(DEBUG)printf("DEU MERDA malloc insertClass\n");
+        if(DEBUG)printf("Error in malloc insertClass\n");
         assert(newMethod!=NULL);
     }
 
     //set the node type
     newMethod->n_type = NODE_METHODDECL;
-    newMethod->type = type;
-    newMethod->id = insertID(newMethod, id);
+    newMethod->type   = type;
+    newMethod->id     = insertID(newMethod, id);
 
     tmp = (Node*) malloc(sizeof(Node));
     assert(tmp!=NULL);
@@ -184,7 +184,7 @@ Node* setNext(Node* current, Node* next){
 Node* insertIf(Node* expression, Node* statement1, Node* statement2 ) {
     Node* insertIf = (Node*) malloc(sizeof(Node));
     if(insertIf == NULL) {
-        if(DEBUG)printf("DEU MERDA MALLOC insertIf\n");
+        if(DEBUG)printf("Error in MALLOC insertIf\n");
         assert(insertIf != NULL);
     }     
 
@@ -284,7 +284,7 @@ Node* insertStore(char* id, Node* arrayIndex, Node* expression){
 
     Node* thisNode =  (Node*) malloc(sizeof(Node));
     if(thisNode == NULL) {
-        if(DEBUG)printf("DEU MERDA malloc insertStore\n");
+        if(DEBUG)printf("Error in malloc [insertStore]\n");
         assert(thisNode == NULL);
     }
 
@@ -314,7 +314,7 @@ Node* createTerminalNode(int n_type, char* token){
 
     Node* newTerminal = (Node*) malloc(sizeof(Node));
     if(newTerminal == NULL) {
-        if(DEBUG)printf("DEU MERDA malloc insertReturn\n");
+        if(DEBUG)printf("Error in malloc insertReturn\n");
         assert(newTerminal != NULL);
     }
     newTerminal->n_type = n_type;
@@ -331,7 +331,7 @@ Node* createTerminalNode(int n_type, char* token){
 Node* insertDotLength(Node* expression){
     Node* newDotLength = (Node*) malloc(sizeof(Node));
     if(newDotLength == NULL){
-        if(DEBUG)printf("DEU MERDA malloc insertDotLength");
+        if(DEBUG)printf("Error in malloc insertDotLength");
         assert(newDotLength != NULL);
     }
     newDotLength->n_type = NODE_LENGTH;
@@ -346,7 +346,7 @@ Node* insertDotLength(Node* expression){
 Node* insertLoadArray(Node* expression, Node* indexExpression) {
     Node* newLoadArray = (Node*) malloc(sizeof(Node));
     if(newLoadArray == NULL){
-        if(DEBUG)printf("DEU MERDA malloc insertDotLength");
+        if(DEBUG)printf("Error in malloc insertDotLength");
         assert(newLoadArray != NULL);
     }
     newLoadArray->n_type = NODE_LOADARRAY;
@@ -365,7 +365,7 @@ Node* insertLoadArray(Node* expression, Node* indexExpression) {
 Node* insertParseInt(char* id, Node* indexExpression){
     Node* newParseInt = (Node*) malloc(sizeof(Node));
     if(newParseInt == NULL){
-        if(DEBUG)printf("DEU MERDA malloc insertDotLength");
+        if(DEBUG)printf("Error in malloc insertDotLength");
         assert(newParseInt != NULL);
     }
     newParseInt->n_type = NODE_PARSEARGS;
