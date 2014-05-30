@@ -1,4 +1,11 @@
 class gcd {
+	static int argc;
+	static int cenasdomal,aa,aaa,aaaa,aaaaa;
+	static boolean cenasdomal2;
+	static int[] cenasdomal3;
+	static boolean[] cenasdomal4;
+
+
 	public static void main(String[] b) {
 		boolean x;
 		int huehue;
@@ -7,26 +14,22 @@ class gcd {
 		huehue = -1;
 		merda = -huehue;
 		x = true;
+		System.out.println(argc);
 		System.out.println(x);
-		System.out.println(665+1);
-		System.out.println(huehue);
-		System.out.println(merda);
-		System.out.println(huehue+merda);
-		//b[0] = true;
-		
+		x = lol(-100,100);
+		System.out.println(x);
 	}
+
 	public static boolean lol(int a, int b){
-		boolean c;
-		int merdaParaIsto; 
-		int[] loladamerda;
-		boolean[] huehuehueuehuee;
+		System.out.println(a);
+		System.out.println(b);
+		System.out.println(a+b);
+		return true;
 	}
-	static int cenasdomal,aa,aaa,aaaa,aaaaa;
-	static boolean cenasdomal2;
-	static int[] cenasdomal3;
-	static boolean[] cenasdomal4;
-	public static void cardoso(){
+
+	public static int cardoso(){
 		aa = 061+2;
 		aa = 0xF-2;
+		//return aa;
 	}
 }

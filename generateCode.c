@@ -8,29 +8,34 @@
 #include <string.h>
 #include <assert.h>
 
+#define LOCAL 0
+#define PARAM 1
+#define GLOBAL 2
+
 char insideFunction  = FALSE;
 char* currentMethod;
 int tabs = 0;
 int varIndex = 0;
 char alreadyOneParam = FALSE;
-char returnValue[20];
-char value1[20];
-char value2[20];
+char returnValue[100];
+char value1[100];
+char value2[100];
 
-//Check if ID exists and if exists, it returns the type
+//Check if ID is Local
 char checkifIDIsLocal(char* id,char* methodID,Table* main) {
-
+    char returnFlag = PARAM;
     Table* table = getMethodTable(main, methodID);
     TableNode* local = table->table->next;
     while(local != NULL) {
+        if(local->isParam == FALSE)
+            returnFlag =  LOCAL;
         if((local->n_type == TABLE_DECL) && strcmp(id,local->id->id) == 0) {
-            return TRUE;
+            return returnFlag;
         }
         local = local->next;
     }
-    return FALSE;
+    return GLOBAL;
 }
-
 
 char* generateCode(Node* ast,Table* main){
     listID* aux;
@@ -39,6 +44,7 @@ char* generateCode(Node* ast,Table* main){
         //printf("DEBUG:%s\n\t%s\n",NODE_STRING[ast->n_type],NODE_TYPE_NAMES[ast->type]);
         if(ast->n_type == NODE_PROGRAM){
             printf("declare i32 @printf(i8* noalias nocapture, ...)\n");
+
             printf("@.printInt = private constant [4 x i8] c\"%%d\\0A\\00\"\n");
 
             printf("@.true = private constant [6 x i8] c\"true\\0A\\00\"\n");
@@ -51,38 +57,32 @@ char* generateCode(Node* ast,Table* main){
             varIndex = 0;
             insideFunction = TRUE;
             tabs++;
-            if(strcmp(ast->id->id,"main")==0){
-                printf("\n\ndefine i32 @main(i32 %%argc, i8** %%argv) {\n\n");
+            if(ast->type == TYPE_BOOL){
+                printf("\ndefine %s @%s(",SYMBOLS_TYPE_SIZE[ast->type],ast->id->id);
+                generateCode(ast->n1->n1,main);
+                alreadyOneParam = FALSE;
+                printf("){\n");
                 generateCode(ast->n2->n1,main);
                 printf("\n");
                 generateCode(ast->n3->n1,main);
                 printf("\n");
-                printf("\tret i32 0\n}\n\n");//\tret i32 0x1\n}\n");
-                //printf("\tret i32 0\n}\n");
+                printf("\tret i1 0}\n");
             }
-            else
-                if(ast->type == TYPE_VOID){
-                    printf("\ndefine %s @%s(",SYMBOLS_TYPE_SIZE[ast->type],ast->id->id);
-                    generateCode(ast->n1->n1,main);
-                    alreadyOneParam = FALSE;
-                    printf("){\n");
-                    generateCode(ast->n2->n1,main);
-                    printf("\n");
-                    generateCode(ast->n3->n1,main);
-                    printf("\n");
-                    printf("\tret void\n}\n");
-                }
+            else{
+                if(strcmp(ast->id->id,"main")==0){
+                    printf("\n\ndefine i32 @main(i32 %%argc, i8** %%argv) {\n\n");
                 else{
                     printf("\ndefine %s @%s(",SYMBOLS_TYPE_SIZE[ast->type],ast->id->id);
                     generateCode(ast->n1->n1,main);
-                    alreadyOneParam = FALSE;
-                    printf("){\n");
-                    generateCode(ast->n2->n1,main);
-                    printf("\n");
-                    generateCode(ast->n3->n1,main);
-                    printf("\n");
-                    printf("\tret i1 1\n}\n");
                 }
+                alreadyOneParam = FALSE;
+                printf("){\n");
+                generateCode(ast->n2->n1,main);
+                printf("\n");
+                generateCode(ast->n3->n1,main);
+                printf("\n");
+                printf("\tret i32 0\n}\n");
+            }
             tabs--;
             insideFunction = FALSE;
         }
@@ -143,11 +143,19 @@ char* generateCode(Node* ast,Table* main){
         }
         else if(ast->n_type == NODE_ID){
             printTabs(tabs);
-            varIndex++;
-            if(checkifIDIsLocal(ast->value,currentMethod,main)==TRUE){
+
+            char result = checkifIDIsLocal(ast->value,currentMethod,main);
+
+            if(result == LOCAL){
+                varIndex++;
                 printf("%%%d = load %s* %%%s\n",varIndex,SYMBOLS_TYPE_SIZE[ast->type],ast->value);
             }
+            else if (result == PARAM) {
+                sprintf(returnValue,"%%%s",ast->value);
+                return returnValue;
+            }
             else{
+                varIndex++;
                 printf("%%%d = load %s* @%s\n",varIndex,SYMBOLS_TYPE_SIZE[ast->type],ast->value);
             }
             sprintf(returnValue,"%%%d",varIndex);
@@ -158,7 +166,7 @@ char* generateCode(Node* ast,Table* main){
             strcpy(value1,generateCode(ast->n3,main));
             printTabs(tabs);
             //store i32 3, i32* %ptr
-            if(checkifIDIsLocal(ast->n1->value,currentMethod,main)==TRUE){
+            if(checkifIDIsLocal(ast->n1->value,currentMethod,main)!=GLOBAL){
                 printf("store %s %s, %s* %%%s\n\n",SYMBOLS_TYPE_SIZE[ast->n1->type],value1,SYMBOLS_TYPE_SIZE[ast->n1->type],ast->n1->value);
             }
             else{
@@ -193,7 +201,83 @@ char* generateCode(Node* ast,Table* main){
             printTabs(tabs);
 
             varIndex++;
+            //just multiply by -1
             printf("%%%d = mul %s -1 , %s\n",varIndex,SYMBOLS_TYPE_SIZE[ast->type],value1);
+            sprintf(returnValue,"%%%d",varIndex);
+            return returnValue;
+
+        }
+        else if(ast->n_type == NODE_NOT){
+            strcpy(value1,generateCode(ast->n1,main));
+            printTabs(tabs);
+
+            varIndex++;
+            //MAKING A NOT LIKE A BOSS!
+            printf("%%%d = sub i1 1, %s\n",varIndex,value1);
+            sprintf(returnValue,"%%%d",varIndex);
+            return returnValue;
+        }
+        else if(ast->n_type == NODE_GREATER || ast->n_type == NODE_LESS || ast->n_type == NODE_GREATEREQUAL || ast->n_type == NODE_LESSEQUAL || ast->n_type == NODE_EQUAL || ast->n_type == NODE_DIFFERENT){
+            strcpy(value1,generateCode(ast->n1,main));
+            strcpy(value2,generateCode(ast->n2,main));
+            printTabs(tabs);
+
+            varIndex++;
+            //MAKING A NOT LIKE A BOSS!
+            printf("%%%d = icmp %s i32 %s, %s\n",varIndex,CODE_OPERATOR_STRING[ast->n_type],value1,value2);
+            sprintf(returnValue,"%%%d",varIndex);
+            return returnValue;
+        }
+        else if(ast->n_type == NODE_CALL){
+
+            printTabs(tabs);
+            //%retval = call i32 @test(i32 %argc)
+            Node* aux;
+            char flagzinhafofinha;
+            callParams* params = (callParams*)malloc(sizeof(callParams));
+            callParams* current = params;
+
+            //UPS!!!!
+            assert(params!=NULL);
+
+            //params
+            aux = ast->n1;
+            while(aux!=NULL){
+                current->next = (callParams*)malloc(sizeof(callParams));
+
+                //UPS
+                assert(current->next!=NULL);
+                current = current->next;
+                current->next = NULL;
+
+                strcpy(current->name,generateCode(aux,main));
+                current->type =aux->type;
+
+                aux = aux->next;
+
+            }
+
+            //TODO LIBERTAR MEMÓRIA!!!!!!!!!
+
+
+            varIndex++;
+            printf("%%%d = call %s @%s(",varIndex,SYMBOLS_TYPE_SIZE[ast->type],ast->id->id);
+            flagzinhafofinha = FALSE;
+            current = params->next;
+            while(current!=NULL){
+
+                if(flagzinhafofinha==TRUE)
+                    printf(",");
+                else
+                    flagzinhafofinha = TRUE;
+
+                printf(" %s %s ",SYMBOLS_TYPE_SIZE[current->type],current->name);
+
+                current = current->next;
+
+            }
+
+            printf(")\n\n");
             sprintf(returnValue,"%%%d",varIndex);
             return returnValue;
 
