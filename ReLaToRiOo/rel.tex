@@ -532,6 +532,8 @@ Esta análise é dividida em duas fases:
 
 \subsection{Tabela de Símbolos}
 
+A Tabela de símbolos é criada a partir da Árvore de Sintaxe Abstrata, onde se percorre todos os nós relativos às declarações de métodos e atributos, sendo criada uma nova entrada na tabela para cada um deles. 
+\subsubsection{Estruturas}
 Para representação da tabela de símbolos, foram utilizadas as seguintes estruturas:
 \lstset{language=C,caption={Estruturas para representação da Tabela de Símbolos},label=Estruturas,frame=single}
 \begin{lstlisting}
@@ -561,6 +563,7 @@ typedef struct _Table{
 }Table;
 
 \end{lstlisting}
+
 
 
 \pagebreak
