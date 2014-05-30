@@ -2,7 +2,16 @@ class gcd {
 	public static void main(String[] b) {
 		boolean x;
 		int huehue;
+		int merda; 
+
+		huehue = -1;
+		merda = -huehue;
+		x = false;
+		System.out.println(x);
 		System.out.println(665+1);
+		System.out.println(huehue);
+		System.out.println(merda);
+		System.out.println(huehue+merda);
 		//b[0] = true;
 		
 	}
