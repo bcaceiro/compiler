@@ -14,7 +14,7 @@ Method to create a Null Node
 */
 Node* createNull() {
     if(nullNode == NULL) {
-        Node* newNull = (Node*) malloc(sizeof(Node));
+        Node* newNull = (Node*) calloc(sizeof(Node),1);
         if(newNull==NULL) {
             if(DEBUG)
                 printf("Error in malloc [insertClass]\n");
@@ -51,7 +51,7 @@ listID* insertID(Node* currentNode, char* id){
     }
     listID* tmp;
     //Create the new Node of the arrayList
-    tmp = (listID*) malloc(sizeof(listID));
+    tmp = (listID*) calloc(sizeof(listID),1);
     if (tmp != NULL) {
         //replace the current ID for the nextOne;
         tmp->id  = id;
@@ -68,7 +68,7 @@ listID* insertID(Node* currentNode, char* id){
 /* Method to insert the Program Node */
 Node* insertClass(char* id, Node* statements) {
     if(DEBUG)printf("Inserting Class (%s) \n\n",id);
-    Node* newClass = (Node*) malloc(sizeof(Node));
+    Node* newClass = (Node*) calloc(sizeof(Node),1);
     if(newClass == NULL) {
         if(DEBUG)printf("Error in malloc [insertClass]\n");
         assert(newClass != NULL);
@@ -89,7 +89,7 @@ listID* newVarID(char* id, listID* next) {
         if(DEBUG)printf("Error in malloc [newVarID]\n");
         assert(id!=NULL);
     }
-    tmp = (listID*) malloc(sizeof(listID));
+    tmp = (listID*) calloc(sizeof(listID),1);
     if (tmp != NULL){
         //replace the current ID for the nextOne;
         tmp->id   = id;
@@ -106,7 +106,7 @@ listID* newVarID(char* id, listID* next) {
 Node* newVarDecl(int type, char* id, listID* moreIds, Node* next) {
     if(DEBUG)printf("Inserting newVarDecl (%s)\n",id);
 
-    Node* newVar = (Node*) malloc(sizeof(Node));
+    Node* newVar = (Node*) calloc(sizeof(Node),1);
     if(newVar == NULL) {
         if(DEBUG)printf("Error in malloc insertClass\n");
         assert(newVar != NULL);
@@ -132,7 +132,7 @@ Node* newParamDecl(int type, char* id, listID* moreIds, Node* next) {
 Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statements){
     if(DEBUG)printf("Inserting New method(%s)\n",id);
     Node* tmp;
-    Node* newMethod = (Node*) malloc(sizeof(Node));
+    Node* newMethod = (Node*) calloc(sizeof(Node),1);
     if(newMethod==NULL){
         if(DEBUG)printf("Error in malloc insertClass\n");
         assert(newMethod!=NULL);
@@ -143,13 +143,13 @@ Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statement
     newMethod->type   = type;
     newMethod->id     = insertID(newMethod, id);
 
-    tmp = (Node*) malloc(sizeof(Node));
+    tmp = (Node*) calloc(sizeof(Node),1);
     assert(tmp!=NULL);
     tmp->n_type   = NODE_METHODPARAMS;
     newMethod->n1 = tmp;
     tmp->n1       = params;
 
-    tmp = (Node*) malloc(sizeof(Node));
+    tmp = (Node*) calloc(sizeof(Node),1);
     assert(tmp != NULL);
     tmp->n_type = NODE_METHODBODY;
     newMethod->n2 = tmp;
@@ -160,7 +160,7 @@ Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statement
         newMethod->n2 = createNull();
     if(statements == NULL)
         newMethod->n3 = createNull();*/
-    tmp = (Node*) malloc(sizeof(Node));
+    tmp = (Node*) calloc(sizeof(Node),1);
     assert(tmp!=NULL);
 
     tmp->n_type     = NODE_DONTPRINT;
@@ -182,7 +182,7 @@ Node* setNext(Node* current, Node* next){
 }
 
 Node* insertIf(Node* expression, Node* statement1, Node* statement2 ) {
-    Node* insertIf = (Node*) malloc(sizeof(Node));
+    Node* insertIf = (Node*) calloc(sizeof(Node),1);
     if(insertIf == NULL) {
         if(DEBUG)printf("Error in MALLOC insertIf\n");
         assert(insertIf != NULL);
@@ -211,7 +211,7 @@ Node* insertCompound(Node* expression) {
         return expression;
 
     //Create a Compound Statement
-    Node* newCompound = (Node*) malloc(sizeof(Node));
+    Node* newCompound = (Node*) calloc(sizeof(Node),1);
     if(newCompound == NULL) {
         if(DEBUG)printf("Error in malloc [insertCompound]\n");
         assert(newCompound != NULL);
@@ -224,7 +224,7 @@ Node* insertCompound(Node* expression) {
 
 /* Method to insert a While Node */
 Node* insertWhile(Node* expression, Node* statements) { 
-    Node* newWhile = (Node*) malloc(sizeof(Node));
+    Node* newWhile = (Node*) calloc(sizeof(Node),1);
 
     if(newWhile == NULL){
         if(DEBUG)printf("Error in malloc [insertCompound]\n");
@@ -247,7 +247,7 @@ Node* insertWhile(Node* expression, Node* statements) {
 
 Node* insertPrint(Node* expression) {
 
-    Node* newPrint = (Node*) malloc(sizeof(Node));
+    Node* newPrint = (Node*) calloc(sizeof(Node),1);
     if(newPrint == NULL) {
         if(DEBUG)printf("Error in malloc insertCompound\n");
         assert(newPrint != NULL);
@@ -266,7 +266,7 @@ Node* insertPrint(Node* expression) {
 
 Node* insertReturn(Node* expression) {
     if(DEBUG)printf("Insert Return\n");
-    Node* newReturn = (Node*) malloc(sizeof(Node));
+    Node* newReturn = (Node*) calloc(sizeof(Node),1);
 
     if(newReturn == NULL) {
         if(DEBUG)printf("Error in malloc insertReturn\n");
@@ -282,7 +282,7 @@ Node* insertReturn(Node* expression) {
 
 Node* insertStore(char* id, Node* arrayIndex, Node* expression){
 
-    Node* thisNode =  (Node*) malloc(sizeof(Node));
+    Node* thisNode =  (Node*) calloc(sizeof(Node),1);
     if(thisNode == NULL) {
         if(DEBUG)printf("Error in malloc [insertStore]\n");
         assert(thisNode == NULL);
@@ -312,7 +312,7 @@ Node* insertStore(char* id, Node* arrayIndex, Node* expression){
 Node* createTerminalNode(int n_type, char* token){
     if(DEBUG)printf("create Terminal\n");
 
-    Node* newTerminal = (Node*) malloc(sizeof(Node));
+    Node* newTerminal = (Node*) calloc(sizeof(Node),1);
     if(newTerminal == NULL) {
         if(DEBUG)printf("Error in malloc insertReturn\n");
         assert(newTerminal != NULL);
@@ -329,7 +329,7 @@ Node* createTerminalNode(int n_type, char* token){
 }
 
 Node* insertDotLength(Node* expression){
-    Node* newDotLength = (Node*) malloc(sizeof(Node));
+    Node* newDotLength = (Node*) calloc(sizeof(Node),1);
     if(newDotLength == NULL){
         if(DEBUG)printf("Error in malloc insertDotLength");
         assert(newDotLength != NULL);
@@ -344,7 +344,7 @@ Node* insertDotLength(Node* expression){
 }
 
 Node* insertLoadArray(Node* expression, Node* indexExpression) {
-    Node* newLoadArray = (Node*) malloc(sizeof(Node));
+    Node* newLoadArray = (Node*) calloc(sizeof(Node),1);
     if(newLoadArray == NULL){
         if(DEBUG)printf("Error in malloc insertDotLength");
         assert(newLoadArray != NULL);
@@ -363,7 +363,7 @@ Node* insertLoadArray(Node* expression, Node* indexExpression) {
 }
 
 Node* insertParseInt(char* id, Node* indexExpression){
-    Node* newParseInt = (Node*) malloc(sizeof(Node));
+    Node* newParseInt = (Node*) calloc(sizeof(Node),1);
     if(newParseInt == NULL){
         if(DEBUG)printf("Error in malloc insertDotLength");
         assert(newParseInt != NULL);
@@ -381,7 +381,7 @@ Node* insertParseInt(char* id, Node* indexExpression){
 }
 
 Node * insertNewArray(int type, Node* expression) {
-    Node * newArray = (Node*) malloc (sizeof(Node));
+    Node * newArray = (Node*)calloc(sizeof(Node),1);
     if(newArray == NULL) {
         if(DEBUG)
             printf("newArray: Error Malloc\n");
@@ -401,7 +401,7 @@ Node * insertNewArray(int type, Node* expression) {
 }
 
 Node* createCall(char* id, Node *args) {
-    Node * newCall = (Node*) malloc (sizeof(Node));
+    Node * newCall = (Node*)calloc(sizeof(Node),1);
     if(newCall == NULL) {
         if(DEBUG)
             printf("newCall: Error Malloc\n");
@@ -417,7 +417,7 @@ Node* createCall(char* id, Node *args) {
 }
 
 Node* insertDoubleExpression(Node* exp1,char* op,Node* exp2){
-    Node * newExpression = (Node*) malloc (sizeof(Node));
+    Node * newExpression = (Node*)calloc(sizeof(Node),1);
     if(newExpression == NULL) {
         if(DEBUG)
             printf("newCall: Error Malloc\n");
@@ -441,7 +441,7 @@ Node* insertDoubleExpression(Node* exp1,char* op,Node* exp2){
 }
 
 Node* insertExpression(char* op,Node* exp){
-    Node * newExpression = (Node*) malloc (sizeof(Node));
+    Node * newExpression = (Node*)calloc(sizeof(Node),1);
     if(newExpression == NULL) {
         if(DEBUG)
             printf("newCall: Error Malloc\n");
@@ -511,11 +511,11 @@ Table* createSymbols(Node* ast) {
     if(ast != NULL && ast->n_type == NODE_PROGRAM) {
         if(mainTable == NULL){
             //Create the table
-            mainTable = (Table*) malloc (sizeof(Table));
+            mainTable = (Table*) calloc(sizeof(Table),1);
             assert(mainTable != NULL);
 
             //Create the TableNode and add it to the table
-            temp = (TableNode*) malloc (sizeof(TableNode));
+            temp = (TableNode*) calloc(sizeof(TableNode),1);
             assert(temp != NULL);
 
             temp->n_type     = TABLE_CLASS;
@@ -536,7 +536,7 @@ Table* createSymbols(Node* ast) {
         }
         else if( ast->n_type == NODE_METHODDECL) {
             //Create a local table
-            tempTable = (Table*) malloc (sizeof(Table));
+            tempTable = (Table*) calloc(sizeof(Table),1);
             assert(tempTable!=NULL);
 
             //Link it to the old table
@@ -545,7 +545,7 @@ Table* createSymbols(Node* ast) {
             checkIfExists(ast->id->id,mainTable);
 
             //Add the MethodDecl to the old table (it must be the mainTable??)
-            temp = (TableNode*) malloc (sizeof(TableNode));
+            temp = (TableNode*) calloc(sizeof(TableNode),1);
             assert(temp!=NULL);
 
             symbol->next   = temp;
@@ -556,7 +556,7 @@ Table* createSymbols(Node* ast) {
             auxiliar       = temp;
 
             //Create the first and the second symbol of the new table
-            temp = (TableNode*) malloc (sizeof(TableNode));
+            temp = (TableNode*) calloc(sizeof(TableNode),1);
             assert(temp!=NULL);
             currentTable->table = temp;
             symbol              = temp;
@@ -591,7 +591,7 @@ TableNode* addNewDeclTable(char isparam, TableNode* symbol, Node* ast,Table* tab
     TableNode* temp;
     listID* aux;
     checkIfExists(ast->id->id,table);
-    temp = (TableNode*) malloc (sizeof(TableNode));
+    temp = (TableNode*) calloc(sizeof(TableNode),1);
     assert(temp != NULL);
     symbol->next    = temp;
     symbol          = temp;
@@ -605,7 +605,7 @@ TableNode* addNewDeclTable(char isparam, TableNode* symbol, Node* ast,Table* tab
         aux = symbol->id->next;
         while(aux != NULL) {
             checkIfExists(aux->id,table);
-            temp = (TableNode*) malloc (sizeof(TableNode));
+            temp = (TableNode*) calloc(sizeof(TableNode),1);
             assert(temp!=NULL);
 
             symbol->next   = temp;

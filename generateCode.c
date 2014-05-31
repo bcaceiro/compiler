@@ -25,7 +25,8 @@ char value2[100];
 char checkifIDIsLocal(char* id,char* methodID,Table* main) {
     char returnFlag = PARAM;
     Table* table = getMethodTable(main, methodID);
-    TableNode* local = table->table->next;
+    TableNode* local;
+    local = table->table->next;
     while(local != NULL) {
         if(local->isParam == FALSE)
             returnFlag =  LOCAL;
@@ -70,7 +71,8 @@ char* generateCode(Node* ast,Table* main){
             }
             else{
                 if(strcmp(ast->id->id,"main")==0){
-                    printf("\n\ndefine i32 @main(i32 %%argc, i8** %%argv) {\n\n");
+                    printf("\n\ndefine i32 @main(i32 %%argc, i8** %%argv");
+                }
                 else{
                     printf("\ndefine %s @%s(",SYMBOLS_TYPE_SIZE[ast->type],ast->id->id);
                     generateCode(ast->n1->n1,main);
@@ -251,29 +253,28 @@ char* generateCode(Node* ast,Table* main){
                 current->next = NULL;
 
                 strcpy(current->name,generateCode(aux,main));
-                current->type =aux->type;
+                current->type = aux->type;
 
                 aux = aux->next;
 
             }
 
-            //TODO LIBERTAR MEMÓRIA!!!!!!!!!
-
 
             varIndex++;
             printf("%%%d = call %s @%s(",varIndex,SYMBOLS_TYPE_SIZE[ast->type],ast->id->id);
             flagzinhafofinha = FALSE;
-            current = params->next;
-            while(current!=NULL){
+            params = params->next;
+            while(params!=NULL){
 
                 if(flagzinhafofinha==TRUE)
                     printf(",");
                 else
                     flagzinhafofinha = TRUE;
 
-                printf(" %s %s ",SYMBOLS_TYPE_SIZE[current->type],current->name);
-
-                current = current->next;
+                printf(" %s %s ",SYMBOLS_TYPE_SIZE[params->type],params->name);
+                current = params;
+                params = params->next;
+                free(current);
 
             }
 
