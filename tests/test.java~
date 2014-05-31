@@ -9,12 +9,16 @@ class gcd {
 	public static void main(String[] b) {
 		boolean x;
 		int huehue;
-		int merda; 
+		int merda;
+		boolean[] tryout; 
 
-		huehue = -1;
+		huehue = -2;
 		merda = -huehue;
 		x = true;
-		System.out.println(argc);
+		tryout = new boolean[5];
+		System.out.println(x);
+		tryout[--1] = false;
+		x = tryout[--1];
 		System.out.println(x);
 		x = lol(-100,100);
 		System.out.println(x);

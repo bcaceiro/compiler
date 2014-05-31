@@ -862,7 +862,7 @@ void checkTypes(Node* ast, Table *main){
         ast->type = ast->n1->type;
     }
     else if(ast->n_type == NODE_STORE || ast->n_type == NODE_STOREARRAY){
-        
+        ast->type = ast->n1->type;
         //if has index (se é STORE ARRAY)
         if(ast->n2!=NULL){
             if(ast->n2->type != TYPE_INT || (ast->n1->type != TYPE_BOOL_ARRAY && ast->n1->type != TYPE_INT_ARRAY)){
@@ -871,12 +871,12 @@ void checkTypes(Node* ast, Table *main){
             }
 
             if(ast->n1->type == TYPE_INT_ARRAY)
-                ast->n1->type = TYPE_INT;
+                ast->type = TYPE_INT;
             else if(ast->n1->type == TYPE_BOOL_ARRAY)
-                ast->n1->type = TYPE_BOOL;
+                ast->type = TYPE_BOOL;
         }
         //se o id é igual à expressao
-        if(ast->n1->type != ast->n3->type){
+        if(ast->type != ast->n3->type){
             
             if(ast->n_type == NODE_STORE)
                 assignmentError(ast->n1->value,ast->n3->type,ast->n1->type);

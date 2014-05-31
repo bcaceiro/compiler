@@ -18,8 +18,6 @@ int tabs = 0;
 int varIndex = 0;
 char alreadyOneParam = FALSE;
 char returnValue[100];
-char value1[100];
-char value2[100];
 
 //Check if ID is Local
 char checkifIDIsLocal(char* id,char* methodID,Table* main) {
@@ -40,6 +38,9 @@ char checkifIDIsLocal(char* id,char* methodID,Table* main) {
 
 char* generateCode(Node* ast,Table* main){
     listID* aux;
+    char value1[100];
+    char value2[100];
+    char value3[100];
     if(ast!=NULL){
         //printf("LOLADA:%s\n",NODE_STRING[ast->n_type]);
         //printf("DEBUG:%s\n\t%s\n",NODE_STRING[ast->n_type],NODE_TYPE_NAMES[ast->type]);
@@ -144,10 +145,10 @@ char* generateCode(Node* ast,Table* main){
             return returnValue;
         }
         else if(ast->n_type == NODE_ID){
+
             printTabs(tabs);
-
             char result = checkifIDIsLocal(ast->value,currentMethod,main);
-
+            //printf("\n\n;DEBUG:   %s(%s)\n\n",SYMBOLS_TYPE_NAMES[ast->type],ast->value);
             if(result == LOCAL){
                 varIndex++;
                 printf("%%%d = load %s* %%%s\n",varIndex,SYMBOLS_TYPE_SIZE[ast->type],ast->value);
@@ -163,6 +164,34 @@ char* generateCode(Node* ast,Table* main){
             sprintf(returnValue,"%%%d",varIndex);
             return returnValue;
         }
+        else if(ast->n_type == NODE_LOADARRAY){
+
+            printf(";LOADARRAY\n");
+            strcpy(value1,generateCode(ast->n1,main));
+            strcpy(value2,generateCode(ast->n2,main));
+
+            //get the index
+            //add 1 because of the size of the array
+            varIndex++;
+            printTabs(tabs);
+            printf("%%%d = add i32 1, %s\n",varIndex,value2);
+            sprintf(value2,"%%%d",varIndex);
+
+            //get the final pointer
+            varIndex++;
+            printTabs(tabs);
+            printf("%%%d = getelementptr inbounds %s %s, i32 %s\n",varIndex,SYMBOLS_TYPE_SIZE[ast->n1->type],value1,value2);
+            sprintf(value2,"%%%d",varIndex);
+
+            //get the value
+            varIndex++;
+            printTabs(tabs);
+            printf("%%%d = load %s* %s\n",varIndex,SYMBOLS_TYPE_SIZE[ast->type],value2);
+
+            sprintf(returnValue,"%%%d",varIndex);
+            return returnValue;
+
+        }
         else if(ast->n_type == NODE_STORE){
             printf(";STORE\n");
             strcpy(value1,generateCode(ast->n3,main));
@@ -174,6 +203,46 @@ char* generateCode(Node* ast,Table* main){
             else{
                 printf("store %s %s, %s* @%s\n\n",SYMBOLS_TYPE_SIZE[ast->n1->type],value1,SYMBOLS_TYPE_SIZE[ast->n1->type],ast->n1->value);
             }
+
+        }
+        else if(ast->n_type == NODE_STOREARRAY){
+            printf(";STOREARRAY\n");
+            strcpy(value1,generateCode(ast->n1,main));
+            strcpy(value2,generateCode(ast->n2,main));
+            strcpy(value3,generateCode(ast->n3,main));
+            //get the index
+            //add 1 because of the size of the array
+            varIndex++;
+            printTabs(tabs);
+            printf("%%%d = add i32 1, %s\n",varIndex,value2);
+            sprintf(value2,"%%%d",varIndex);
+
+            //get the final pointer
+            varIndex++;
+            printTabs(tabs);
+            printf("%%%d = getelementptr inbounds %s %s, i32 %s\n",varIndex,SYMBOLS_TYPE_SIZE[ast->n1->type],value1,value2);
+            sprintf(value2,"%%%d",varIndex);
+            printTabs(tabs);
+            printf("store %s %s, %s %s\n\n",SYMBOLS_TYPE_SIZE[ast->n3->type],value3,SYMBOLS_TYPE_SIZE[ast->type],value2);
+
+        }
+        else if( ast->n_type == NODE_NEWINT || ast->n_type == NODE_NEWBOOL){
+            printf(";NEWINT\n");
+
+            strcpy(value1,generateCode(ast->n1,main));
+
+            printTabs(tabs);
+            varIndex++;
+            printf("%%%d = add i32 1, %s\n",varIndex,value1);
+            sprintf(value1,"%%%d",varIndex);
+            printTabs(tabs);
+            varIndex++;
+            if(ast->type==TYPE_BOOL_ARRAY)
+                printf("%%%d = alloca i1, %s %s \n",varIndex,SYMBOLS_TYPE_SIZE[ast->n1->type],value1);
+            else
+            printf("%%%d = alloca i32, %s %s \n",varIndex,SYMBOLS_TYPE_SIZE[ast->n1->type],value1);
+            sprintf(returnValue,"%%%d",varIndex);
+            return returnValue;
 
         }
         else if(ast->n_type == NODE_PRINT){
