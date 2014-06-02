@@ -787,7 +787,8 @@ Esta análise é dividida em duas fases:
 
 \subsection{Tabela de Símbolos}
 
-A Tabela de símbolos é criada a partir da Árvore de Sintaxe Abstrata, onde se percorrem todos os nós relativos às declarações de métodos e atributos, sendo criada uma nova entrada na tabela para cada um deles. 
+A Tabela de símbolos é criada a partir da Árvore de Sintaxe Abstrata, onde se percorrem todos os nós relativos às declarações de métodos e atributos. Assim é criada uma tabela para cada \emph{scope}, \emph{scope} global do programa e das variáveis locais de cada método.
+ 
 \subsubsection{Estruturas}
 Para representação da tabela de símbolos, foram utilizadas as seguintes estruturas:
 \lstset{language=C,caption={Estruturas para representação da Tabela de Símbolos},label=Estruturas,frame=single}
@@ -819,7 +820,16 @@ typedef struct _Table{
 
 \end{lstlisting}
 
+\subsubsection{Criação da Tabela de Símbolos}
 
+\lstset{language=C,caption={Métodos para criação da Tabela de Símbolos},label=Estruturas,frame=single}
+\begin{lstlisting}
+/* Method to add a variable declaration to a scope  */
+TableNode* addNewDeclTable(char isparam, TableNode* symbol, Node* ast,
+												    	Table* table);
+/* Goes through the AST and creates the scopes  adding the Method's and Variables */												    	
+Table* createSymbols(Node* ast);
+\end{lstlisting}
 
 \pagebreak
 \subsection{Tratamento de Erros Semânticos}
