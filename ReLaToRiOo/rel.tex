@@ -260,7 +260,9 @@ De forma a realizar a análise sintática foi utilizada a ferramenta \emph{lex},
        
 Para realizar a ligação entre o \emph{yacc} e o \emph{lex} foram definidos \emph{tokens} no  \emph{yacc},posteriormente importados pelo \emph{lex}. Sempre que o \emph{lex} detecta uma sequência de caracteres correspondente a um \emph{token} válido retorna um código acordado entre o \emph{yacc} e \emph{lex} de forma a identificar de forma única esse \emph{token} (\emph{enums}), sendo este valor enviado para o \emph{yacc}. 
 Caso o \emph{token} corresponda a um tipo passível de ser processado (\emph{INTLIT, BOOLIT, ID e operadores}), é guardado na variável \emph{yyvar} o valor introduzido pelo utilizador.
-\par É a variável \emph{yylval} que contém tipicamente o valor do \emph{token} encontrado num dado momento. Uma vez que pretendemos enviar vários de dados, tivémos e utilizar uma \emph{union}, definida no \emph{yacc},que permite partilhar, no mesmo espaço de memória, vários tipos diferentes.
+
+\par Sendo a variável \emph{yylval} também responsável por definir o tipo de retorno de cada regra da gramática, foi necessário acrescentar outros tipos de dados, de forma a permitir a criação da árvore de sintaxe abstrata. Assim, foi criada uma \emph{union}, definida no \emph{yacc},que permite partilhar, no mesmo espaço de memória, vários tipos diferentes.
+
 \lstset{language=c,caption={Union},label=Estruturas}
 \begin{lstlisting}
 %union{
@@ -269,16 +271,22 @@ Caso o \emph{token} corresponda a um tipo passível de ser processado (\emph{INT
     struct _idList* listId;
     int type;
 }
-\end{lstlisting}       
+\end{lstlisting}   
+
+\par Para permitir a percepção, pelo \emph{yaac}, da linha e coluna que estão atualmente a serem utilizadas, foram também declaradas várias variáveis externas, partilhadas pelo \emph{lex}.
+\lstset{language=c,caption=Variáveis externas,label=Estruturas2}
+\begin{lstlisting}
+extern int column;
+extern int yylineno;
+extern char* yytext;
+extern int yyleng;
+\end{lstlisting}  
 
 
 \subsection{Gramática}
 
-
-
-
 A gramática é a maneira formal de especificar a sintaxe de uma linguagem. 
-Desenvolver uma gramática não ambígua é um dos passos mais importantes para o sucesso do compilador. Para a gramática da linguagem \emph{iJava} usámos a notação \textbf{BNF} \emph{( Backus Naur Form)}. 
+Desenvolver uma gramática não ambígua é um dos passos mais importantes para o sucesso de um compilador. Para a gramática da linguagem \emph{iJava} usámos a notação \textbf{BNF} \emph{( Backus Naur Form)}, visto que a mesma é utilizada pelo \emph{yaac} e permite remover as ambiguidades. 
 
 
 \subsection{Gramática Inicial}
