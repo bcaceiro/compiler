@@ -20,7 +20,6 @@ char alreadyOneParam = FALSE;
 char returnValue[100];
 int function_type;
 int counter4jumps;
-int pedreiroMaster;
 
 //Check if ID is Local
 char checkifIDIsLocal(char* id,char* methodID,Table* main) {
@@ -68,7 +67,10 @@ char* generateCode(Node* ast,Table* main){
             if(strcmp(ast->id->id,"main")==0){
                 function_type = TYPE_INT;
                 //change this to include the name of the variable defined by the user...
-                printf("\n\ndefine i32 @main(i32 %%argc, i8** %%%s){\n",ast->n1->n1->id->id);
+                if(ast->n1->n1!=NULL)
+                    printf("\n\ndefine i32 @main(i32 %%..argc, i8** %%%s){\n",ast->n1->n1->id->id);
+                else
+                    printf("\n\ndefine i32 @main(i32 %%..argc, i8** argv){\n");
             }
             else{
                 function_type = ast->type;
@@ -91,6 +93,8 @@ char* generateCode(Node* ast,Table* main){
                 printf("ret %%.ArrayInt {i32 0, i32* null}\n");
             else if(function_type == TYPE_BOOL_ARRAY)
                 printf("ret %%.ArrayBool {i32 0, i1* null}\n");
+            else if(function_type == TYPE_VOID)
+                printf("ret void\n");
             printf("}\n\n");
             tabs--;
             insideFunction = FALSE;
@@ -136,8 +140,8 @@ char* generateCode(Node* ast,Table* main){
             strcpy(value2,generateCode(ast->n2,main));
             printTabs(tabs);
             varIndex++;
-            printf("%%t%d = %s %s %s , %s\n\n",varIndex,CODE_OPERATOR_STRING[ast->n_type],SYMBOLS_TYPE_SIZE[ast->type],value1,value2);   //<result> = add/sub/mul/sdiv <ty> <op1>, <op2>
-            sprintf(returnValue,"%%t%d",varIndex);
+            printf("%%..%d = %s %s %s , %s\n\n",varIndex,CODE_OPERATOR_STRING[ast->n_type],SYMBOLS_TYPE_SIZE[ast->n1->type],value1,value2);   //<result> = add/sub/mul/sdiv <ty> <op1>, <op2>
+            sprintf(returnValue,"%%..%d",varIndex);
             return returnValue;
         }
         else if(ast->n_type == NODE_AND){
@@ -149,28 +153,28 @@ char* generateCode(Node* ast,Table* main){
             varIndex++;
             temp2 = varIndex;
             //alloc temporary space
-            printf("%%t%d = alloca i1\n",varIndex);
+            printf("%%..%d = alloca i1\n",varIndex);
             //store th 1º value
             printTabs(tabs);
-            printf("store i1 %s, i1* %%t%d\n",value1,varIndex);
+            printf("store i1 %s, i1* %%..%d\n",value1,varIndex);
             //verify if it need to run the second
             printTabs(tabs);
             varIndex++;
-            printf("%%t%d = icmp eq i1 1, %s\n", varIndex, value1);
+            printf("%%..%d = icmp eq i1 1, %s\n", varIndex, value1);
             printTabs(tabs);
-            printf("br i1 %%t%d, label %%and.do%d, label %%and.end%d\n",varIndex,tmp,tmp);
+            printf("br i1 %%..%d, label %%and.do%d, label %%and.end%d\n",varIndex,tmp,tmp);
             printf("and.do%d:\n",tmp);
             counter4jumps++;
             strcpy(value2,generateCode(ast->n2,main));
             printTabs(tabs);
-            printf("store i1 %s, i1* %%t%d\n",value2,temp2);
+            printf("store i1 %s, i1* %%..%d\n",value2,temp2);
             printTabs(tabs);
             printf("br label %%and.end%d\n",tmp);
             printf("and.end%d:\n",tmp);
             varIndex++;
             printTabs(tabs);
-            printf("%%t%d = load i1* %%t%d\n",varIndex,temp2);
-            sprintf(returnValue,"%%t%d",varIndex);
+            printf("%%..%d = load i1* %%..%d\n",varIndex,temp2);
+            sprintf(returnValue,"%%..%d",varIndex);
             return returnValue;
         }
         else if(ast->n_type == NODE_OR){
@@ -182,28 +186,28 @@ char* generateCode(Node* ast,Table* main){
             varIndex++;
             temp2 = varIndex;
             //alloc temporary space
-            printf("%%t%d = alloca i1\n",varIndex);
+            printf("%%..%d = alloca i1\n",varIndex);
             //store th 1º value
             printTabs(tabs);
-            printf("store i1 %s, i1* %%t%d\n",value1,varIndex);
+            printf("store i1 %s, i1* %%..%d\n",value1,varIndex);
             //verify if it need to run the second
             printTabs(tabs);
             varIndex++;
-            printf("%%t%d = icmp eq i1 0, %s\n", varIndex, value1);
+            printf("%%..%d = icmp eq i1 0, %s\n", varIndex, value1);
             printTabs(tabs);
-            printf("br i1 %%t%d, label %%and.do%d, label %%and.end%d\n",varIndex,tmp,tmp);
+            printf("br i1 %%..%d, label %%and.do%d, label %%and.end%d\n",varIndex,tmp,tmp);
             printf("and.do%d:\n",tmp);
             counter4jumps++;
             strcpy(value2,generateCode(ast->n2,main));
             printTabs(tabs);
-            printf("store i1 %s, i1* %%t%d\n",value2,temp2);
+            printf("store i1 %s, i1* %%..%d\n",value2,temp2);
             printTabs(tabs);
             printf("br label %%and.end%d\n",tmp);
             printf("and.end%d:\n",tmp);
             varIndex++;
             printTabs(tabs);
-            printf("%%t%d = load i1* %%t%d\n",varIndex,temp2);
-            sprintf(returnValue,"%%t%d",varIndex);
+            printf("%%..%d = load i1* %%..%d\n",varIndex,temp2);
+            sprintf(returnValue,"%%..%d",varIndex);
             return returnValue;
         }
         else if(ast->n_type == NODE_INTLIT){
@@ -235,15 +239,14 @@ char* generateCode(Node* ast,Table* main){
 
             varIndex++;
             //just multiply by -1
-            printf("%%t%d = mul %s -1 , %s\n",varIndex,SYMBOLS_TYPE_SIZE[ast->type],value1);
-            sprintf(returnValue,"%%t%d",varIndex);
+            printf("%%..%d = mul %s -1 , %s\n",varIndex,SYMBOLS_TYPE_SIZE[ast->type],value1);
+            sprintf(returnValue,"%%..%d",varIndex);
             return returnValue;
 
         }
         else if(ast->n_type == NODE_UNARYPLUS){
             //this doesn't do anything
-            strcpy(returnValue,generateCode(ast->n1,main));
-            return returnValue;
+            return generateCode(ast->n1,main);
 
         }
         else if(ast->n_type == NODE_NOT){
@@ -252,8 +255,8 @@ char* generateCode(Node* ast,Table* main){
 
             varIndex++;
             //MAKING A NOT LIKE A BOSS!
-            printf("%%t%d = sub i1 1, %s\n",varIndex,value1);
-            sprintf(returnValue,"%%t%d",varIndex);
+            printf("%%..%d = sub i1 1, %s\n",varIndex,value1);
+            sprintf(returnValue,"%%..%d",varIndex);
             return returnValue;
         }
         else if(ast->n_type == NODE_GREATER || ast->n_type == NODE_LESS || ast->n_type == NODE_GREATEREQUAL || ast->n_type == NODE_LESSEQUAL || ast->n_type == NODE_EQUAL || ast->n_type == NODE_DIFFERENT){
@@ -262,8 +265,8 @@ char* generateCode(Node* ast,Table* main){
             printTabs(tabs);
 
             varIndex++;
-            printf("%%t%d = icmp %s i32 %s, %s\n",varIndex,CODE_OPERATOR_STRING[ast->n_type],value1,value2);
-            sprintf(returnValue,"%%t%d",varIndex);
+            printf("%%..%d = icmp %s %s %s, %s\n",varIndex,CODE_OPERATOR_STRING[ast->n_type],SYMBOLS_TYPE_SIZE[ast->n1->type] ,value1,value2);
+            sprintf(returnValue,"%%..%d",varIndex);
             return returnValue;
         }
         else if(ast->n_type == NODE_ID){
@@ -273,13 +276,13 @@ char* generateCode(Node* ast,Table* main){
             //printf("\n\n;DEBUG:   %s(%s)\n\n",SYMBOLS_TYPE_NAMES[ast->type],ast->value);
             if(result != GLOBAL){
                 varIndex++;
-                printf("%%t%d = load %s* %%%s\n",varIndex,SYMBOLS_TYPE_SIZE[ast->type],ast->value);
+                printf("%%..%d = load %s* %%%s\n",varIndex,SYMBOLS_TYPE_SIZE[ast->type],ast->value);
             }
             else{
                 varIndex++;
-                printf("%%t%d = load %s* @%s\n",varIndex,SYMBOLS_TYPE_SIZE[ast->type],ast->value);
+                printf("%%..%d = load %s* @%s\n",varIndex,SYMBOLS_TYPE_SIZE[ast->type],ast->value);
             }
-            sprintf(returnValue,"%%t%d",varIndex);
+            sprintf(returnValue,"%%..%d",varIndex);
             return returnValue;
         }
         else if(ast->n_type == NODE_LOADARRAY){
@@ -292,24 +295,24 @@ char* generateCode(Node* ast,Table* main){
 
             varIndex++;
             printTabs(tabs);
-            printf("%%t%d = extractvalue %s %s, 1\n", varIndex,SYMBOLS_TYPE_SIZE[ast->n1->type], value1);
+            printf("%%..%d = extractvalue %s %s, 1\n", varIndex,SYMBOLS_TYPE_SIZE[ast->n1->type], value1);
             if(ast->n1->type == TYPE_BOOL_ARRAY){
                 varIndex++;
                 printTabs(tabs);
-                printf("%%t%d = getelementptr i1* %%t%d, i32 %s\n",varIndex,varIndex-1,value2);
+                printf("%%..%d = getelementptr i1* %%..%d, i32 %s\n",varIndex,varIndex-1,value2);
                 varIndex++;
                 printTabs(tabs);
-                printf("%%t%d = load i1* %%t%d\n",varIndex,varIndex-1);
+                printf("%%..%d = load i1* %%..%d\n",varIndex,varIndex-1);
             }else if(ast->n1->type == TYPE_INT_ARRAY){
 
                 varIndex++;
                 printTabs(tabs);
-                printf("%%t%d = getelementptr i32* %%t%d, i32 %s\n",varIndex,varIndex-1,value2);
+                printf("%%..%d = getelementptr i32* %%..%d, i32 %s\n",varIndex,varIndex-1,value2);
                 varIndex++;
                 printTabs(tabs);
-                printf("%%t%d = load i32* %%t%d\n",varIndex,varIndex-1);
+                printf("%%..%d = load i32* %%..%d\n",varIndex,varIndex-1);
             }
-            sprintf(returnValue,"%%t%d",varIndex);
+            sprintf(returnValue,"%%..%d",varIndex);
             return returnValue;
 
         }
@@ -333,25 +336,31 @@ char* generateCode(Node* ast,Table* main){
 
             printf(";STOREARRAY\n");
             //array
+            printf(";ARRAY\n");
             strcpy(value1,generateCode(ast->n1,main));
             //index
+            printf(";INDEX\n");
             strcpy(value2,generateCode(ast->n2,main));
             //value
+            printf(";VALUE\n");
             strcpy(value3,generateCode(ast->n3,main));
 
 
             //varIndex++;
             //printTabs(tabs);
-            //printf("%%t%d = load %s* %s%s\n", varNumber++, llvmType1, varDeclSymbol, stmt->id);
+            //printf("%%..%d = load %s* %s%s\n", varNumber++, llvmType1, varDeclSymbol, stmt->id);
 
+            //get the array
+            printf(";STOREFOFINHO\n");
             varIndex++;
             printTabs(tabs);
-            printf("%%t%d = extractvalue %s %s, 1\n", varIndex, SYMBOLS_TYPE_SIZE[ast->n1->type], value1);
+            printf("%%..%d = extractvalue %s %s, 1\n", varIndex, SYMBOLS_TYPE_SIZE[ast->n1->type], value1);
+            //get the index
             varIndex++;
             printTabs(tabs);
-            printf("%%t%d = getelementptr %s* %%t%d, i32 %s\n", varIndex, SYMBOLS_TYPE_SIZE[ast->n3->type], varIndex -1, value2);
+            printf("%%..%d = getelementptr %s* %%..%d, i32 %s\n", varIndex, SYMBOLS_TYPE_SIZE[ast->n3->type], varIndex -1, value2);
             printTabs(tabs);
-            printf("store %s %s, %s* %%t%d\n", SYMBOLS_TYPE_SIZE[ast->n3->type], value3, SYMBOLS_TYPE_SIZE[ast->n3->type], varIndex);
+            printf("store %s %s, %s* %%..%d\n", SYMBOLS_TYPE_SIZE[ast->n3->type], value3, SYMBOLS_TYPE_SIZE[ast->n3->type], varIndex);
 
 
         }
@@ -363,21 +372,21 @@ char* generateCode(Node* ast,Table* main){
             varIndex++;
             printTabs(tabs);
             //reserve the space
-            printf("%%t%d = call noalias i8* @calloc(i32 %s, i32 4) nounwind\n\n", varIndex, value1);
+            printf("%%..%d = call noalias i8* @calloc(i32 %s, i32 4) nounwind\n\n", varIndex, value1);
             varIndex++;
             printTabs(tabs);
             //cast to int
-            printf("%%t%d = bitcast i8* %%t%d to i32*\n", varIndex, varIndex -1);
+            printf("%%..%d = bitcast i8* %%..%d to i32*\n", varIndex, varIndex -1);
             varIndex++;
             printTabs(tabs);
             //insert size
-            printf("%%t%d = insertvalue %%.ArrayInt undef, i32 %s, 0\n", varIndex, value1);
+            printf("%%..%d = insertvalue %%.ArrayInt undef, i32 %s, 0\n", varIndex, value1);
             varIndex++;
             printTabs(tabs);
             //insert array
-            printf("%%t%d = insertvalue %%.ArrayInt %%t%d, i32* %%t%d, 1\n", varIndex, varIndex -1, varIndex -2);
+            printf("%%..%d = insertvalue %%.ArrayInt %%..%d, i32* %%..%d, 1\n", varIndex, varIndex -1, varIndex -2);
 
-            sprintf(returnValue,"%%t%d",varIndex);
+            sprintf(returnValue,"%%..%d",varIndex);
             return returnValue;
 
 
@@ -391,21 +400,21 @@ char* generateCode(Node* ast,Table* main){
             varIndex++;
             printTabs(tabs);
              //reserve the space
-            printf("%%t%d = call noalias i8* @calloc(i32 %s, i32 1) nounwind\n\n", varIndex, value1);
+            printf("%%..%d = call noalias i8* @calloc(i32 %s, i32 1) nounwind\n\n", varIndex, value1);
             varIndex++;
             printTabs(tabs);
             //cast to bool
-            printf("%%t%d = bitcast i8* %%t%d to i1*\n", varIndex, varIndex -1);
+            printf("%%..%d = bitcast i8* %%..%d to i1*\n", varIndex, varIndex -1);
             varIndex++;
             printTabs(tabs);
             //insert size
-            printf("%%t%d = insertvalue %%.ArrayBool undef, i32 %s, 0\n", varIndex, value1);
+            printf("%%..%d = insertvalue %%.ArrayBool undef, i32 %s, 0\n", varIndex, value1);
             varIndex++;
             printTabs(tabs);
             //insert array
-            printf("%%t%d = insertvalue %%.ArrayBool %%t%d, i1* %%t%d, 1\n", varIndex, varIndex -1, varIndex -2);
+            printf("%%..%d = insertvalue %%.ArrayBool %%..%d, i1* %%..%d, 1\n", varIndex, varIndex -1, varIndex -2);
 
-            sprintf(returnValue,"%%t%d",varIndex);
+            sprintf(returnValue,"%%..%d",varIndex);
             return returnValue;
 
         }
@@ -416,17 +425,17 @@ char* generateCode(Node* ast,Table* main){
             varIndex++;
             if(ast->n1->type == TYPE_BOOL){
                 //convert to int
-                printf("%%t%d = zext i1 %s to i32\n", varIndex,value1);
+                printf("%%..%d = zext i1 %s to i32\n", varIndex,value1);
                 varIndex++;
                 //get the rigth string
                 printTabs(tabs);
-                printf("%%t%d = getelementptr inbounds [2 x i8*]* @.printBool, i32 0, i32 %%t%d\n", varIndex, varIndex -1);
+                printf("%%..%d = getelementptr inbounds [2 x i8*]* @.printBool, i32 0, i32 %%..%d\n", varIndex, varIndex -1);
                 varIndex++;
                 //load it
                 printTabs(tabs);
-                printf("%%t%d = load i8** %%t%d\n", varIndex, varIndex -1);
+                printf("%%..%d = load i8** %%..%d\n", varIndex, varIndex -1);
                 printTabs(tabs);
-                printf("call i32 (i8*, ...)* @printf(i8* %%t%d)\n\n", varIndex);
+                printf("call i32 (i8*, ...)* @printf(i8* %%..%d)\n\n", varIndex);
                 varIndex++;
             }else
                 printf("call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([4 x i8]* @.printInt, i32 0, i32 0), i32 %s)\n\n",value1);
@@ -436,8 +445,8 @@ char* generateCode(Node* ast,Table* main){
             printTabs(tabs);
             //%retval = call i32 @test(i32 %argc)
             Node* aux;
-            char flagzinhafofinha;
-            callParams* params = (callParams*)malloc(sizeof(callParams));
+            char flagzinhafofinha = FALSE;
+            callParams* params = (callParams*)calloc(sizeof(callParams),1);
             callParams* current = params;
 
             //UPS!!!!
@@ -462,7 +471,7 @@ char* generateCode(Node* ast,Table* main){
 
 
             varIndex++;
-            printf("%%t%d = call %s @%s(",varIndex,SYMBOLS_TYPE_SIZE[ast->type],ast->id->id);
+            printf("%%..%d = call %s @%s(",varIndex,SYMBOLS_TYPE_SIZE[ast->type],ast->id->id);
             flagzinhafofinha = FALSE;
             current = params;
             params = params->next;
@@ -482,12 +491,11 @@ char* generateCode(Node* ast,Table* main){
             }
 
             printf(")\n\n");
-            sprintf(returnValue,"%%t%d",varIndex);
+            sprintf(returnValue,"%%..%d",varIndex);
             return returnValue;
 
         }
         else if(ast->n_type == NODE_RETURN){
-            pedreiroMaster++;
             printf(";RETURN\n");
             if(ast->n1!=NULL){
                 strcpy(value1,generateCode(ast->n1,main));
@@ -499,6 +507,8 @@ char* generateCode(Node* ast,Table* main){
                     printf("ret i32 0\n");
                 else if(function_type == TYPE_BOOL)
                     printf("ret i1 0\n");
+                else if(function_type == TYPE_VOID)
+                    printf("ret void\n");
                 else if(function_type == TYPE_INT_ARRAY)
                     printf("ret %%.ArrayInt {i32 0, i32* null}\n");
                 else if(function_type == TYPE_BOOL_ARRAY)
@@ -509,43 +519,46 @@ char* generateCode(Node* ast,Table* main){
 
             printf(";.LENGTH\n");
             //array
-            strcpy(value1,generateCode(ast->n1,main));
-              varIndex++;
-            printTabs(tabs);
             if(ast->n1->type != TYPE_STRING_ARRAY){
-                printf("%%t%d = extractvalue %s %s, 0\n", varIndex,SYMBOLS_TYPE_SIZE[ast->n1->type], value1);
-                sprintf(returnValue,"%%t%d",varIndex);
+                strcpy(value1,generateCode(ast->n1,main));
+                varIndex++;
+                printTabs(tabs);
+                printf("%%..%d = extractvalue %s %s, 0\n", varIndex,SYMBOLS_TYPE_SIZE[ast->n1->type], value1);
+                sprintf(returnValue,"%%..%d",varIndex);
             }
             else{
-               printf("%%t%d = sub i32 1, %%argc\n",varIndex);
-               sprintf(returnValue,"%%t%d",varIndex);
+               varIndex++;
+               printTabs(tabs);
+               printf("%%..%d = sub i32 %%..argc , 1\n",varIndex);
+               sprintf(returnValue,"%%..%d",varIndex);
             }
             return returnValue;
         }
         else if(ast->n_type == NODE_PARSEARGS){
+            printf(";PARSEARGS\n");
             //array
             strcpy(value2,generateCode(ast->n2,main));
 
             //get the array Index (+1 because of the program name)
             varIndex++;
             printTabs(tabs);
-            printf("%%t%d = add i32 1 , %s\n",varIndex,value2);
+            printf("%%..%d = add i32 1 , %s\n",varIndex,value2);
 
             //get the final pointer
             varIndex++;
             printTabs(tabs);
-            printf("%%t%d = getelementptr inbounds i8** %%%s, i32 %%t%d\n",varIndex,ast->n1->value,varIndex-1);
+            printf("%%..%d = getelementptr inbounds i8** %%%s, i32 %%..%d\n",varIndex,ast->n1->value,varIndex-1);
 
             //get the value
             varIndex++;
             printTabs(tabs);
-            printf("%%t%d = load i8** %%t%d\n",varIndex,varIndex-1);
+            printf("%%..%d = load i8** %%..%d\n",varIndex,varIndex-1);
 
             varIndex++;
             printTabs(tabs);
-            printf("%%t%d = call i32 @atoi(i8* %%t%d) nounwind readonly\n",varIndex,varIndex-1);
+            printf("%%..%d = call i32 @atoi(i8* %%..%d) nounwind readonly\n",varIndex,varIndex-1);
 
-            sprintf(returnValue,"%%t%d",varIndex);
+            sprintf(returnValue,"%%..%d",varIndex);
             return returnValue;
 
 
@@ -566,16 +579,14 @@ char* generateCode(Node* ast,Table* main){
             varIndex++;
             temp2 = varIndex;
             printTabs(tabs);
-            printf("%%t%d = icmp eq i1 1, %s\n", varIndex, value1);
+            printf("%%..%d = icmp eq i1 1, %s\n", varIndex, value1);
             printTabs(tabs);
             //if
             //varIndex++;
-            printf("br i1 %%t%d, label %%if.do%d, label %%if.else%d\n",varIndex,tmp,tmp);
+            printf("br i1 %%..%d, label %%if.do%d, label %%if.else%d\n",varIndex,tmp,tmp);
             printf("if.do%d:\n",tmp);
                 tabs++;
-                pedreiroMaster = 0;
                 generateCode(ast->n2,main);
-                varIndex+=pedreiroMaster;
                 printTabs(tabs);
                 printf("br label %%if.end%d\n",tmp);
                 tabs--;
@@ -600,16 +611,14 @@ char* generateCode(Node* ast,Table* main){
             varIndex++;
             temp2 = varIndex;
             printTabs(tabs);
-            printf("%%t%d = icmp eq i1 1, %s\n", varIndex, value1);
+            printf("%%..%d = icmp eq i1 1, %s\n", varIndex, value1);
             printTabs(tabs);
             //if
             //varIndex++;
-            printf("br i1 %%t%d, label %%while.continue%d, label %%while.end%d\n",varIndex,tmp,tmp);
+            printf("br i1 %%..%d, label %%while.continue%d, label %%while.end%d\n",varIndex,tmp,tmp);
             printf("while.continue%d:\n",tmp);
                 tabs++;
-                pedreiroMaster = 0;
                 generateCode(ast->n2,main);
-                varIndex+=pedreiroMaster;
                 printTabs(tabs);
                 tabs--;
             printTabs(tabs);

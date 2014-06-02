@@ -57,7 +57,7 @@ reserved (abstract|assert|break|byte|case|catch|char|const|continue|default|do|d
 ("+"|"-")                               {if(DEBUG)printf("OP3(%s)\n",yytext);               column += yyleng;yylval.token = strdup(yytext);return OP3;}
 ("*"|"/"|"%")                           {if(DEBUG)printf("OP4(%s)\n",yytext);               column += yyleng;yylval.token = strdup(yytext);return OP4;}
 "!"                                     {if(DEBUG)printf("NOT\n");                          column += yyleng;yylval.token = strdup(yytext);return NOT;}
-"="                                     {if(DEBUG)printf("ASSIGN\n");                       column += yyleng;yylval.token = strdup(yytext);return ASSIGN;}
+"="                                     {if(DEBUG)printf("ASSIGN\n");                       column += yyleng;/*yylval.token = strdup(yytext)*/;return ASSIGN;}
 ";"                                     {if(DEBUG)printf("SEMIC\n");                        column += yyleng;return SEMIC;}
 ","                                     {if(DEBUG)printf("COMMA\n");                        column += yyleng;return COMMA;}
 {reserved}                              {if(DEBUG)printf("RESERVED(%s)\n",yytext);          column += yyleng;return RESERVED;}

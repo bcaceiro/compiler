@@ -160,12 +160,13 @@ Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statement
         newMethod->n2 = createNull();
     if(statements == NULL)
         newMethod->n3 = createNull();*/
+
     tmp = (Node*) calloc(sizeof(Node),1);
     assert(tmp!=NULL);
-
-    tmp->n_type     = NODE_DONTPRINT;
     newMethod->n3   = tmp;
+    tmp->n_type     = NODE_DONTPRINT;
     tmp->n1         = statements;
+
     newMethod->next = NULL;
     return newMethod;
 }
@@ -425,6 +426,7 @@ Node* insertDoubleExpression(Node* exp1,char* op,Node* exp2){
     }
 
     newExpression-> n_type = getOperatorType(op);
+    free(op);
     if(newExpression->n_type == -1 )
         exit(-2);
     newExpression->n1 = exp1;
@@ -449,6 +451,7 @@ Node* insertExpression(char* op,Node* exp){
     }
 
     newExpression->n_type = getOperatorType(op);
+    free(op);
 
     if(newExpression->n_type == -1 )
         exit(-2);

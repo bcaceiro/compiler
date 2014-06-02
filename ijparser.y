@@ -6,6 +6,7 @@
 //#include "show.c"
 #include "structures.h"
 //#include "functions.c"
+#include "clean.h"
 
 #define DEBUG 0
 
@@ -16,6 +17,7 @@ extern int column;
 extern int yylineno;
 extern char* yytext;
 extern int yyleng;
+extern Node* nullNode;
 
 //program tree
 Node* program = NULL;
@@ -232,8 +234,9 @@ int main(int argc, char *argv[]){
         }
 
         generateCode(program);
-
-	//TODO:LIMPAR MEMÓRIA???
+        cleanNodes(program);
+        cleanTable(symbols);
+        free(nullNode);
 		
     return 0;
 }
