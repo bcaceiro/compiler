@@ -524,7 +524,7 @@ void yyerror (char *var) {
 \subsection{Árvore de Sintaxe Abstrata}
 
 \subsubsection{Estruturas}
-Para a árvore de sintaxe abstrata optámos por utilizar um nó genérico (\emph{Node}) com a  seguinte estrutura: 
+Para a construção da árvore de sintaxe abstrata, optámos por utilizar um nó genérico (\emph{Node}) com a  seguinte estrutura: 
 
 \lstset{language=C,caption={Estruturas para representação de Nós da Árvore},label=Estruturas,numbers=left,frame=single}
 \begin{lstlisting}
@@ -532,15 +532,15 @@ Para a árvore de sintaxe abstrata optámos por utilizar um nó genérico (\emph
 typedef struct _Node
 {
     //Type of the Node (to identify the type of the node)
-	NodeType n_type;
+    NodeType n_type;
 
     //Type of the Struct (Int, Void, String,...)
-	Type type;
+    Type type;
 
     //Id or list of id's
     listID* id;
 
-    //The tree next nodes (the case of if)
+    //The Node's children (Method's/ Statements, Operators)
     struct _Node* n1;
     struct _Node* n2;
     struct _Node* n3;
@@ -550,7 +550,8 @@ typedef struct _Node
 
     //Literals (to store the values)
     char* value;
-
+	
+	//Not used lololol
     char isStatic;
 }Node;
 
@@ -558,11 +559,76 @@ typedef struct _Node
 /* Linked list of ID's (for multiple declaration of variables) */
 typedef struct _idList
 {
+	//ID
 	char* id;
+	
+	//Next ID
 	struct _idList* next;
 }listID;
 
 \end{lstlisting}
+
+Optámos por usar apenas uma única estrutura para representar toda a Árvore de Sintaxe Abstrata uma vez que qualquer nó poderia ser reduzido a um caso mais abstrato. Esta solução permitiu também que as operação realizadas sobre a árvore tenham sido simplificadas, visto não ser necessário realizar qualquer \emph{cast} ou conversão de tipo. Uma vez que a linguagem \emph{iJava} apresenta menos funcionalidades do que a linguagem \emph{Java}, foi possível optar por esta representação, mas tal poderia não se adaptar a um projecto mais complexo.
+
+
+\lstset{language=C,caption={Identificadores únicos de cada \emph{Node}},label=Estruturas,numbers=left,frame=single}
+\begin{lstlisting}
+/* Type of the Node (to identify the type of the node) 
+	- This enum allows us to uniquely identify each node and manipulate the data accordingly
+*/
+typedef enum {NODE_PROGRAM,
+              NODE_VARDECL,
+              NODE_METHODDECL,
+              NODE_METHODPARAMS,
+              NODE_METHODBODY,
+              NODE_PARAMDECL,
+              NODE_COMPOUNDSTAT,
+              NODE_IFELSE,
+              NODE_PRINT,
+              NODE_RETURN,
+              NODE_STORE,
+              NODE_MUL,
+              NODE_DIV,
+              NODE_MOD,
+              NODE_NOT,
+              NODE_MINUS,
+              NODE_PLUS,
+              NODE_LENGTH,
+              NODE_LOADARRAY,
+              NODE_CALL,
+              NODE_NEWINT,
+              NODE_NEWBOOL,
+              NODE_PARSEARGS,
+              NODE_WHILE,
+              NODE_STOREARRAY,
+              NODE_INTLIT,
+              NODE_BOOLLIT,
+              NODE_ID,
+              NODE_AND,
+              NODE_OR,
+              NODE_LESS,
+              NODE_GREATER,
+              NODE_LESSEQUAL,
+              NODE_GREATEREQUAL,
+              NODE_DIFFERENT,
+              NODE_EQUAL,
+              NODE_NULL,
+              NODE_UNARYPLUS,
+              NODE_UNARYMINUS,
+              NODE_DONTPRINT
+             } NodeType;
+  
+ /*Type of Node/Token (Int, Void, String,...) */            
+typedef enum {TYPE_VOID, 
+		       TYPE_INT,
+		       TYPE_BOOL, 
+		       TYPE_INT_ARRAY, 
+		       TYPE_BOOL_ARRAY, 
+		       TYPE_STRING_ARRAY
+		       } Type;
+\end{lstlisting}
+
+
  
  \subsubsection{Criação da Árvore}
 \lstset{language=C,caption={Funções para a criação da árvore},label=Estruturas,numbers=left,frame=single} 
