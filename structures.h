@@ -104,31 +104,55 @@ typedef struct _Table{
     struct _Table* next;
 }Table;
 
+/* Method to create an Id (a) */
 listID* insertID(Node* currentNode, char* id);
+/* Method to create a new VarId (int a,b,c (to link a to b to c)) */
 listID* newVarID(char* id, listID* next);
+/* Method to get an operator type (NODE_PLUS; NODE_NOT,...) */
 NodeType getOperatorType(char* op);
+/* Method to create a Null Node, used for mandatory child Nodes */
 Node* createNull();
+/* Method to create the Program itself (class gcd) */
 Node* insertClass(char* id, Node* statements);
+/* Method to create a new VarDecl (int a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r;)*/
 Node* newVarDecl(int type, char* id, listID* moreIds, Node* next);
+/* Method to link nodes */
 Node* setNext(Node* current, Node* next);
+/* Method to set a Node static */
 Node* setStatic(Node* currentNode);
+/* Creates a New Method Declaration Node:
+    public static void cenas(){statement1; statement2;return;} */
 Node* newMethod(int type, char* id, Node* params, Node* varDecl, Node* statements);
+/* Creates a Compound Node ({ expression1;expression2}) */
 Node* insertCompound(Node* expression);
+/* Creates an If node (if(true)) */
 Node* insertIf(Node* expression, Node* statement1, Node* statement2);
+/* Creates a Print Node (System.out.println("blica"))*/
 Node* insertPrint(Node* expression);
+/* Creates a While Node (while(true)) */
 Node* insertWhile(Node* expression, Node* statements);
+/* Creates a Return Node (return;  return true;)*/
 Node* insertReturn(Node* expression);
+/* Creates a Store Node (a = 5, b[5] = true) */
 Node* insertStore(char* id, Node* arrayIndex, Node* expression);
+/* Creates a Terminal Node (a, 5, true, false) */
 Node* createTerminalNode(int n_type, char* token);
+/* Creates a New Param Declaration Node (String[] argv, int a) */
 Node* newParamDecl(int type, char* id, listID* moreIds, Node* next);
+/* Creates a .length Node (argv.length) */
 Node* insertDotLength(Node* expression);
+/* Creates a Load Array Node (c[1]) */
 Node* insertLoadArray(Node* expression, Node* indexExpression);
+/* Creates a parse int Node (Integer.parseInt(argv[1])) */
 Node* insertParseInt(char* id, Node* indexExpression);
+/* Creates a new array Node (new int[1]) */
 Node* insertNewArray(int type, Node* expression);
+/* Creates a Method Call (teste(a,b)) */
 Node* createCall(char* id, Node *args);
+/* Creates an unary expression ( !true; -1;...)*/
 Node* insertExpression(char* op,Node* exp);
+/* Creates an binary expression  ( 1 + 1; true != false; a < b) */
 Node* insertDoubleExpression(Node* exp1,char* op,Node* exp2);
-
 TableNode* addNewDeclTable(char isparam, TableNode* symbol, Node* ast,Table* table);
 Table* createSymbols(Node* ast);
 
