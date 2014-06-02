@@ -7,14 +7,14 @@
 \contentsline {section}{\numberline {3}An\IeC {\'a}lise Sint\IeC {\'a}tica e Sem\IeC {\^a}ntica}{6}
 \contentsline {subsection}{\numberline {3.1}Gram\IeC {\'a}tica}{7}
 \contentsline {subsection}{\numberline {3.2}Gram\IeC {\'a}tica Inicial}{7}
-\contentsline {subsubsection}{\numberline {3.2.1}Estado Final da Gram\IeC {\'a}tica}{8}
-\contentsline {subsection}{\numberline {3.3}\IeC {\'A}rvore de Sintaxe Abstrata}{11}
-\contentsline {subsubsection}{\numberline {3.3.1}Estruturas}{11}
-\contentsline {subsubsection}{\numberline {3.3.2}Cria\IeC {\c c}\IeC {\~a}o da \IeC {\'A}rvore}{11}
-\contentsline {subsubsection}{\numberline {3.3.3}Exemplo}{12}
-\contentsline {subsection}{\numberline {3.4}An\IeC {\'a}lise Sem\IeC {\^a}ntica}{13}
-\contentsline {subsection}{\numberline {3.5}Tabela de S\IeC {\'\i }mbolos}{14}
-\contentsline {subsubsection}{\numberline {3.5.1}Estruturas}{14}
-\contentsline {subsection}{\numberline {3.6}Tratamento de Erros Sem\IeC {\^a}nticos}{15}
-\contentsline {section}{\numberline {4}Gera\IeC {\c c}\IeC {\~a}o de C\IeC {\'o}digo}{16}
-\contentsline {section}{\numberline {5}Conclus\IeC {\~a}o}{16}
+\contentsline {subsubsection}{\numberline {3.2.1}Gram\IeC {\'a}tica Final}{8}
+\contentsline {subsection}{\numberline {3.3}\IeC {\'A}rvore de Sintaxe Abstrata}{12}
+\contentsline {subsubsection}{\numberline {3.3.1}Estruturas}{12}
+\contentsline {subsubsection}{\numberline {3.3.2}Cria\IeC {\c c}\IeC {\~a}o da \IeC {\'A}rvore}{12}
+\contentsline {subsubsection}{\numberline {3.3.3}Exemplo}{13}
+\contentsline {subsection}{\numberline {3.4}An\IeC {\'a}lise Sem\IeC {\^a}ntica}{14}
+\contentsline {subsection}{\numberline {3.5}Tabela de S\IeC {\'\i }mbolos}{15}
+\contentsline {subsubsection}{\numberline {3.5.1}Estruturas}{15}
+\contentsline {subsection}{\numberline {3.6}Tratamento de Erros Sem\IeC {\^a}nticos}{16}
+\contentsline {section}{\numberline {4}Gera\IeC {\c c}\IeC {\~a}o de C\IeC {\'o}digo}{17}
+\contentsline {section}{\numberline {5}Conclus\IeC {\~a}o}{17}

@@ -347,15 +347,34 @@ Lembramos que, em notação \textbf{ENBF}, os símbolos \textbf{[...]} englobam 
 
 
 
-\subsubsection{Estado Final da Gramática}
+\subsubsection{Gramática Final}
 \par A gramática que nos foi dada era ambígua e por isso tivemos de efetuar diversas alterações para permitir a análise sintática ascendente com o \emph{yacc}.\\
 Algumas das alterações que efetuámos foram:
 \begin{itemize}
-	\item Usar recursividade à direita, nas regras onde era possível existirem uma ou mais repetições
+	\item Criação de estados adicionais para as regras que implicam a repetição de \emph{tokens}.
 	\item Criação de estados adicionais para as regras que continham \emph{tokens} opcionais
+	\item Estabelecimento de regras de prioridade de forma a gerir regras de precedência entre operadores
+	\item Definição das regras de associação dos operadores ( à esquerda/direita)
 \end{itemize}
 
-Deveríamos ter usado recursividade  à esquerda pois assim teríamos em memória apenas os elementos que estaríamos a analisar visto que estamos a efectuar reduções à medida que estamos a ler o \emph{input}.
+\lstset{language=c,caption=Associação de Operadores,label=Estruturas2}
+\begin{lstlisting}
+%nonassoc IFX
+%nonassoc ELSE
+
+%left OP1OR
+%left OP1
+%left OP2EQS
+%left OP2
+%left OP3
+%left OP4
+%right NOT
+%left OSQUARE DOTLENGTH
+\end{lstlisting}  
+
+
+Deveríamos ter usado recursividade  à esquerda pois assim teríamos em memória apenas os elementos que estaríamos a analisar visto que estamos a efetuar reduções à medida que estamos a ler o \emph{input}.
+\par Foram ainda necessárias realizar alterações na gramática, de forma a impedir a indexação de \emph{arrays} ($a[1][2]$). Para tal as expressões foram divididas em dois tipos, expressões indexáveis e não indexáveis.
 
 
 A gramática final, utilizada no \emph{yacc} é a seguinte apresentada.
