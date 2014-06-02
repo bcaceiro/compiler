@@ -20,5 +20,5 @@
 \contentsline {subsubsection}{\numberline {3.5.2}Cria\IeC {\c c}\IeC {\~a}o da Tabela de S\IeC {\'\i }mbolos}{19}
 \contentsline {subsubsection}{\numberline {3.5.3}Impress\IeC {\~a}o da Tabela de S\IeC {\'\i }mbolos}{19}
 \contentsline {subsection}{\numberline {3.6}Tratamento de Erros Sem\IeC {\^a}nticos}{21}
-\contentsline {section}{\numberline {4}Gera\IeC {\c c}\IeC {\~a}o de C\IeC {\'o}digo}{22}
-\contentsline {section}{\numberline {5}Conclus\IeC {\~a}o}{22}
+\contentsline {section}{\numberline {4}Gera\IeC {\c c}\IeC {\~a}o de C\IeC {\'o}digo}{23}
+\contentsline {section}{\numberline {5}Conclus\IeC {\~a}o}{24}

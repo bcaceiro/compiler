@@ -927,8 +927,76 @@ void   statementError1oranother(int op, int n1, int n2, int n3);
 void   getErrorCall(int i,char* name, int n1, int n2);
 
 \end{lstlisting}
+
+Na detecção de erros semânticos foi realizada a verificação da consistência entre os símbolos terminais e operadores.
+\par Um dos problemas com que nos deparámos durante a verificação de erros foi a adequação da mensagem de erro ao nó onde ocorre o erro. Tal facto levou a que, apesar de todas as funcionalidades estarem implementadas, não fosse possível concluir a meta 2 atempadamente, embora os erros fossem apenas de \emph{output} ("\emph{presentation error}"). 
+\par Foi necessária especial atenção com alguns tipos de nós como o $NODE\_CALL$ uma vez que era necessária realizar a verificação de todos os seus parâmetros, o $NODE\_LENGTH$ e $NODE\_PARSEARGS$ uma vez que poderiam utilizar \emph{Strings}.Nos restantes nós foi necessário verificar os tipos dos nós filhos bem como o tipo resultante da aplicação do operador. Assim, durante a verificação semântica propagamos os tipos de forma a que todos os nós guardem o tipo de retorno.
+
+
+
 \pagebreak
 \section{Geração de Código}
+
+
+\lstset{language=C,caption={Função e estrutura auxiliar},label=Estruturas,frame=single}
+\begin{lstlisting}
+char* generateCode(Node* ast,Table* main);
+
+typedef struct _callP{
+    Type type;
+    char name[100];
+    struct _callP* next;
+}callParams;
+\end{lstlisting}
+
+\lstset{language=C,caption={Tamanho de dados e operadores},label=Estruturas,frame=single}
+\begin{lstlisting}
+static const char* SYMBOLS_TYPE_SIZE[] = {     "void",     "i32",     "i1",
+"%.ArrayInt",     "%.ArrayBool",     "i8*",     "Id",     "i32",
+"i1",     "i1*",  };
+
+static const char *CODE_OPERATOR_STRING[] = {"Program",
+                 "VarDecl",
+                 "MethodDecl",
+                 "MethodParams",
+                 "MethodBody",
+                 "ParamDeclaration",
+                 "CompoundStat",
+                 "if",
+                 "System.out.println",
+                 "return",
+                 "=",
+                 "mul",
+                 "sdiv",
+                 "srem",
+                 "!",
+                 "sub",
+                 "add",
+                 ".length",
+                 "[",
+                 "call",
+                 "new int",
+                 "new boolean",
+                 "Integer.parseInt",
+                 "while",
+                 "=",
+                 "IntLit",
+                 "BoolLit",
+                 "Id",
+                 "and",
+                 "or",
+                 "slt",
+                 "sgt",
+                 "sle",
+                 "sge",
+                 "ne",
+                 "eq",
+                 "null",
+                 "+",
+                 "-"
+                 };
+\end{lstlisting}
+
 
 \section{Conclusão}
 	
