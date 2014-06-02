@@ -77,6 +77,7 @@ David \textsc{Cardoso}  \\Número: 2011164039
 \end{minipage}
 ~
 \begin{minipage}{0.4\textwidth}
+
 \begin{flushright} \large
 \emph{Autor:} \\
 Bruno \textsc{Caceiro}  \\Número: 2008107991
@@ -98,7 +99,7 @@ Bruno \textsc{Caceiro}  \\Número: 2008107991
 \section{Introdução}
 Este projecto consiste no desenvolvimento de um compilador para a linguagem \emph{iJava} (imperative Java), que consiste num pequeno subconjunto da linguagem Java (versão 5.0). Os programas da linguagem \emph{iJava} são constituídos por uma única classe (a principal), contendo necessariamente um método \emph{main}, e podendo conter outros métodos e atributos, todos eles estáticos e (possivelmente) públicos.
 
-O projecto foi estruturado em 3 fases, primeiramente foi feita a Análise Lexical, implementada na linguagem \emph{C} e utilizando a ferramenta \emph{lex}. A segunda fase consistiu na análise sintática, com a  construção da árvore de sintaxe abstrata e análise semântica (tabelas de símbolos, deteção de erros semânticos). No final foi feita a geração de código.
+O projecto foi estruturado em 3 fases, primeiramente foi feita a Análise Lexical, implementada na linguagem \emph{C} e utilizando a ferramenta \emph{lex}. A segunda fase consistiu na análise sintática, recorrendo ao \emph{yacc/bison}, com a  construção da árvore de sintaxe abstrata e análise semântica (tabelas de símbolos, deteção de erros semânticos). No final foi feita a geração de código, em \emph{LLVM}.
 
 \begin{figure}[H]
        \centering
@@ -109,7 +110,7 @@ O projecto foi estruturado em 3 fases, primeiramente foi feita a Análise Lexica
 \pagebreak
 \section{Análise Lexical}
 
-A Análise Lexical consiste em analisar a entrada de linhas de caracteres e produzir uma sequência de símbolos (\emph{tokens}) que podem ser manipulados mais facilmente por um \emph{parser}. É uma forma de verificar um determinado alfabeto, neste caso o alfabeto da linguagem \emph{iJava}.
+A Análise Lexical consiste em analisar a entrada de linhas de caracteres e produzir uma sequência de símbolos (\emph{tokens}) que podem ser manipulados mais facilmente por um \emph{parser}. Assim, é uma forma de verificar um determinado alfabeto, neste caso o alfabeto da linguagem \emph{iJava}.
 Esta análise pode ser dividida em três fases:
 \begin{itemize}
 	\item Extração e classificação de \emph{tokens};
@@ -120,7 +121,7 @@ Esta análise pode ser dividida em três fases:
 
 \subsection{Tokens}
 \begin{itemize}
-	        \item \textbf{ID:} Sequências alfanuméricas começadas por uma letra, onde os símbolos "\_" e "\$" contam como letras. Maiúsculas e minúsculas são consideradas letras diferentes
+	        \item \textbf{ID:} Sequências alfanuméricas começadas por uma letra, onde os símbolos "\_" e "\$" contam como letras. Maiúsculas e minúsculas são consideradas ID's diferentes (\emph{case sensitive}).
 	        \begin{itemize}
 				\item \textbf{Expressão Regular}: $[a-zA-Z\_\$]([a-zA-Z\_\$0-9])* $
 	        \end{itemize}
@@ -156,7 +157,7 @@ Esta análise pode ser dividida em três fases:
 	        \item \textbf{COMMA:} ","
 	      \end{itemize}
 	      
-	    Foi necessário separar alguns \emph{tokens} devido às diferentes prioridades que cada operador tem.
+	    Para a Análise Sintática foi necessário separar alguns \emph{tokens} devido às diferentes prioridades que cada operador tem. Assim, os \emph{tokens} foram agrupados pela ordem de precedência de operações.
 		\begin{itemize}  
 	        \item \textbf{OP1:} "\&\&"  
 	        \item \textbf{OP1OR:} "\text{\textbar} \text{\textbar}"
@@ -211,16 +212,16 @@ Esta análise pode ser dividida em três fases:
 	       	                 \text{\textbar} volatile
 		       	             \text{\textbar} null
 	       	                 \text{\textbar} ++
-	       	                 \text{\textbar} --
+	       	                 \text{\textbar} $--$
 	       	            \end{itemize}      	 
 		\end{itemize}
 		
 		\subsubsection{Comentários}
 		Existem duas maneiras de fazer comentários:
 		\begin{itemize}
-			\item Comentar apenas uma linha //\textless código\textgreater. \\Caso seja detectado (//)  todo o código que se segue é ignorado até encontrar uma mudança de linha.
+			\item Comentar apenas uma linha "//\textless código\textgreater". \\Caso seja detectado (//)  todo o código que se segue é ignorado até encontrar uma mudança de linha.
 			\subitem \textbf{Expressão Regular:} "//".*
-			\item Comentar um bloco de código  /*\textless código\textgreater */
+			\item Comentar um bloco de código  "/*\textless código\textgreater */"
 		\end{itemize} 
 		\lstset{language=C,caption={Detecção de Comentários},label=Estruturas,frame=single}
 		\begin{lstlisting}
@@ -230,7 +231,7 @@ Esta análise pode ser dividida em três fases:
 		< COMMENT > .       {}
 		"/*"	            {BEGIN COMMENT}
 		\end{lstlisting}
-		Caso seja detectado (/*) todo o código é ignorado até que seja encontrado o seu correspondente (*/). Caso seja detectado o EOF então é apresentada uma mensagem de erro: "Line \%d, col \%d: unterminated comment". Foi criado um estado adicional no \emph{lex} para poder esta situação.
+		Caso seja detectado (/*) todo o código é ignorado até que seja encontrado o seu correspondente (*/). Caso seja detectado o EOF então é apresentada uma mensagem de erro: "Line \%d, col \%d: unterminated comment". Foi criado um estado adicional no \emph{lex} para poder tratar esta situação. Foi a criação deste estado que permitiu ignorar todos os \emph{tokens} presentes dentro do comentário.
 		
 		
 		
@@ -240,14 +241,15 @@ Esta análise pode ser dividida em três fases:
             \item "Line\textless num linha\textgreater,col\textless num coluna\textgreater:illegal character('\textless c \textgreater'\textbackslash n)"
             \item "Line\textless num linha\textgreater,col\textless num coluna\textgreater:unterminated comment\textbackslash n"
         \end{itemize}
-        Para podermos imprimir as mensagens de erro com o número da linha e coluna criámos uma variável \emph{column} para poder contar as colunas e utilizamos a variável \emph{yylineno} disponibilizada pelo \emph{yacc} para sabermos o número das linhas.
-        Para a contagem de colunas aumentamos a variável referente às colunas consoante o tamanho de cada \emph{token}. Quando há uma mudança de linha, inicializa-se o contador das colunas a 1. \\Para tratar o caso dos comentários criámos duas variáveis adicionais (\emph{Commentline,Commentcolumn}) para poder guardar a coluna e linha onde o comentário é inicializado.
+        \par Para podermos imprimir as mensagens de erro com o número da linha e coluna criámos uma variável \emph{column} para poder contar as colunas e utilizamos a variável \emph{yylineno},disponibilizada pelo \emph{yacc}, para sabermos o número das linhas.
+        Para a contagem de colunas aumentamos a variável referente às colunas consoante o tamanho de cada \emph{token}. Quando há uma mudança de linha, inicializa-se o contador das colunas a 1. 
+        \par Para tratar o caso dos comentários criámos duas variáveis adicionais (\emph{Commentline,Commentcolumn}) para poder guardar a coluna e linha onde o comentário é inicializado.
         
 	
 \pagebreak
 
 \section{Análise Sintática e Semântica}
-O \emph{lex} vai reconhecer os \emph{tokens} para de seguida o \emph{yacc} verificar se estes pertencem à gramática da linguagem.
+De forma a realizar a análise sintática foi utilizada a ferramenta \emph{lex}, para reconhecer e isolar os \emph{tokens}, sendo que de seguida serão enviados para o \emph{yacc} que irá ser responsável por verificar se estes pertencem à gramática da linguagem.
 
 
 \begin{figure}[H]
@@ -256,7 +258,8 @@ O \emph{lex} vai reconhecer os \emph{tokens} para de seguida o \emph{yacc} verif
        \caption{Relacionamento entre \emph{lex} e \emph{yacc}, retirado de \emph{http://pt.wikipedia.org/wiki/Yacc}}
        \end{figure}
        
-Para realizar a ligação entre o yacc e o lex foram definimos tokens no  yacc ,posteriormente importados pelo lex. Sempre que o lex uma sequência de caracteres correspondente a um token válido retorna-o, sendo este valor enviado para o yacc.     
+Para realizar a ligação entre o \emph{yacc} e o \emph{lex} foram definidos \emph{tokens} no  \emph{yacc},posteriormente importados pelo \emph{lex}. Sempre que o \emph{lex} detecta uma sequência de caracteres correspondente a um \emph{token} válido retorna um código acordado entre o \emph{yacc} e \emph{lex} de forma a identificar de forma única esse \emph{token} (\emph{enums}), sendo este valor enviado para o \emph{yacc}. 
+Caso o \emph{token} corresponda a um tipo passível de ser processado (\emph{INTLIT, BOOLIT, ID e operadores}), é guardado na variável \emph{yyvar} o valor introduzido pelo utilizador.
 \par É a variável \emph{yylval} que contém tipicamente o valor do \emph{token} encontrado num dado momento. Uma vez que pretendemos enviar vários de dados, tivémos e utilizar uma \emph{union}, definida no \emph{yacc},que permite partilhar, no mesmo espaço de memória, vários tipos diferentes.
 \lstset{language=c,caption={Union},label=Estruturas}
 \begin{lstlisting}
