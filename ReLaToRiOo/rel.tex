@@ -787,7 +787,7 @@ Esta análise é dividida em duas fases:
 
 \subsection{Tabela de Símbolos}
 
-A Tabela de símbolos é criada a partir da Árvore de Sintaxe Abstrata, onde se percorrem todos os nós relativos às declarações de métodos e atributos. Assim é criada uma tabela para cada \emph{scope}, \emph{scope} global do programa e das variáveis locais de cada método.
+A Tabela de símbolos é criada a partir da Árvore de Sintaxe Abstrata, onde se percorrem todos os nós relativos às declarações de métodos e atributos. Assim é criada uma tabela para cada \emph{scope},ou seja uma tabela global do programa e uma para cada método.
  
 \subsubsection{Estruturas}
 Para representação da tabela de símbolos, foram utilizadas as seguintes estruturas:
@@ -821,6 +821,8 @@ typedef struct _Table{
 \end{lstlisting}
 
 \subsubsection{Criação da Tabela de Símbolos}
+
+Durante a criação da tabela de símbolos é realizada a verificação da existência de IDs duplicados dentro do mesmo \emph{scope}.
 
 \lstset{language=C,caption={Métodos para criação da Tabela de Símbolos},label=Estruturas,frame=single}
 \begin{lstlisting}
