@@ -838,34 +838,39 @@ Table* createSymbols(Node* ast);
 Para o tratamento de erros semânticos utilizamos as seguintes funções:
 \lstset{language=C,caption={Funções para tratamento de erros semânticos},label=Estruturas,frame=single}
 \begin{lstlisting}
-/* Check if global variables have the same name as the Methods:
-		- If they have print error message: "Symbol %s already defined" and exit 
-*/
+/*Check if ID is already declared in the scope */
 void   checkIfExists(char* id, Table* local);
-void   checkSemanticErrors(Node* ast, Table* local, Table* main);
-void   checkErrors(Node* ast, Table* symbols, Table* main);
-
 /* Check if ID exists:
 	- If exists return the Type 
 	- If doesn't exist, print error message: "Cannot find symbol %s\n" and exit 
 */
 int    checkifIDExists(char* id,TableType type, Table* table, Table* main);
-Table* getMethodTable(Table* main, char* methodID);
-
 /* Check if the Literal is valid (decimal / hexadecimal / octal)
 	- If it is invalid print error message: "Invalid literal %s\n" and exit
 */
 void   validIntLit(char* lit);
+/*goes through the AST and check for errors in every node */
+void   checkSemanticErrors(Node* ast, Table* local, Table* main);
+/*check if terminal nodes are correct*/
+void   checkErrors(Node* ast, Table* symbols, Table* main);
+/*check if the types of the operators are correct, and propagates those types through the tree*/
 void   checkTypes(Node* ast,Table* main);
+/*Gets the local scope */
+Table* getMethodTable(Table* main, char* methodID);
+/* Get the type of the function */
+int    getFunctionType();
+/* Get the name of the function */
+char*  getFunctionName();
+/*Change to another scope */
+void   setTable(Table * oi);
+
+/* Prints the correspondent error */
 void   operatorError2Types(int op,int n1, int n2);
 void   operatorError1Types(int op,int n1);
 void   assignmentError(char* var, int n1, int n2);
 void   assignmentErrorArray(char* var, int n1, int n2);
-void   setTable(Table * oi);
-int    getFunctionType();
 void   statementError(int op, int n1,int n2);
 void   statementError1oranother(int op, int n1, int n2, int n3);
-char*  getFunctionName();
 void   getErrorCall(int i,char* name, int n1, int n2);
 
 \end{lstlisting}
