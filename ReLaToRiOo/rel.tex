@@ -272,7 +272,7 @@ Caso o \emph{token} corresponda a um tipo passível de ser processado (\emph{INT
     int type;
 }
 \end{lstlisting}   
-
+\pagebreak
 \par Para permitir a percepção, pelo \emph{yaac}, da linha e coluna que estão atualmente a serem utilizadas, foram também declaradas várias variáveis externas, partilhadas pelo \emph{lex}.
 \lstset{language=c,caption=Variáveis externas,label=Estruturas2}
 \begin{lstlisting}
@@ -376,8 +376,7 @@ Algumas das alterações que efetuámos foram:
 Apesar de termos usado recursividade  à direita, visto ser mais intuitiva, uma solução mais eficiente seria utilizar recursividade à esquerda, pois assim teríamos em memória apenas os elementos que estaríamos a analisar visto que estamos a efetuar reduções à medida que estamos a ler o \emph{input}.
 \par Foram ainda necessárias realizar alterações na gramática, de forma a impedir a indexação de \emph{arrays} ($a[1][2]$). Para tal as expressões foram divididas em dois tipos, expressões indexáveis e não indexáveis.
 
-$$$$
-
+\pagebreak
 A gramática final, utilizada no \emph{yacc} é a seguinte apresentada.
 
 \lstset{language=java,caption={Gramática Final},label=Estruturas,numbers=none, frame=none}
@@ -702,7 +701,7 @@ A árvore gerada é a seguinte:
 
 \begin{figure}[H]
        \centering
-       \includegraphics[keepaspectratio=true, scale = 0.5]{arvore.png}
+       \includegraphics[keepaspectratio=true, scale = 0.41]{arvore.png}
        \caption{Árvore de Sintaxe Abstrata para o Programa Exemplo}
 \end{figure}
 
@@ -788,7 +787,7 @@ Esta análise é dividida em duas fases:
 \subsection{Tabela de Símbolos}
 
 A Tabela de símbolos é criada a partir da Árvore de Sintaxe Abstrata, onde se percorrem todos os nós relativos às declarações de métodos e atributos. Assim é criada uma tabela para cada \emph{scope},ou seja uma tabela global do programa e uma para cada método.
- 
+ \pagebreak
 \subsubsection{Estruturas}
 Para representação da tabela de símbolos, foram utilizadas as seguintes estruturas:
 \lstset{language=C,caption={Estruturas para representação da Tabela de Símbolos},label=Estruturas,frame=single}
@@ -916,7 +915,6 @@ int    getFunctionType();
 char*  getFunctionName();
 /*Change to another scope */
 void   setTable(Table * oi);
-
 /* Prints the correspondent error */
 void   operatorError2Types(int op,int n1, int n2);
 void   operatorError1Types(int op,int n1);
@@ -958,6 +956,8 @@ typedef struct _callP{
     struct _callP* next;
 }callParams;
 \end{lstlisting}
+
+\par Foi também necessário a criação de um a estrutura, de forma a permitir realizar as chamadas de funções, uma vez que é necessário executar todas as instruções necessárias à preparação dos parâmetros antes de realizar a chamada da função.  
 
 \lstset{language=C,caption={Tamanho de dados e operadores},label=Estruturas,frame=single}
 \begin{lstlisting}
@@ -1006,7 +1006,126 @@ static const char *CODE_OPERATOR_STRING[] = {"Program",
                  "-"
                  };
 \end{lstlisting}
+\pagebreak
+\par Para realizar as operações necessárias foi necessário realizar chamadas ao sistema, neste caso a funções como o \emph{calloc, atoi e printf}. Foi também necessário criar as strings necessárias à impressão de valores.
 
+\lstset{language=C,caption={Cabeçalho do programa gerado},label=Estruturas,frame=single}
+\begin{lstlisting}
+printf("declare i32 @printf(i8* noalias nocapture, ...)\n");
+printf("declare noalias i8* @calloc(i32, i32) nounwind\n");
+printf("declare i32 @atoi(i8*) nounwind readonly\n");
+printf("@.printInt = private constant [4 x i8] c\"%%d\\0A\\00\"\n");
+printf("@.true = private constant [6 x i8] c\"true\\0A\\00\"\n");
+printf("@.false = private constant [7 x i8] c\"false\\0A\\00\"\n");
+printf("@.printBool = private constant [2 x i8*] 
+		 		[i8* getelementptr inbounds ([7 x i8]* @.false, i32 0, i32 0),
+		 		i8* getelementptr inbounds ([6 x i8]* @.true, 
+		 		i32 0, i32 0)]\n\n");
+printf("%%.ArrayInt = type { i32, i32* }\n");
+printf("%%.ArrayBool = type { i32, i1* }\n");
+
+\end{lstlisting}
+
+\subsection{Exemplo de código gerado}
+
+\lstset{language=Java,caption={Programa exemplo e código \emph{LLVM} gerado},label=Estruturas,frame=single}
+\begin{lstlisting}
+class gcd
+{
+	public static void main(String[] args) {
+		boolean a;
+		a = true && true;
+		System.out.println(args.length);
+		System.out.println(Integer.parseInt(args[5]));
+		a = osMaiores(69);
+	}
+
+	public static boolean osMaiores(int Caceiro) {
+		int[] cardouzoo;
+		cardouzoo = new int[5];
+		System.out.println(Caceiro);
+		return false;
+	}
+}
+
+==============================================================================
+
+declare i32 @printf(i8* noalias nocapture, ...)
+declare noalias i8* @calloc(i32, i32) nounwind
+declare i32 @atoi(i8*) nounwind readonly
+@.printInt = private constant [4 x i8] c"%d\0A\00"
+@.true = private constant [6 x i8] c"true\0A\00"
+@.false = private constant [7 x i8] c"false\0A\00"
+@.printBool = private constant [2 x i8*] [i8* getelementptr inbounds ([7 x i8]* @.false, i32 0, i32 0),i8* getelementptr inbounds ([6 x i8]* @.true, i32 0, i32 0)]
+
+%.ArrayInt = type { i32, i32* }
+%.ArrayBool = type { i32, i1* }
+
+
+define i32 @main(i32 %..argc, i8** %args){
+  %a = alloca i1
+
+;STORE
+  %..1 = alloca i1
+  store i1 1, i1* %..1
+  %..2 = icmp eq i1 1, 1
+  br i1 %..2, label %and.do0, label %and.end0
+and.do0:
+  store i1 1, i1* %..1
+  br label %and.end0
+and.end0:
+  %..3 = load i1* %..1
+  store i1 %..3, i1* %a
+
+;PRINT
+;.LENGTH
+  %..4 = sub i32 %..argc , 1
+  call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([4 x i8]* @.printInt, i32 0, i32 0), i32 %..4)
+
+;PRINT
+;PARSEARGS
+  %..6 = add i32 1 , 5
+  %..7 = getelementptr inbounds i8** %args, i32 %..6
+  %..8 = load i8** %..7
+  %..9 = call i32 @atoi(i8* %..8) nounwind readonly
+  call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([4 x i8]* @.printInt, i32 0, i32 0), i32 %..9)
+
+;STORE
+  %..11 = call i1 @osMaiores( i32 69 )
+
+  store i1 %..11, i1* %a
+
+
+  ret i32 0
+}
+
+
+define i1 @osMaiores(i32 %.Caceiro){
+%Caceiro  = alloca i32
+store i32 %.Caceiro, i32* %Caceiro 
+%cardouzoo = alloca %.ArrayInt
+
+;STORE
+;NEWINTARRAY
+  %..1 = call noalias i8* @calloc(i32 5, i32 4) nounwind
+
+  %..2 = bitcast i8* %..1 to i32*
+  %..3 = insertvalue %.ArrayInt undef, i32 5, 0
+  %..4 = insertvalue %.ArrayInt %..3, i32* %..2, 1
+  store %.ArrayInt %..4, %.ArrayInt* %cardouzoo
+
+;PRINT
+  %..5 = load i32* %Caceiro
+  call i32 (i8*, ...)* @printf(i8* getelementptr inbounds ([4 x i8]* @.printInt, i32 0, i32 0), i32 %..5)
+
+;RETURN
+  ret i1 0
+
+  ret i1 0
+}
+
+
+\end{lstlisting}
 
 
 \end{document}
