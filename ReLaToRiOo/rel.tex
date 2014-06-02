@@ -937,6 +937,16 @@ Na detecção de erros semânticos foi realizada a verificação da consistênci
 \pagebreak
 \section{Geração de Código}
 
+Para a realização da geração de código foi necessário ter em conta certos aspetos, nomeadamente os parâmetros e tipo de retorno da função \emph{main}, uma função obrigatória em \emph{iJava} e em \emph{LLVM}. Assim foi necessário permitir a recepção de parâmetros no formato definido pelo \emph{ANSI-C} ($int$ $main(int$ $argc,$ $char** argv$)).
+\par Outro aspecto a ter em conta foi a necessidade de armazenar a dimensão dos \emph{arrays} alocados em memória. Para tal, foi criada uma estrutura, de forma a permitir o armazenamento de dois valores, o espaço de memória alocado e o tamanho desse espaço.
+\par Além disso, tivemos de ter em consideração o \emph{Short Circuiting}, ou seja, o segundo argumento é apenas executado ou avaliado se o primeiro argumento não for suficiente para determinar o valor da expressão: quando o primeiro argumento de uma função $AND$ é avaliado como falso, o valor global deve ser falso e quando o primeiro argumento da função $OR$ for avaliado como verdadeiro, o valor global deve ser verdadeiro. Para realizar estes requisitos, recorremos à utilização de saltos condicionais.
+\par Outro aspecto a considerar, foi a necessidade de garantir que todas as funções apresentassem um chamada de retorno. Para não ser necessária a utilização de saltos condicionais, decidimos acrescentar sempre no final de cada função uma expressão de retorno, mesmo que a mesma não possa ser alcançada.
+\par Por fim, foi necessário  criar variáveis locais para armazenar os parâmetros, que são passados por valor e por isso não eram passíveis de ser acedidos da mesma forma que outras variáveis.
+\par Devido ao facto de a árvore de sintaxe abstrata já conter os tipos de dados devolvidos pelos operadores, foi-nos possível gerar a maioria o código sem a necessidade de utilizar a tabela de símbolos, sendo que apenas a utilizamos para verificar a origem das variáveis (globais ou locais).
+
+
+
+
 
 \lstset{language=C,caption={Função e estrutura auxiliar},label=Estruturas,frame=single}
 \begin{lstlisting}
@@ -997,9 +1007,6 @@ static const char *CODE_OPERATOR_STRING[] = {"Program",
                  };
 \end{lstlisting}
 
-
-\section{Conclusão}
-	
 
 
 \end{document}
