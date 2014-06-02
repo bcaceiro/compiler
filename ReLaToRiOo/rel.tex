@@ -688,7 +688,6 @@ Para a criação da árvore é realizada pelo \emph{yacc} uma análise ascendent
 \subsubsection{Exemplo}
 Considerando o seguinte programa:
 
-
 \lstset{language=java,caption={Programa Exemplo},label=Estruturas,numbers=left,frame=single}
 \begin{lstlisting}
  class gcd {
@@ -707,7 +706,68 @@ A árvore gerada é a seguinte:
        \caption{Árvore de Sintaxe Abstrata para o Programa Exemplo}
 \end{figure}
 
+ \subsubsection{Impressão da Árvore}
+ Para imprimir a Árvore de Sintaxe Abstrata percorremos todos os nós 
+ \lstset{language=c,caption={Funções para impressão da Árvore},label=Estruturas,numbers=left,frame=single}
+ \begin{lstlisting}
+ /* Method to print tabs */
+ void printTabs(int i);
+ /* Method to print the Syntax Abstract Tree */
+ void printAST(Node* AST);
+ /* Method to print the ID/ID's of the Node */
+ void printIDs(listID* ids,int tabs, int n_type, int type);
+ /* Recursive method to print the tree */
+ void printSubTree(Node* currentNode, int tabs);
+ \end{lstlisting}
  
+ Para impressão da árvore de Sintaxe Abstrata tivémos em conta a indentação correta para cada Nó e utilizamos a estrutura auxiliar $NODE\_STRING[]$ onde guardamos a \emph{Node} que identifica cada tipo de \emph{Node}. Para tal, aproveitamos o facto do $NODE\_ID$ de cada nó ser parte uma enumeração, possibilitando assim que haja uma correspondência direta entre cada índice do array $NODE\_STRING[]$ e do $NODE\_ID$. 
+ 
+\lstset{language=c,caption={Estrutura auxiliar para impressão da árvore},label=Estruturas,numbers=left,frame=single}
+ \begin{lstlisting}
+static const char *NODE_STRING[] = {"Program",
+                 "VarDecl",
+                 "MethodDecl",
+                 "MethodParams",
+                 "MethodBody",
+                 "ParamDeclaration",
+                 "CompoundStat",
+                 "IfElse",
+                 "Print",
+                 "Return",
+                 "Store",
+                 "Mul",
+                 "Div",
+                 "Mod",
+                 "Not",
+                 "Sub",
+                 "Add",
+                 "Length",
+                 "LoadArray",
+                 "Call",
+                 "NewInt",
+                 "NewBool",
+                 "ParseArgs",
+                 "While",
+                 "StoreArray",
+                 "IntLit",
+                 "BoolLit",
+                 "Id",
+                 "And",
+                 "Or",
+                 "Lt",
+                 "Gt",
+                 "Leq",
+                 "Geq",
+                 "Neq",
+                 "Eq",
+                 "Null",
+                 "Plus",
+                 "Minus",
+                 "DON'T PRINT THIS!"
+                 }; 
+ \end{lstlisting} 
+ 
+
 
 \subsection{Análise Semântica}
 A Análise Semântica tem como principais objectivos a ligação das definições de variáveis com a sua utilização, a verificação da correcção de tipos, declarações e chamadas de funções.
