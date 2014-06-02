@@ -12,10 +12,10 @@
 \contentsline {subsection}{\numberline {3.3}\IeC {\'A}rvore de Sintaxe Abstrata}{12}
 \contentsline {subsubsection}{\numberline {3.3.1}Estruturas}{12}
 \contentsline {subsubsection}{\numberline {3.3.2}Cria\IeC {\c c}\IeC {\~a}o da \IeC {\'A}rvore}{14}
-\contentsline {subsubsection}{\numberline {3.3.3}Exemplo}{14}
-\contentsline {subsection}{\numberline {3.4}An\IeC {\'a}lise Sem\IeC {\^a}ntica}{15}
-\contentsline {subsection}{\numberline {3.5}Tabela de S\IeC {\'\i }mbolos}{16}
-\contentsline {subsubsection}{\numberline {3.5.1}Estruturas}{16}
-\contentsline {subsection}{\numberline {3.6}Tratamento de Erros Sem\IeC {\^a}nticos}{17}
-\contentsline {section}{\numberline {4}Gera\IeC {\c c}\IeC {\~a}o de C\IeC {\'o}digo}{18}
-\contentsline {section}{\numberline {5}Conclus\IeC {\~a}o}{18}
+\contentsline {subsubsection}{\numberline {3.3.3}Exemplo}{15}
+\contentsline {subsection}{\numberline {3.4}An\IeC {\'a}lise Sem\IeC {\^a}ntica}{16}
+\contentsline {subsection}{\numberline {3.5}Tabela de S\IeC {\'\i }mbolos}{17}
+\contentsline {subsubsection}{\numberline {3.5.1}Estruturas}{17}
+\contentsline {subsection}{\numberline {3.6}Tratamento de Erros Sem\IeC {\^a}nticos}{18}
+\contentsline {section}{\numberline {4}Gera\IeC {\c c}\IeC {\~a}o de C\IeC {\'o}digo}{19}
+\contentsline {section}{\numberline {5}Conclus\IeC {\~a}o}{19}
