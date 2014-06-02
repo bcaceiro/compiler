@@ -720,7 +720,7 @@ A árvore gerada é a seguinte:
  void printSubTree(Node* currentNode, int tabs);
  \end{lstlisting}
  
- Para impressão da árvore de Sintaxe Abstrata tivémos em conta a indentação correta para cada Nó e utilizamos a estrutura auxiliar $NODE\_STRING[]$ onde guardamos a \emph{Node} que identifica cada tipo de \emph{Node}. Para tal, aproveitamos o facto do $NODE\_ID$ de cada nó ser parte uma enumeração, possibilitando assim que haja uma correspondência direta entre cada índice do array $NODE\_STRING[]$ e do $NODE\_ID$. 
+ Para impressão da árvore de Sintaxe Abstrata tivémos em conta a indentação correta para cada Nó e utilizamos a estrutura auxiliar $NODE\_STRING[ ]$ onde guardamos a \emph{Node} que identifica cada tipo de \emph{Node}. Para tal, aproveitamos o facto do $NODE\_ID$ de cada nó ser parte uma enumeração, possibilitando assim que haja uma correspondência direta entre cada índice do array $NODE\_STRING[ ]$ e do $NODE\_ID$. 
  
 \lstset{language=c,caption={Estrutura auxiliar para impressão da árvore},label=Estruturas,numbers=left,frame=single}
  \begin{lstlisting}
@@ -770,26 +770,20 @@ static const char *NODE_STRING[] = {"Program",
 
 
 \subsection{Análise Semântica}
-A Análise Semântica tem como principais objectivos a ligação das definições de variáveis com a sua utilização, a verificação da correcção de tipos, declarações e chamadas de funções.
+A Análise Semântica tem como principais objetivos a ligação das definições de variáveis com a sua utilização, a verificação da correção de tipos, declarações e chamadas de funções.
 Esta análise é dividida em duas fases:
-\begin{enumerate}
-	\item Para cada \emph{scope no programa:}
-	\begin{itemize}
-		\item Processar as declarações:
+	\begin{enumerate}
+		\item Processar as declarações de variáveis e métodos:
 		\begin{itemize}
 			\item Adicionar novas entradas na tabela de símbolos
-			\item Apresentar mensagem de erro caso haja variáveis repetidas
+			\item Apresentar mensagem de erro caso haja \emph{Ids} repetidos
 		\end{itemize}
 		\item Processar os \emph{statements}
 		\begin{itemize}
-			\item Procurar variáveis que não foram declaradas neste \emph{scope} ou no \emph{scope} global, e caso não tenham sido, apresentar mensagem de erro
+			\item Verificar se as variáveis utilizadas foram declaradas no  \emph{scope} local (do método) ou no \emph{scope} global, e em caso de variável não declarada, apresentar mensagem de erro
+			\item Usar a tabela de símbolos para determinar o tipo de cada expressão e procurar erros de concordância de tipo (atribuições, cálculos, contagem e tipos de argumentos corretos,...)
 		\end{itemize}
-	\end{itemize}
-	\item Processar todos os \emph{statements} do programa outra vez
-	\begin{itemize}
-		\item Usar a tabela de símbolos para determinar o tipo de cada expressão e procurar erros de tipo (atribuições, cálculos, contagem e tipos de argumentos correctos,...)
-	\end{itemize}
-\end{enumerate}
+	\end{enumerate}
 
 \subsection{Tabela de Símbolos}
 
