@@ -833,6 +833,59 @@ TableNode* addNewDeclTable(char isparam, TableNode* symbol, Node* ast,
 Table* createSymbols(Node* ast);
 \end{lstlisting}
 
+\subsubsection{Impressão da Tabela de Símbolos}
+Tal como ocorreu com a Árvore de Sintaxe Abstrata foi utilizado um \emph{array} de \emph{Strings} para fazer a correspondência entre $NODE\_ID$ e o \emph{output} esperado. Neste \emph{array} no entanto foi necessário uma especial atenção ao fato do \emph{output} esperado ser exatamente o \emph{input} do utilizador e não o \emph{token} de cada nó.
+
+\lstset{language=C,caption={Funções impressão da tabela de símbolos},label=Estruturas,frame=single}
+\begin{lstlisting}
+/* Goes through the tables, prints the header and calls printSymbolsDecl method */
+void printSymbols(Table* table);
+/* Prints the declarations of each table */
+void printSymbolsDecl(TableNode* tableNode);
+
+static const char *OPERATOR_STRING[] = {"Program",
+                 "VarDecl",
+                 "MethodDecl",
+                 "MethodParams",
+                 "MethodBody",
+                 "ParamDeclaration",
+                 "CompoundStat",
+                 "if",
+                 "System.out.println",
+                 "return",
+                 "=",
+                 "*",
+                 "/",
+                 "%",
+                 "!",
+                 "-",
+                 "+",
+                 ".length",
+                 "[",
+                 "call",
+                 "new int",
+                 "new boolean",
+                 "Integer.parseInt",
+                 "while",
+                 "=",
+                 "IntLit",
+                 "BoolLit",
+                 "Id",
+                 "&&",
+                 "||",
+                 "<",
+                 ">",
+                 "<=",
+                 ">=",
+                 "!=",
+                 "==",
+                 "null",
+                 "+",
+                 "-"
+                 };
+
+\end{lstlisting}
+
 \pagebreak
 \subsection{Tratamento de Erros Semânticos}
 Para o tratamento de erros semânticos utilizamos as seguintes funções:
