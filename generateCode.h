@@ -4,7 +4,7 @@
 
 
 static const char* SYMBOLS_TYPE_SIZE[] = {     "void",     "i32",     "i1",
-"i32*",     "i1*",     "i8*",     "Id",     "i32",
+"%.ArrayInt",     "%.ArrayBool",     "i8*",     "Id",     "i32",
 "i1",     "i1*",  };
 
 static const char *CODE_OPERATOR_STRING[] = {"Program",
@@ -20,7 +20,7 @@ static const char *CODE_OPERATOR_STRING[] = {"Program",
                  "=",
                  "mul",
                  "sdiv",
-                 "%",
+                 "srem",
                  "!",
                  "sub",
                  "add",
@@ -35,8 +35,8 @@ static const char *CODE_OPERATOR_STRING[] = {"Program",
                  "IntLit",
                  "BoolLit",
                  "Id",
-                 "&&",
-                 "||",
+                 "and",
+                 "or",
                  "slt",
                  "sgt",
                  "sle",

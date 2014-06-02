@@ -68,8 +68,6 @@ expressão regular para os IDS e para os intlit
 
 pk foi necessário separar as prioridades
 
-o caso do "++" e do "--"
-
 como foi realizado o tratamento de erros
 (contar linhas e colunas)
 como foi feita a parte de ignorar os comentários (visto que podem estar no meio do cod)
