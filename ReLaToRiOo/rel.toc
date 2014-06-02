@@ -6,8 +6,9 @@
 \contentsline {subsubsection}{\numberline {2.1.2}Tratamento de Erros}{5}
 \contentsline {section}{\numberline {3}An\IeC {\'a}lise Sint\IeC {\'a}tica e Sem\IeC {\^a}ntica}{6}
 \contentsline {subsection}{\numberline {3.1}Gram\IeC {\'a}tica}{7}
-\contentsline {subsection}{\numberline {3.2}Gram\IeC {\'a}tica Inicial}{7}
-\contentsline {subsubsection}{\numberline {3.2.1}Gram\IeC {\'a}tica Final}{8}
+\contentsline {subsubsection}{\numberline {3.1.1}Gram\IeC {\'a}tica Inicial}{7}
+\contentsline {subsubsection}{\numberline {3.1.2}Gram\IeC {\'a}tica Final}{8}
+\contentsline {subsection}{\numberline {3.2}Tratamento de Erros Sint\IeC {\'a}ticos}{11}
 \contentsline {subsection}{\numberline {3.3}\IeC {\'A}rvore de Sintaxe Abstrata}{12}
 \contentsline {subsubsection}{\numberline {3.3.1}Estruturas}{12}
 \contentsline {subsubsection}{\numberline {3.3.2}Cria\IeC {\c c}\IeC {\~a}o da \IeC {\'A}rvore}{12}

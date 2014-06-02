@@ -289,7 +289,7 @@ A gramática é a maneira formal de especificar a sintaxe de uma linguagem.
 Desenvolver uma gramática não ambígua é um dos passos mais importantes para o sucesso de um compilador. Para a gramática da linguagem \emph{iJava} usámos a notação \textbf{BNF} \emph{( Backus Naur Form)}, visto que a mesma é utilizada pelo \emph{yaac} e permite remover as ambiguidades. 
 
 
-\subsection{Gramática Inicial}
+\subsubsection{Gramática Inicial}
 
 \vspace{0.5cm}
 
@@ -346,7 +346,7 @@ Desenvolver uma gramática não ambígua é um dos passos mais importantes para 
 Lembramos que, em notação \textbf{ENBF}, os símbolos \textbf{[...]} englobam \emph{tokens} opcionais e \textbf{\{...\}} implicam a repetição dos \emph{tokens} 0 ou mais vezes.
 
 
-
+\pagebreak
 \subsubsection{Gramática Final}
 \par A gramática que nos foi dada era ambígua e por isso tivemos de efetuar diversas alterações para permitir a análise sintática ascendente com o \emph{yacc}.\\
 Algumas das alterações que efetuámos foram:
@@ -373,9 +373,10 @@ Algumas das alterações que efetuámos foram:
 \end{lstlisting}  
 
 
-Deveríamos ter usado recursividade  à esquerda pois assim teríamos em memória apenas os elementos que estaríamos a analisar visto que estamos a efetuar reduções à medida que estamos a ler o \emph{input}.
+Apesar de termos usado recursividade  à direita, visto ser mais intuitiva, uma solução mais eficiente seria utilizar recursividade à esquerda, pois assim teríamos em memória apenas os elementos que estaríamos a analisar visto que estamos a efetuar reduções à medida que estamos a ler o \emph{input}.
 \par Foram ainda necessárias realizar alterações na gramática, de forma a impedir a indexação de \emph{arrays} ($a[1][2]$). Para tal as expressões foram divididas em dois tipos, expressões indexáveis e não indexáveis.
 
+$$$$
 
 A gramática final, utilizada no \emph{yacc} é a seguinte apresentada.
 
@@ -503,6 +504,20 @@ comma_expr:
         |                                  
         ;
 \end{lstlisting}
+\subsection{Tratamento de Erros Sintáticos}
+Para o tratamento de erros sintáticos utilizamos a função \emph{yyerror} que imprime a linha, a coluna e o input onde ocorreu o erro através da utilização das variáveis \emph{yylineno, column, yytext}. Assim, sempre que é detetado um erro um sintático é impressa uma mensagem de erro e terminada a execução do programa.
+
+\lstset{language=c,caption=Função para tratamento erros sintáticos,label=Estruturas2,numbers=left,frame=single}
+\begin{lstlisting}
+void yyerror (char *var) {
+		printf ("Line %d, col %d: %s: %s\n",yylineno,
+           (int)(column-strlen(yytext)), var, yytext);
+		Error = 1;
+}
+\end{lstlisting}  
+
+
+
 
 
 \pagebreak
