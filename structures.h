@@ -84,7 +84,6 @@ typedef struct _Node
     char isStatic;
 }Node;
 
-
 typedef struct _TableNode
 {
     //Type of the Node (to identify the tipe of the node)
@@ -156,3 +155,4 @@ void getErrorCall(int i,char* name, int n1, int n2);
 
 
 
+                        \                           |\                                      \\|

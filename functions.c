@@ -603,7 +603,7 @@ TableNode* addNewDeclTable(char isparam, TableNode* symbol, Node* ast,Table* tab
     symbol->id      = ast->id;
     symbol->isParam = isparam;
 
-    //If more than a id has been if() declared in the same line
+    //If more than a id has been (if declared in the same line)
     if(symbol->id->next != NULL) {
         aux = symbol->id->next;
         while(aux != NULL) {

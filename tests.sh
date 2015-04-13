@@ -11,7 +11,7 @@ NUM_TESTS=1
 #done
 
 echo "Running final test"
-    ./ijparser < tests/test34.java > out.ll
+    ./ijparser -t < tests/test.java
 	#llc out.ll
 	#gcc -g -o out out.s
 	#./out 0 0 1 1 1 0 0 0 0 0
