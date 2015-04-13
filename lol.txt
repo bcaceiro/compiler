@@ -1,0 +1,26 @@
+class gcd {
+	static int aqq, bqq, cqq, dqq;
+	static boolean eqq,qqf,gqq,hqq;
+	static boolean[] iqq,jqq,kqq,lqq;
+	static int [] mqq,nqq,qoq,pqq;
+ 	public static int main(String[] args) {
+		int a, b, c, d;
+		boolean e,f,g,h;
+		boolean[] i,j,k,l;
+		int [] m,n,o,p;
+		d = foda(a,b,c);
+		/*m = new int[10];
+		i = new boolean[0];
+		l = new int[true];*/
+		//aqq = Integer.parseInt(mqq[2]);
+		if(true){
+		{{{{{{{{{{{{{return bqq;{return aqq;}}}}}}}}}}}}}}
+			return a;
+		}
+
+	}
+	static int maiscenas;
+	public static int foda(int a, boolean b, int c){
+		return 1;
+	}
+}
